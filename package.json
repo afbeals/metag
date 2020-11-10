@@ -1,0 +1,131 @@
+{
+  "name": "mytag",
+  "version": "0.0.1",
+  "description": "media streaming service",
+  "main": "client/index.js",
+  "keywords": [
+    "react",
+    "redux",
+    "sagas",
+    "postgres",
+    "node",
+    "express",
+    "graphql",
+    "javascript",
+    "sql"
+  ],
+  "scripts": {
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
+    "test:view": "cross-env CI=true react-app-rewired test&& start chrome --incognito %cd%/reports/test/index.html&& start chrome --incognito %cd%/reports/coverage/index.html",
+    "eject": "react-app-rewired eject",
+    "lint:fe": "eslint ./src/**/*.js?(x)"
+  },
+  "author": "Allan Beals-Gibson",
+  "license": "ISC",
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "dependencies": {
+    "@emotion/core": "^10.1.1",
+    "@emotion/styled": "^10.0.27",
+    "@testing-library/jest-dom": "^5.11.5",
+    "@testing-library/react": "^11.1.1",
+    "@testing-library/user-event": "^12.2.0",
+    "customize-cra": "^1.0.0",
+    "node-sass": "^4.14.1",
+    "react": "^17.0.1",
+    "react-app-rewired": "^2.1.6",
+    "react-dom": "^17.0.1",
+    "react-scripts": "4.0.0",
+    "web-vitals": "^0.2.4"
+  },
+  "devDependencies": {
+    "@babel/plugin-transform-react-jsx": "^7.12.5",
+    "babel-eslint": "^10.1.0",
+    "babel-plugin-emotion": "^10.0.33",
+    "cross-env": "^7.0.2",
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-import-resolver-alias": "^1.1.2",
+    "eslint-plugin-html": "^6.1.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-react": "^7.21.5",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "express": "^4.17.1",
+    "handlebars": "^4.7.6",
+    "husky": "^4.3.0",
+    "inquirer": "^7.3.3",
+    "jest-html-reporters": "^2.1.0",
+    "pg": "^8.4.2",
+    "prettier": "^2.1.2",
+    "webpack-bundle-analyzer": "^4.1.0"
+  },
+  "jest": {
+    "testMatch": [
+      "**/*.test.js?(x)"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/generator/",
+      "/scripts/",
+      "/server/",
+      "/config/",
+      "/reports/",
+      "/dist/"
+    ],
+    "reporters": [
+      "default",
+      [
+        "jest-html-reporters",
+        {
+          "publicPath": "./reports/test",
+          "filename": "index.html"
+        }
+      ]
+    ],
+    "roots": [
+      "./"
+    ],
+    "testURL": "http://localhost",
+    "moduleNameMapper": {
+      "\\.(css|scss|less)$": "<rootDir>/config/jest.styleMock.js",
+      "\\.(png|jpg|gif|ttf|eot|svg)$": "<rootDir>/config/jest.fileMock.js",
+      "^~Components(.*)": "<rootDir>/src/components$1",
+      "^~Modules(.*)": "<rootDir>/src/modules$1",
+      "^~Pages(.*)": "<rootDir>/src/pages$1",
+      "^~Styles(.*)": "<rootDir>/src/styles$1",
+      "^~Util(.*)": "<rootDir>/src/util$1",
+      "^~Images(.*)": "<rootDir>/public/images$1"
+    },
+    "coverageDirectory": "<rootDir>/reports/coverage",
+    "coverageReporters": [
+      "html",
+      "json",
+      "text-summary"
+    ],
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "**/*.{js,jsx}",
+      "!<rootDir>/config/**/*",
+      "!<rootDir>/generator/**/*",
+      "!<rootDir>/dist/**/*",
+      "!<rootDir>/reports/**/*",
+      "!<rootDir>/server/**/*",
+      "<rootDir>/src/((?!styles)).*.js(x)?",
+      "!<rootDir>/*",
+      "!**/node_modules/**"
+    ]
+  }
+}
