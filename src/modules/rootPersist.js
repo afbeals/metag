@@ -1,6 +1,6 @@
 // Local
-import app from './application/persist';
+// import app from './application/persist';
 
 export default {
-  app,
+  // app,
 };

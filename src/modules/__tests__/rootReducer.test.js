@@ -6,11 +6,12 @@ import rootReducer from '../rootReducer';
 describe('Root Reducer Test', () => {
   describe('modules/rootReducer', () => {
     it('Should exist', () => {
-      expect.exists(rootReducer, 'rootReducer not found');
+      expect(rootReducer).toBeTruthy();
     });
 
     it('Should export an object', () => {
-      expect.equal(typeof rootReducer, 'object', 'rootReducer not a object');
+      expect(typeof rootReducer).toBe('object');
+      expect(Object.keys(rootReducer).length).toBeGreaterThanOrEqual(0);
     });
   });
 });

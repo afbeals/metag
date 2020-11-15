@@ -1,6 +1,6 @@
 // Local
-import app from './application/reducer';
+// import app from './application/reducer';
 
 export default {
-  app,
+  // app,
 };

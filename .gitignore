@@ -17,7 +17,8 @@ testReports/mocha/*
 !testReports/mocha/mochawesome.json
 
 # production
-/build
+/build/
+/dist/
 
 # logs
 *.log.*

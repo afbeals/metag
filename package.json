@@ -17,7 +17,7 @@
   "scripts": {
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
-    "test": "react-app-rewired test --watchAll=false",
+    "test": "react-app-rewired test --watchAll=false --no-cache",
     "test:watch": "react-app-rewired test",
     "test:view": "cross-env CI=true react-app-rewired test&& start chrome --incognito %cd%/reports/test/index.html&& start chrome --incognito %cd%/reports/coverage/index.html",
     "eject": "react-app-rewired eject",
@@ -82,11 +82,12 @@
     "testPathIgnorePatterns": [
       "/node_modules/",
       "/generator/",
-      "/scripts/",
+      "/build/",
       "/server/",
       "/config/",
       "/reports/",
-      "/dist/"
+      "/dist/",
+      "./src/styles"
     ],
     "reporters": [
       "default",
@@ -119,16 +120,27 @@
       "text-summary"
     ],
     "collectCoverage": true,
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/config/",
+      "<rootDir>/generator/",
+      "<rootDir>/dist/",
+      "<rootDir>/reports/",
+      "<rootDir>/server/",
+      "<rootDir>/src/styles",
+      "node_modules",
+      "<rootDir>/src/reportWebVitals.js"
+  ],
     "collectCoverageFrom": [
-      "**/*.{js,jsx}",
-      "!<rootDir>/config/**/*",
-      "!<rootDir>/generator/**/*",
-      "!<rootDir>/dist/**/*",
-      "!<rootDir>/reports/**/*",
-      "!<rootDir>/server/**/*",
-      "<rootDir>/src/((?!styles)).*.js(x)?",
-      "!<rootDir>/*",
-      "!**/node_modules/**"
-    ]
+      "./src/**/*.{js,jsx}"
+
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 50,
+        "functions": 50,
+        "lines": 50,
+        "statements": -10
+      }
+    }
   }
 }
