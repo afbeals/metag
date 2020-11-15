@@ -1,0 +1,13 @@
+// Local
+import {{camelName}}ActionsTest from './actions.testPartial';
+import {{camelName}}ReducerTest from './reducer.testPartial';
+{{#if selectors}}import {{camelName}}SelectorsTest from './selectors.testPartial';{{/if}}
+{{#if sagas}}import {{camelName}}SagasTest from './sagas.testPartial';{{/if}}
+
+describe('{{capitalName}} Module Tests: ', () => {
+  // run all test in block
+  {{camelName}}ActionsTest();
+  {{camelName}}ReducerTest();
+{{#if selectors}}  {{camelName}}SelectorsTest();{{/if}}
+{{#if sagas}}  {{camelName}}SagasTest();{{/if}}
+});

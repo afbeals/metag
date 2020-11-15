@@ -1,0 +1,34 @@
+// External
+import localForage from 'localforage';
+import createEncryptor from 'redux-persist-transform-encrypt';
+import { createTransform } from 'redux-persist';
+
+// Internal
+import { normalize } from '~GlobalUtil/';
+const { REACT_APP_PERSIST_KEY, REACT_APP_EXPERIATION } = process.env;
+
+// Constants
+const { expireReducer } = normalize;
+const encryptor = createEncryptor({
+  secretKey: REACT_APP_PERSIST_KEY, // TODO: update to private key
+  onError: error => {
+    console.log('{{name}} persist error: ', error);
+  },
+});
+const expire = expireReducer(
+  '',
+  {
+    dataDefault: null,
+    expireSeconds: REACT_APP_EXPERIATION,
+  },
+  createTransform,
+);
+
+const {{camelName}}PersistConfig = {
+  storage: localForage,
+  key: '{{name}}',
+  transforms: [expire, encryptor],
+  whitelist: [],
+};
+
+export default {{camelName}}PersistConfig;

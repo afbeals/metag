@@ -1,0 +1,17 @@
+// Internal
+import types from './types';
+{{#if util}}import util from './util';{{/if}}
+{{#if util}}const initialStore = util.buildInitialStore();{{/if}}
+export default function reducer(state = {{#if util}}initialStore{{else}}{}{{/if}}, { type, payload }) {
+  switch (type) {
+    case types: {
+      return {
+        ...state,
+        payload,
+      };
+    }
+
+    default:
+      return state;
+  }
+}

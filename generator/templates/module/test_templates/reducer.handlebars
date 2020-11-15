@@ -1,0 +1,26 @@
+// External
+
+// Internal
+import reducer from '../reducer';
+import types from '../types';
+{{#if util}}import util from '../util';{{/if}}
+
+const {{camelName}}ReducerTest = () => describe('Reducer', () => {
+    let initialStore; // instantiate beforehand
+    beforeEach(() => {
+        {{#if util}}
+            initialStore = util.buildInitialStore(); // assign for each test block
+        {{else}}
+            initialStore = {};
+        {{/if}}
+    });
+
+    it('Should have initial store', () => {
+        expect.deepEqual(
+            reducer(undefined, {}),
+            initialStore,
+        );
+    });
+});
+
+export default {{camelName}}ReducerTest;

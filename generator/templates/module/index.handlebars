@@ -1,0 +1,29 @@
+// Internal
+import actions from './actions';
+{{#if hooks}}import hooks from './hooks';{{/if}}
+{{#if persist}}import persist from './persist';{{/if}}
+import reducer from './reducer';
+{{#if sagas}}import sagas from './sagas';{{/if}}
+{{#if selectors}}import * as selectors from './selectors';{{/if}}
+import types from './types';
+{{#if util}}import util from './util';{{/if}}
+
+export {default as actions} from './actions';
+{{#if hooks}}export {default as hooks} from './hooks';{{/if}}
+{{#if persist}}export {default as persist} from './persist';{{/if}}
+export reducer from './reducer';
+{{#if sagas}}export {default as sagas} from './sagas';{{/if}}
+{{#if selectors}}export * as selectors from './selectors';{{/if}}
+export {default as types} from './types';
+{{#if util}}export {default as util} from './util';{{/if}}
+
+export default {
+  actions,
+{{#if hooks}}  hooks,{{/if}}
+{{#if persist}}  persist,{{/if}}
+  reducer,
+{{#if sagas}}  sagas,{{/if}}
+{{#if selectors}}  selectors,{{/if}}
+  types,
+{{#if util}}  util,{{/if}}
+};

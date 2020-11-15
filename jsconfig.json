@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "commonjs",
+    "allowSyntheticDefaultImports": false,
+    "baseUrl": "./",
+    "paths": {
+      "~Components/*": ["src/components*"],
+      "~Modules*": ["src/modules*"],
+      "~Pages*": ["src/pages*"],
+      "~Styles*": ["src/styles*"],
+      "~GlobalUtil*": ["src/util*"],
+      "~Images*": ["public/images*"]
+    }
+  },
+  "exclude": ["node_modules", "build"]
+}

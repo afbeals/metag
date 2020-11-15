@@ -1,0 +1,23 @@
+// External
+
+// Internal
+import types from './types';
+{{#if util}}
+import util from './util';
+{{/if}}
+import normalize from '~GlobalUtil/normalize';
+
+// Constants
+const { actionCreator } = normalize;
+const { ACTION } = types;
+
+// Actions
+const actions = {
+  /**
+   * @method actionName
+   * @desc an action
+   */
+  actionName: (payload, meta) => actionCreator(ACTION, payload, meta),
+};
+
+export default actions;

@@ -1,0 +1,37 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# tests
+testReports/*
+!testReports/**/
+testReports/jest/*
+!testReports/jest
+!testReports/jest/jest-results.json
+testReports/jest/coverage/*
+!testReports/jest/coverage
+!testReports/jest/coverage/coverage-final.json
+testReports/mocha/*
+!testReports/mocha
+!testReports/mocha/mochawesome.json
+
+# production
+/build/
+/dist/
+
+# logs
+*.log.*
+
+# OS files
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+/.vscode
+debug.log
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

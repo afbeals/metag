@@ -1,0 +1,22 @@
+// External
+
+// Internal
+import * as selectors from '../selectors';
+{{#if util}}import util from '../util';{{/if}}
+
+const {{camelName}}SelectorsTest = () => describe('Selectors', () => {
+    const mockStore = {}; // mock global store object
+    beforeEach(() => { // assign for each test block
+        {{#if util}}
+        mockStore.{{name}} = util.buildMockStore();
+        {{else}}
+        mockStore.{{name}} = {};
+        {{/if}}
+    });
+
+    it('Should return equals', () => {
+        expect(selectors.get{{capitalName}}Store(mockStore)).to.deep.equal(mockStore.{{name}}).and.an('object');
+    });
+});
+
+export default {{camelName}}SelectorsTest;

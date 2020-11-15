@@ -1,0 +1,12 @@
+// External
+import { createSelector } from 'reselect'; // selector package
+
+// Constants
+const get{{capitalName}} = state => state.{{name}}; // select item in store to use
+
+/**
+ * @name get{{capitalName}}Store
+ * @param {object} get{{capitalName}} store object
+ * @return {object} the store data
+ */
+export const get{{capitalName}}Store = createSelector([get{{capitalName}}], store => store);
