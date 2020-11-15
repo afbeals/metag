@@ -1,0 +1,21 @@
+// External
+
+// Internal
+import actions from '../actions';
+import types from '../types';
+{{#if util}}import util from '../util';{{/if}}
+
+const {{camelName}}ActionsTest = () => describe('Actions', () => {
+    it('Should do something', () => {
+        const value = 'val';
+        assert.deepEqual(
+            actions(value),
+            {
+                type: types,
+                payload: value,
+            },
+        );
+    });
+});
+
+export default {{camelName}}ActionsTest;

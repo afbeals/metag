@@ -1,0 +1,85 @@
+// External
+import {
+  put,
+  takeLatest,
+  all,
+  fork,
+  race,
+  take,
+  cancel,
+  select,
+  join,
+} from 'redux-saga/effects';
+
+// Internal
+import types from './types';
+import actions from './actions';
+import api from '~GlobalUtil/api';
+import normalize from '~GlobalUtil/normalize';
+{{#if selectors}}import {{camelName}}Selectors from './selectors';{{/if}}
+
+// Constants
+const { sagaRequest } = normalize;
+const { FETCH, SUCCESS, CANCEL } = actionTypes;
+
+// success generators
+function* successActions() {
+  yield all([take(SUCCESS)]);
+  return true;
+}
+
+// Series Generators
+export function* saga({ payload }) {
+  try {
+    {{#if selectors}}const selector = yield select{{camelName}}Selectors;{{/if}}
+    const request = { payload };
+
+    const apiCalls = yield all([
+      fork(sagaRequest, {
+        apiParams: [api.fetch, request],
+        onSuccess: actions.actionName,
+        successHnd: null,
+        onFail: actions.,
+        errorParams: {
+          keyValue: '',
+          clientErr: '',
+        },
+      }),
+    ]);
+
+    const { cancelSagas, success } = yield race({
+      cancelSagas: take(CANCEL),
+      success: successActions(),
+    });
+
+    if (cancelSagas) {
+      for (let i = 0; i < apiCalls.length; i++) {
+        yield cancel(apiCalls[i]);
+      }
+    } else {
+      yield successActionData = yield join(apiCalls);
+      return success;
+    }
+  } catch (e) {
+    yield put(
+      errorActions.createStoreError({
+        devErr: e.message,
+        keyValue: '',
+        clientErr: '',
+      }),
+    );
+  }
+}
+
+// WATCHERS
+export function* watchRequestForGeneratorName() {
+    yield takeLatest(FETCH, generatorName);
+}
+
+function* watcher() {
+  yield all([
+    watchRequestForGeneratorName(),
+  ]);
+}
+
+export default watcher;

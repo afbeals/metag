@@ -20,7 +20,7 @@ const customizers = {
     '~Modules': path.resolve(__dirname, '../src/modules'),
     '~Pages': path.resolve(__dirname, '../src/pages'),
     '~Styles': path.resolve(__dirname, '../src/styles'),
-    '~Util': path.resolve(__dirname, '../src/util'),
+    '~GlobalUtil': path.resolve(__dirname, '../src/util'),
     '~Images': path.resolve(__dirname, '../public/images'),
   },
   /**

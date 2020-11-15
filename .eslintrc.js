@@ -22,7 +22,7 @@ const eslintrc = {
           ['^~Modules*', './src/modules'],
           ['^~Pages*', './src/pages'],
           ['^~Styles*', './src/styles'],
-          ['^~Util*', './src/util'],
+          ['^~GlobalUtil*', './src/util'],
           ['^~Images*', './public/images'],
         ],
         extensions: ['.js', '.jsx', '.json'],
@@ -62,6 +62,7 @@ const eslintrc = {
   },
   rules: {
     // Eslint rules:
+    'arrow-parens': [2, 'as-needed'], // parens around arrow function parameters
     'max-len': [2, { ignoreTrailingComments: true }],
     'no-debugger': 1,
     'no-return-assign': ['error', 'except-parens'],
@@ -128,6 +129,7 @@ const eslintrc = {
         jsxSingleQuote: true,
         singleQuote: true,
         quoteProps: 'as-needed',
+        arrowParens: 'avoid',
       },
     ],
     'jsx-a11y/href-no-hash': 'off',

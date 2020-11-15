@@ -5,7 +5,8 @@ const prettierOptions = {
   "semi": true,
   "jsxSingleQuote": true,
   "singleQuote": true,
-  "quoteProps": "as-needed"
+  "quoteProps": "as-needed",
+  "arrowParens": "avoid",
 }
 
 module.exports = prettierOptions;

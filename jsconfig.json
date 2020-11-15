@@ -9,7 +9,7 @@
       "~Modules*": ["src/modules*"],
       "~Pages*": ["src/pages*"],
       "~Styles*": ["src/styles*"],
-      "~Util*": ["src/util*"],
+      "~GlobalUtil*": ["src/util*"],
       "~Images*": ["public/images*"]
     }
   },
