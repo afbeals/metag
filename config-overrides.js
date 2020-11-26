@@ -1,5 +1,9 @@
 // External
-const { override, addWebpackAlias } = require('customize-cra');
+const {
+  override,
+  addWebpackAlias,
+  removeModuleScopePlugin,
+} = require('customize-cra');
 
 // Internal
 const {
@@ -12,6 +16,7 @@ module.exports = {
   webpack: override(
     addWebpackAlias(aliasRoutes),
     bundleVisualizer(),
+    removeModuleScopePlugin(),
     styleLoaders()
   ),
 };

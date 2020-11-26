@@ -6,11 +6,11 @@
     "baseUrl": "./",
     "paths": {
       "~Components/*": ["src/components*"],
-      "~Modules*": ["src/modules*"],
-      "~Pages*": ["src/pages*"],
-      "~Styles*": ["src/styles*"],
-      "~GlobalUtil*": ["src/util*"],
-      "~Images*": ["public/images*"]
+      "~Modules/*": ["src/modules*"],
+      "~Pages/*": ["src/pages*"],
+      "~Styles/*": ["src/styles*"],
+      "~GlobalUtil/*": ["src/util*"],
+      "~Images/*": ["public/images*"]
     }
   },
   "exclude": ["node_modules", "build"]

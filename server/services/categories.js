@@ -15,68 +15,85 @@ const {
 // post create category (db and folder)
 const createCategory = async (pool, { body: { category } }) => {
   const checkDbQuery = {
-    text: `SELECT 'id' FROM public.${categoriesTable}
+    text: `SELECT id FROM ${categoriesTable}
            WHERE name = $1;`,
     values: [category],
   };
 
   const foundDbCat = await queryHandler(pool, checkDbQuery);
-  if (foundDbCat.length > 1) return Promise.reject('Category already exists');
+  if (foundDbCat.rows.length > 0)
+    return Promise.reject({ message: 'Category already exists' });
 
   const catPath = path.join(adPath, category);
-  return fs.ensureDir(catPath).then(() => {
-    const normalizedCat = category.replace(' ', '_');
-    const query = {
-      text: `INSERT INTO public.(${categoriesTable})(name, src_folder)
+  return fs
+    .ensureDir(catPath)
+    .then(() => {
+      const normalizedCat = category.replace(' ', '_');
+      const query = {
+        text: `INSERT INTO ${categoriesTable}(name, src_folder)
             VALUES($1, $2)
-            ON CONFLICT DO NOTHING
+            ON CONFLICT (name) DO NOTHING
             RETURNING *;`,
-      values: [category, normalizedCat],
-    };
-    return queryHandler(pool, query);
-  });
+        values: [category, normalizedCat],
+      };
+      return queryHandler(pool, query);
+    })
+    .catch(err => err);
 };
 
 // post update category (db and keep src same)
 const updateCategory = (pool, { body: { category, id } }) => {
-  if (!category || !id) return Promise.reject('missing required params');
+  if (!category || !id)
+    return Promise.reject({ message: 'missing required params' });
   const query = {
-    text: `UPDATE public.${categoriesTable}
-          SET name = $1) WHERE id = $2 RETURNING *;`,
+    text: `UPDATE ${categoriesTable}
+          SET name = $1 WHERE id = $2 RETURNING *;`,
     values: [category, id],
   };
   return queryHandler(pool, query);
 };
 
 // delete delete category (if empty, folder/category)
-const deleteCategory = async (pool, { body: { id, category } }) => {
+const deleteCategory = async (pool, { body: { id } }) => {
   const getCatQuery = {
-    text: `SELECT * FROM public.${categoriesTable}
-            WHERE name = $1;`,
-    values: [category],
+    text: `SELECT * FROM ${categoriesTable}
+            WHERE id = $1;`,
+    values: [id],
   };
   const found = await queryHandler(pool, getCatQuery);
-  const { src_folder } = found.rows[0];
-  if (!src_folder) return Promise.reject('category not found');
+  if (found.rows.length < 1)
+    return Promise.reject({ message: 'category not found' });
 
+  const { src_folder, name } = found.rows[0];
   const catPath = path.join(adPath, src_folder);
-  return fs.readdir(catPath, (err, files) => {
-    if (err) return Promise.reject(`error deleting category for id ${id}`);
-    if (!files.length) {
-      const deleteCatQuery = {
-        text: `DELETE FROM ${categoriesTable}
+
+  return new Promise((res, rej) =>
+    fs
+      .readdir(catPath)
+      .then(files => {
+        if (files.length > 0) {
+          rej({
+            message: `category not empty, move movies from ${name}(id:${id})`,
+          });
+        } else if (files.length === 0) {
+          const deleteCatQuery = {
+            text: `DELETE FROM ${categoriesTable}
                 WHERE id = $1
                 AND src_folder = $2;`,
-        values: [id, src_folder],
-      };
-      return queryHandler(pool, deleteCatQuery);
-    }
-  });
+            values: [id, src_folder],
+          };
+          queryHandler(pool, deleteCatQuery).then(() => {
+            fs.remove(catPath).then(() => res());
+          });
+        }
+      })
+      .catch(err => err)
+  );
 };
 
 // get fetch db all categories (db categories);
 const getAllCategories = pool => {
-  const query = `SELECT * FROM public.${categoriesTable} ORDER BY id ASC;`;
+  const query = `SELECT * FROM ${categoriesTable} ORDER BY id ASC;`;
   return queryHandler(pool, query);
 };
 
