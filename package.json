@@ -145,7 +145,7 @@
       "<rootDir>/server/",
       "<rootDir>/src/styles",
       "node_modules",
-      "<rootDir>/src/reportWebVitals.js"
+      "<rootDir>/src/app/reportWebVitals.js"
     ],
     "collectCoverageFrom": [
       "./src/**/*.{js,jsx}"

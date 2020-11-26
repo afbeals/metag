@@ -1,16 +1,9 @@
-import { useState } from 'react';
-import axios from 'axios';
+// import { useState } from 'react';
 import logo from '~Images/logos/logo.svg';
 import '~Styles/main.scss';
 
 function App() {
-  const [isHover, updateIsHover] = useState(false);
-  const getAllUsers = () => {
-    axios
-      .get('http://localhost:4250/getMovies')
-      .then(data => console.log(data))
-      .catch(({ response }) => console.log(response.data.message));
-  };
+  // const [isHover, updateIsHover] = useState(false);
 
   return (
     <div className='App'>
@@ -19,10 +12,10 @@ function App() {
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
-        <button className='App-link' onClick={getAllUsers}>
-          Get All Users
+        <button className='App-link' link='https://create-react-app.dev/'>
+          learn react
         </button>
-        <img
+        {/* <img
           onMouseOver={() => updateIsHover(true)}
           onMouseOut={() => updateIsHover(false)}
           onBlur={() => updateIsHover(false)}
@@ -44,7 +37,7 @@ function App() {
             type='video/mp4'
           />
           Sorry, your browser doesn't support embedded videos.
-        </video>
+        </video> */}
       </header>
     </div>
   );

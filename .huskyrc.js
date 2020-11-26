@@ -1,7 +1,6 @@
 const huskyOptions = {
   "hooks": {
-     "pre-push": "npm run test && npm run lint:fe",
-     "push-msg": "commitlint -E HUSKY_GIT_PARAMS"
+     "pre-commit": "npm run test && npm run lint:fe && git add -A"
    }
 };
 
