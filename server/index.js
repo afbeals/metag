@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import env from 'dotenv';
 import path from 'path';
 import colors from 'colors';
+import cors from 'cors';
 
 // Internal
 import getPool from './db';
@@ -12,9 +13,11 @@ import routes from './routes';
 const app = express();
 const pool = getPool();
 const envFilePath = path.join(__dirname, '../.env.local');
-const { SERVER_PORT: port } = process.env;
+const { SERVER_APP_PORT: port } = process.env;
 
 env.config({ path: envFilePath });
+
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(
@@ -24,7 +27,7 @@ app.use(
 );
 
 app.get('/', (_, response) => {
-  response.json({ info: 'Node.js, Express, and Postgres API' });
+  response.json({ info: 'Node.jss, Express, and Postgres API' });
 });
 
 routes(app, pool);

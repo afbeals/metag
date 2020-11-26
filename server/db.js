@@ -13,8 +13,9 @@ const {
   SERVER_USER,
   SERVER_HOST,
   SERVER_DB,
-  SERVER_PORT,
+  SERVER_DB_PORT,
 } = process.env;
+
 let establishedPool = null;
 
 const createPool = () => {
@@ -23,7 +24,7 @@ const createPool = () => {
     host: SERVER_HOST,
     database: SERVER_DB,
     password: SERVER_PASSWORD,
-    port: SERVER_PORT,
+    port: SERVER_DB_PORT,
   });
 
   return pool;

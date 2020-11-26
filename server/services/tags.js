@@ -12,9 +12,9 @@ const {
 // Queries
 const createTag = (pool, { body: { tag } }) => {
   const query = {
-    text: `INSERT INTO public.tags(${tagsTable})(name)
+    text: `INSERT INTO ${tagsTable}(name)
            VALUES($1)
-           ON CONFLICT DO NOTHING
+           ON CONFLICT (name) DO NOTHING
            RETURNING *;`,
     values: [tag],
   };
@@ -22,7 +22,8 @@ const createTag = (pool, { body: { tag } }) => {
 };
 
 const updateTag = (pool, { body: { tag, id } }) => {
-  if (!tag || !id) return Promise.reject('missing paramters to update tag');
+  if (!tag || !id)
+    return Promise.reject({ message: 'missing paramters to update tag' });
   const query = {
     text: `UPDATE ${tagsTable}
           SET name = $1

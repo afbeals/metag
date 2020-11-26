@@ -1,5 +1,5 @@
 // Internal
-import { user } from '../services/';
+import { user } from '../services';
 
 export default (app, pool) => {
   app.post('/createUser', (req, res) =>

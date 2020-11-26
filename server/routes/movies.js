@@ -18,7 +18,7 @@ export default (app, pool) => {
   app.get('/getAvailableMovies', (req, res) =>
     movies
       .getAvailableMovies(req)
-      .then(results => res.status(200).json(results.rows))
+      .then(data => res.status(200).send(data))
       .catch(err => {
         res.status(500).send(err);
       })
@@ -51,6 +51,13 @@ export default (app, pool) => {
       })
   );
 
+  app.get('/getMovieImg', (req, res) =>
+    movies
+      .getMovieImg(req)
+      .then(results => res.sendFile(results))
+      .catch(err => res.status(500).send(err))
+  );
+
   app.get('/streamMovie', (req, res) =>
     movies
       .streamMovie(pool, req)
@@ -58,9 +65,7 @@ export default (app, pool) => {
         res.writeHead(status, head);
         file.pipe(res);
       })
-      .catch(err => {
-        res.status(500).send(err);
-      })
+      .catch(err => res.status(500).send(err))
   );
 
   app.get('/searchMovies', (req, res) =>
@@ -72,7 +77,7 @@ export default (app, pool) => {
       })
   );
 
-  app.get('/updateMovie', (req, res) =>
+  app.post('/updateMovie', (req, res) =>
     movies
       .updateMovie(pool, req)
       .then(results => res.status(200).json(results.rows))

@@ -132,6 +132,7 @@ const eslintrc = {
         arrowParens: 'avoid',
       },
     ],
+    'jsx-a11y/media-has-caption': [0],
     'jsx-a11y/href-no-hash': 'off',
     'jsx-a11y/anchor-is-valid': [
       'warn',

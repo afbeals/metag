@@ -28,8 +28,8 @@ const customizers = {
    * @desc see size of bundle components, set REACT_APP_RUN_BUNDLE_VIS
    */
   bundleVisualizer: () => (config, env) => {
-    const { RUN_BUNDLE_VIS = false } = process.env;
-    if (RUN_BUNDLE_VIS) {
+    const { RUN_BUNDLE_VIS = 'false' } = process.env;
+    if (RUN_BUNDLE_VIS !== 'false') {
       return addBundleVisualizer()(config, env);
     }
     return config;

@@ -7,18 +7,22 @@
  * @example
  * const queryHandler = (pool, 'SELECT * FROM table', data => [data]);
  */
-const queryHandler = (pool, query, handler) =>
-  new Promise((res, rej) =>
-    pool.query(query, (err, results) => {
-      if (err) {
-        rej(err);
-      }
-      if (handler && typeof handler === 'function') {
-        res(handler(results));
-      }
-      res(results);
-    })
-  );
+export const queryHandler = (pool, query, handler = null) => {
+  let queryText;
+  let queryVals = null;
+  if (typeof query === 'string') {
+    queryText = query;
+  } else {
+    queryText = query.text;
+    queryVals = query.values;
+  }
+  return pool
+    .query(queryText, queryVals)
+    .then(res =>
+      handler && typeof handler === 'function' ? handler(res) : res
+    )
+    .catch(err => err);
+};
 
 /**
  * @function pageLimiter
@@ -31,18 +35,17 @@ const queryHandler = (pool, query, handler) =>
  * @example
  * const `SELECT * FROM table ${pageLimiter(options)}`;
  */
-const pageLimiter = (
-  { dir = 'ASC', where = null, group = '' },
-  currentValLength
-) => `
-  WHERE ($${currentValLength + 1}) ${
-  dir === 'ASC' ? '>' : '<'
-} ($${currentValLength})
+export const pageLimiter = ({ dir, where, group }, currentValLength) =>
+  `WHERE $${currentValLength + 2} ${dir === 'ASC' ? '>' : '<'} $${
+    currentValLength + 1
+  }
   ${where ? `AND ${where}` : ''}
-  ORDER BY $${currentValLength + 1} $${currentValLength + 3} LIMIT $${
-  currentValLength + 2
-}]
-  ${group};`;
+  ${group}
+  ${
+    dir === 'ASC'
+      ? `ORDER BY $${currentValLength + 2} ASC LIMIT $${currentValLength + 3};`
+      : `ORDER BY $${currentValLength + 2} DESC LIMIT $${currentValLength + 3};`
+  }`;
 
 export default {
   pageLimiter,
