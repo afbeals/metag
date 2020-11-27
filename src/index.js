@@ -1,12 +1,21 @@
+// External
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+
+// Internal
 import '~Styles/main.scss';
-import { App, reportWebVitals } from './app/';
+import { App, reportWebVitals, config } from './app/';
+
+// Constants
+const { store } = config;
 
 /* istanbul ignore next */
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );

@@ -1,6 +1,10 @@
-// Local
-// import app from './application/reducer';
+// External
+import { combineReducers } from '@reduxjs/toolkit';
 
-export default {
-  // app,
-};
+// Internal
+import app from './app/reducer';
+
+export default () =>
+  combineReducers({
+    app,
+  });

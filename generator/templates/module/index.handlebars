@@ -11,7 +11,7 @@ import types from './types';
 export {default as actions} from './actions';
 {{#if hooks}}export {default as hooks} from './hooks';{{/if}}
 {{#if persist}}export {default as persist} from './persist';{{/if}}
-export reducer from './reducer';
+export { default as reducer } from './reducer';
 {{#if sagas}}export {default as sagas} from './sagas';{{/if}}
 {{#if selectors}}export * as selectors from './selectors';{{/if}}
 export {default as types} from './types';
