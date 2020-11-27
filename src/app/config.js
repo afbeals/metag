@@ -19,7 +19,7 @@ const store = configureStore({
     }),
     ...rootMiddleware,
   ],
-  devTools: process.env.NODE_ENV !== 'production',
+  devTools: false,
   enhancers: [configureDevTools],
 });
 

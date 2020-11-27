@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for src/modules/app/util.js</title>
+    <title>Code coverage report for src/modules/fetch/selectors.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../../prettify.css" />
     <link rel="stylesheet" href="../../../base.css" />
@@ -19,27 +19,27 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../index.html">All files</a> / <a href="index.html">src/modules/app</a> util.js</h1>
+        <h1><a href="../../../index.html">All files</a> / <a href="index.html">src/modules/fetch</a> selectors.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>4/4</span>
+                <span class='fraction'>7/7</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>0/0</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
@@ -81,60 +81,54 @@
 <a name='L22'></a><a href='#L22'>22</a>
 <a name='L23'></a><a href='#L23'>23</a>
 <a name='L24'></a><a href='#L24'>24</a>
-<a name='L25'></a><a href='#L25'>25</a>
-<a name='L26'></a><a href='#L26'>26</a>
-<a name='L27'></a><a href='#L27'>27</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<a name='L25'></a><a href='#L25'>25</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">19x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">10x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const appUtilityDefs = {};
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// External
+import { createSelector } from 'reselect'; // selector package
 &nbsp;
-const appUtilityFuncs = {
-  /**
-   * Returns initial store
-   * @method buildInitialStore
-   * @return {obj} returns object with initial store properties
-   */
-  buildInitialStore: () =&gt; ({
-    showOverlay: 0,
-    showModal: false,
-    notification: null,
-  }),
-  /**
-   * Returns mock store
-   * @method buildMockStore
-   * @param {object} [props] addtional props insert alongside mock data
-   * @return {object} returns mock store
-   */
-  buildMockStore: (props = <span class="branch-0 cbranch-no" title="branch not covered" >{})</span> =&gt; ({
-    ...appUtilityFuncs.buildInitialStore(),
-    ...props,
-  }),
-};
+// Constants
+// select item in store to use
+const getFetch = (state, key) =&gt; ({ store: state.fetch, key });
 &nbsp;
-export default { ...appUtilityDefs, ...appUtilityFuncs };
+/**
+ * @name getFetchStore
+ * @param {object} getFetch store object
+ * @return {object} the store data
+ */
+export const getFetchStore = createSelector([getFetch], ({ store }) =&gt; store);
+&nbsp;
+/**
+ * @desc create dynamic selector to returns fetch status of request
+ * @name createFetchSelector
+ * @param {object} getFetchStore
+ * @param {object} getFetchStore.store store object
+ * @param {string} getFetchStore.key key value to listen for
+ * @return {boolean} the status of request
+ */
+export const createFetchSelector = () =&gt;
+  createSelector([getFetch], ({ store, key }) =&gt; !!store[key]);
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
