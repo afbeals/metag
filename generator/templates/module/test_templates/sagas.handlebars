@@ -18,11 +18,11 @@ const {{camelName}}SagasTest = () => describe('Sagas', () => {
   describe('Sagas: ', () => {
     describe('Section Sagas: ', () => {
       describe('Watchers: ', () => {
-        it('Should catch request ', () => testSaga({{camelName}}Sagas.watchRequestForGeneratorName) // match to watcher
+        it('Should catch request ', () => {testSaga({{camelName}}Sagas.watchRequestForGeneratorName) // match to watcher
           .next() // start generator
           .takeLatest(types, {{camelName}}Sagas) // match to generator
           .next() // step through generator
-          .isDone());
+          .isDone()});
       });
 
       describe('Section Series: ', () => {

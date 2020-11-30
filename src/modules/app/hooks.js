@@ -7,6 +7,13 @@ import * as appSelectors from './selectors';
 import appActions from './actions';
 
 // Constants
+const {
+  app: {
+    modal: { show: appShowModal, hide: appHideModal },
+    notify: { show: appShowNotify, hide: appHideNotify },
+    overlay: { show: appShowOverlay, hide: appHideOverlay },
+  },
+} = appActions;
 const appHooks = {
   /**
    * @method useAppStore
@@ -24,12 +31,12 @@ const appHooks = {
       appNotification: useSelector(appSelectors.appNotification),
       modalIsVisible: useSelector(appSelectors.appModalIsVisible),
       // actions
-      appShowOverlay: () => dispatch(appActions.appShowOverlay()),
-      appHideOverlay: () => dispatch(appActions.appHideOverlay()),
-      appShowNotify: info => dispatch(appActions.appShowNotify(info)),
-      appHideNotify: () => dispatch(appActions.appHideNotify()),
-      appShowModal: () => dispatch(appActions.appShowModal()),
-      appHideModal: () => dispatch(appActions.appHideModal()),
+      appShowOverlay: () => dispatch(appShowOverlay()),
+      appHideOverlay: () => dispatch(appHideOverlay()),
+      appShowNotify: info => dispatch(appShowNotify(info)),
+      appHideNotify: () => dispatch(appHideNotify()),
+      appShowModal: () => dispatch(appShowModal()),
+      appHideModal: () => dispatch(appHideModal()),
     };
 
     const propTypes = {
@@ -61,8 +68,8 @@ const appHooks = {
       // selectors
       modalIsVisible: useSelector(appSelectors.appModalIsVisible),
       // actions
-      appShowModal: () => dispatch(appActions.appShowModal()),
-      appHideModal: () => dispatch(appActions.appHideModal()),
+      appShowModal: () => dispatch(appShowModal()),
+      appHideModal: () => dispatch(appHideModal()),
     };
 
     const propTypes = {
@@ -87,8 +94,8 @@ const appHooks = {
       // selectors
       appNotification: useSelector(appSelectors.appNotification),
       // actions
-      appShowNotify: info => dispatch(appActions.appShowNotify(info)),
-      appHideNotify: () => dispatch(appActions.appHideNotify()),
+      appShowNotify: info => dispatch(appShowNotify(info)),
+      appHideNotify: () => dispatch(appHideNotify()),
     };
 
     const propTypes = {
@@ -113,8 +120,8 @@ const appHooks = {
       // selectors
       overlayIsVisible: useSelector(appSelectors.appOverlayIsVisible),
       // actions
-      appShowOverlay: () => dispatch(appActions.appShowOverlay()),
-      appHideOverlay: () => dispatch(appActions.appHideOverlay()),
+      appShowOverlay: () => dispatch(appShowOverlay()),
+      appHideOverlay: () => dispatch(appHideOverlay()),
     };
 
     const propTypes = {

@@ -1,23 +1,28 @@
 // External
 
 // Internal
-import types from './types';
 {{#if util}}
 import util from './util';
 {{/if}}
-import normalize from '~GlobalUtil/normalize';
+import { createActions } from '~GlobalUtil/normalize';
 
 // Constants
-const { actionCreator } = normalize;
-const { ACTION } = types;
+const MODULE = `${process.env.REACT_APP_MODULE_NAME}/{{upperName}}/`; // module action prefix
 
 // Actions
-const actions = {
-  /**
-   * @method actionName
-   * @desc an action
-   */
-  actionName: (payload, meta) => actionCreator(ACTION, payload, meta),
-};
+/**
+ * Name
+ *
+ * @method
+ * @name path
+ * @desc desc
+ *
+ */
+const actions = createActions(
+  {
+    {{moduleName}}: {},
+  },
+  { prepend: MODULE },
+);
 
 export default actions;

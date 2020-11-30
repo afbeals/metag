@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/33</span>
+                <span class='fraction'>0/34</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/33</span>
+                <span class='fraction'>0/34</span>
             </div>
         
             
@@ -189,7 +189,14 @@
 <a name='L130'></a><a href='#L130'>130</a>
 <a name='L131'></a><a href='#L131'>131</a>
 <a name='L132'></a><a href='#L132'>132</a>
-<a name='L133'></a><a href='#L133'>133</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L133'></a><a href='#L133'>133</a>
+<a name='L134'></a><a href='#L134'>134</a>
+<a name='L135'></a><a href='#L135'>135</a>
+<a name='L136'></a><a href='#L136'>136</a>
+<a name='L137'></a><a href='#L137'>137</a>
+<a name='L138'></a><a href='#L138'>138</a>
+<a name='L139'></a><a href='#L139'>139</a>
+<a name='L140'></a><a href='#L140'>140</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -198,6 +205,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -330,6 +344,13 @@ import * as appSelectors from './selectors';
 import appActions from './actions';
 &nbsp;
 // Constants
+const {
+  app: {
+    modal: { show: appShowModal, hide: appHideModal },
+    notify: { show: appShowNotify, hide: appHideNotify },
+    overlay: { show: appShowOverlay, hide: appHideOverlay },
+  },
+} = <span class="cstat-no" title="statement not covered" >appActions;</span>
 const appHooks = <span class="cstat-no" title="statement not covered" >{</span>
   /**
    * @method useAppStore
@@ -347,12 +368,12 @@ const appHooks = <span class="cstat-no" title="statement not covered" >{</span>
       appNotification: useSelector(appSelectors.appNotification),
       modalIsVisible: useSelector(appSelectors.appModalIsVisible),
       // actions
-      appShowOverlay: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >dispatch(appActions.appShowOverlay()),</span>
-      appHideOverlay: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >dispatch(appActions.appHideOverlay()),</span>
-      appShowNotify: <span class="fstat-no" title="function not covered" >in</span>fo =&gt; <span class="cstat-no" title="statement not covered" >dispatch(appActions.appShowNotify(info)),</span>
-      appHideNotify: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >dispatch(appActions.appHideNotify()),</span>
-      appShowModal: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >dispatch(appActions.appShowModal()),</span>
-      appHideModal: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >dispatch(appActions.appHideModal()),</span>
+      appShowOverlay: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >dispatch(appShowOverlay()),</span>
+      appHideOverlay: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >dispatch(appHideOverlay()),</span>
+      appShowNotify: <span class="fstat-no" title="function not covered" >in</span>fo =&gt; <span class="cstat-no" title="statement not covered" >dispatch(appShowNotify(info)),</span>
+      appHideNotify: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >dispatch(appHideNotify()),</span>
+      appShowModal: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >dispatch(appShowModal()),</span>
+      appHideModal: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >dispatch(appHideModal()),</span>
     };
 &nbsp;
     const propTypes = <span class="cstat-no" title="statement not covered" >{</span>
@@ -384,8 +405,8 @@ const appHooks = <span class="cstat-no" title="statement not covered" >{</span>
       // selectors
       modalIsVisible: useSelector(appSelectors.appModalIsVisible),
       // actions
-      appShowModal: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >dispatch(appActions.appShowModal()),</span>
-      appHideModal: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >dispatch(appActions.appHideModal()),</span>
+      appShowModal: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >dispatch(appShowModal()),</span>
+      appHideModal: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >dispatch(appHideModal()),</span>
     };
 &nbsp;
     const propTypes = <span class="cstat-no" title="statement not covered" >{</span>
@@ -410,8 +431,8 @@ const appHooks = <span class="cstat-no" title="statement not covered" >{</span>
       // selectors
       appNotification: useSelector(appSelectors.appNotification),
       // actions
-      appShowNotify: <span class="fstat-no" title="function not covered" >in</span>fo =&gt; <span class="cstat-no" title="statement not covered" >dispatch(appActions.appShowNotify(info)),</span>
-      appHideNotify: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >dispatch(appActions.appHideNotify()),</span>
+      appShowNotify: <span class="fstat-no" title="function not covered" >in</span>fo =&gt; <span class="cstat-no" title="statement not covered" >dispatch(appShowNotify(info)),</span>
+      appHideNotify: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >dispatch(appHideNotify()),</span>
     };
 &nbsp;
     const propTypes = <span class="cstat-no" title="statement not covered" >{</span>
@@ -436,8 +457,8 @@ const appHooks = <span class="cstat-no" title="statement not covered" >{</span>
       // selectors
       overlayIsVisible: useSelector(appSelectors.appOverlayIsVisible),
       // actions
-      appShowOverlay: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >dispatch(appActions.appShowOverlay()),</span>
-      appHideOverlay: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >dispatch(appActions.appHideOverlay()),</span>
+      appShowOverlay: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >dispatch(appShowOverlay()),</span>
+      appHideOverlay: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >dispatch(appHideOverlay()),</span>
     };
 &nbsp;
     const propTypes = <span class="cstat-no" title="statement not covered" >{</span>
@@ -460,7 +481,7 @@ export default appHooks;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Fri Nov 27 2020 12:35:30 GMT-0800 (Pacific Standard Time)
+                at Sun Nov 29 2020 19:41:51 GMT-0800 (Pacific Standard Time)
             </div>
         </div>
         <script src="../../../prettify.js"></script>

@@ -1,31 +1,28 @@
 // External
 import { configureStore } from '@reduxjs/toolkit';
+import createSagaMW from 'redux-saga';
 
 // Internal
-import { rootReducer, rootMiddleware } from '~Modules/';
-const configureDevTools =
-  process.env.NODE_ENV !== 'production' &&
-  window.__REDUX_DEVTOOLS_EXTENSION__ &&
-  window.__REDUX_DEVTOOLS_EXTENSION__({
-    maxAge: 25,
-    trace: true,
-  });
+import { rootReducer, rootSaga } from '~Modules/';
+const sagaMW = createSagaMW();
 
 const store = configureStore({
   reducer: rootReducer(),
-  middleware: getDefaultMiddleware => [
-    ...getDefaultMiddleware({
+  middleware: cdm =>
+    cdm({
       thunk: false,
-    }),
-    ...rootMiddleware,
-  ],
-  devTools: false,
-  enhancers: [configureDevTools],
+    }).concat(sagaMW),
+  devTools: {
+    maxAge: 25,
+    trace: true,
+  },
 });
 
+sagaMW.run(rootSaga);
+
 if (process.env.NODE_ENV === 'development' && module.hot) {
-  module.hot.accept('~Modules/rootReducer', () => {
-    const newRootReducer = require('~Modules/rootReducer').default;
+  module.hot.accept('../modules/', () => {
+    const newRootReducer = require('../modules/rootReducer').default;
     store.replaceReducer(newRootReducer);
   });
 }

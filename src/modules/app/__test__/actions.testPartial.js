@@ -3,29 +3,29 @@ import { expect } from 'chai';
 
 // Internal
 import actions from '../actions';
-import types from '../types';
 
 // Constants
 const {
-  MODAL_HIDE,
-  MODAL_SHOW,
-  NOTIFY_SHOW,
-  NOTIFY_HIDE,
-  OVERLAY_SHOW,
-  OVERLAY_HIDE,
-} = types;
+  app: {
+    modal: { show: appShowModal, hide: appHideModal },
+    notify: { show: appShowNotify, hide: appHideNotify },
+    overlay: { show: appShowOverlay, hide: appHideOverlay },
+  },
+} = actions;
 
 const appActionsTest = () =>
   describe('Actions:', () => {
     describe('Overlay actions:', () => {
       it('Should set the overlay to display', () => {
-        expect(actions.appShowOverlay()).deep.equal({
-          type: OVERLAY_SHOW,
+        expect(appShowOverlay()).deep.equal({
+          payload: undefined,
+          type: appShowOverlay.type,
         });
       });
       it('Should set the overlay to hide', () => {
-        expect(actions.appHideOverlay()).deep.equal({
-          type: OVERLAY_HIDE,
+        expect(appHideOverlay()).deep.equal({
+          payload: undefined,
+          type: appHideOverlay.type,
         });
       });
     });
@@ -37,27 +37,30 @@ const appActionsTest = () =>
           timer: 3000,
           msg: 'great',
         };
-        expect(actions.appShowNotify(params)).to.deep.equal({
-          type: NOTIFY_SHOW,
+        expect(appShowNotify(params)).to.deep.equal({
+          type: appShowNotify.type,
           payload: params,
         });
       });
       it('Should set the notification to hide', () => {
-        expect(actions.appHideNotify()).to.deep.equal({
-          type: NOTIFY_HIDE,
+        expect(appHideNotify()).to.deep.equal({
+          payload: undefined,
+          type: appHideNotify.type,
         });
       });
     });
 
     describe('Modal Actions:', () => {
       it('Should set the modal to display', () => {
-        expect(actions.appShowModal()).to.deep.equal({
-          type: MODAL_SHOW,
+        expect(appShowModal()).to.deep.equal({
+          payload: undefined,
+          type: appShowModal.type,
         });
       });
       it('Should set the modal to hide', () => {
-        expect(actions.appHideModal()).to.deep.equal({
-          type: MODAL_HIDE,
+        expect(appHideModal()).to.deep.equal({
+          payload: undefined,
+          type: appHideModal.type,
         });
       });
     });

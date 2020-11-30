@@ -26,7 +26,7 @@ export default (app, pool) => {
   app.get('/getUser', (req, res) =>
     user
       .getUser(pool, req)
-      .then(results => res.status(200).json(results.rows))
+      .then(results => res.status(200).send(results))
       .catch(err => res.status(500).send(err))
   );
 

@@ -1,10 +1,10 @@
 // External
-// import { all } from 'redux-saga/effects';
+import { all } from 'redux-saga/effects';
 
 // Local
-// import wacher from './module/sagas';
+import userWatchers from './user/sagas';
 
 export default function* rootSaga() {
   // load watchers
-  // yield all([wacher()]);
+  yield all([userWatchers()]);
 }

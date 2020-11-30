@@ -13,7 +13,7 @@ const fetchReducerTest = () =>
     });
 
     it('Should set fetching to 1 and fetched to false', () => {
-      const type = `${preType}DATA_REQUEST`;
+      const type = `${preType}DATA/REQUEST`;
       expect(reducer(initialState, { type })).to.deep.equal({
         userIsFetchingData: 1,
         userHasFetchedData: false,
@@ -21,7 +21,7 @@ const fetchReducerTest = () =>
     });
 
     it('Should set fetching to 0 and fetched status to true', () => {
-      const type = `${preType}DATA_SUCCESS`;
+      const type = `${preType}DATA/SUCCESS`;
       const mockState = {
         userIsFetchingData: 1,
         userHasFetchedData: false,
@@ -33,7 +33,7 @@ const fetchReducerTest = () =>
     });
 
     it('Should set fetching to 2 and fetched status to false', () => {
-      const type = `${preType}DATA_FAIL`;
+      const type = `${preType}DATA/FAIL`;
       const mockStore = {
         userIsFetchingData: 3,
         userHasFetchedData: false,
@@ -45,7 +45,7 @@ const fetchReducerTest = () =>
     });
 
     it('Should set fetching to 2 and fetched status to false', () => {
-      const type = `${preType}DATA_CANCEL`;
+      const type = `${preType}DATA/CANCEL`;
       const mockStore = {
         userIsFetchingData: 3,
         userHasFetchedData: false,

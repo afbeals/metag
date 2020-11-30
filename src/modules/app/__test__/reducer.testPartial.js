@@ -3,18 +3,17 @@ import { expect } from 'chai';
 
 // Local
 import reducer from '../reducer';
-import types from '../types';
+import actions from '../actions';
 import appUtil from '../util';
 
 // Constants
 const {
-  OVERLAY_HIDE,
-  OVERLAY_SHOW,
-  NOTIFY_SHOW,
-  NOTIFY_HIDE,
-  MODAL_SHOW,
-  MODAL_HIDE,
-} = types;
+  app: {
+    modal: { show: appShowModal, hide: appHideModal },
+    notify: { show: appShowNotify, hide: appHideNotify },
+    overlay: { show: appShowOverlay, hide: appHideOverlay },
+  },
+} = actions;
 
 // Reducer
 const appReducerTest = () =>
@@ -30,7 +29,9 @@ const appReducerTest = () =>
     });
 
     it('Should handle showing the overlay', () => {
-      expect(reducer(initialStore, { type: OVERLAY_SHOW })).to.deep.equal(
+      expect(
+        reducer(initialStore, { type: appShowOverlay.type })
+      ).to.deep.equal(
         mockStore({
           showOverlay: 1,
         })
@@ -39,7 +40,7 @@ const appReducerTest = () =>
 
     it('Should handle hiding the overlay', () => {
       expect(
-        reducer(mockStore({ showOverlay: 1 }), { type: OVERLAY_HIDE })
+        reducer(mockStore({ showOverlay: 1 }), { type: appHideOverlay.type })
       ).to.deep.equal(initialStore);
     });
 
@@ -50,7 +51,7 @@ const appReducerTest = () =>
         msg: 'hello',
       };
       expect(
-        reducer(initialStore, { type: NOTIFY_SHOW, payload })
+        reducer(initialStore, { type: appShowNotify.type, payload })
       ).to.deep.equal(
         mockStore({
           notification: {
@@ -66,13 +67,13 @@ const appReducerTest = () =>
           mockStore({
             notification: {},
           }),
-          { type: NOTIFY_HIDE }
+          { type: appHideNotify.type }
         )
       ).to.deep.equal(initialStore);
     });
 
     it('Should handle showing the modal', () => {
-      expect(reducer(initialStore, { type: MODAL_SHOW })).to.deep.equal(
+      expect(reducer(initialStore, { type: appShowModal.type })).to.deep.equal(
         mockStore({
           showModal: true,
         })
@@ -81,7 +82,7 @@ const appReducerTest = () =>
 
     it('Should handle hiding the modal', () => {
       expect(
-        reducer(mockStore({ showModal: false }), { type: MODAL_HIDE })
+        reducer(mockStore({ showModal: false }), { type: appHideModal.type })
       ).to.deep.equal(initialStore);
     });
   });

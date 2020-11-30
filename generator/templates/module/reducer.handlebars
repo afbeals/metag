@@ -1,14 +1,15 @@
 // Internal
 import types from './types';
+import {{camelName}}Actions from './actions';
 {{#if util}}import util from './util';{{/if}}
 
 // Constants
 {{#if util}}const initialStore = util.buildInitialStore();{{/if}}
-const { ACTION } = types;
+const { {{moduleName}} } = {{camelName}}Actions;
 
 export default function reducer(state = {{#if util}}initialStore{{else}}{}{{/if}}, { type, payload }) {
   switch (type) {
-    case types: {
+    case {{moduleName}}.type: {
       return {
         ...state,
         payload,
