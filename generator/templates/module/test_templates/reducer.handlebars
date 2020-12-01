@@ -6,9 +6,10 @@ import reducer from '../reducer';
 import actions from '../actions';
 {{#if util}}import util from '../util';{{/if}}
 
-const { {{moduleName}}: {} } = actions;
+const { {{name}}: {} } = actions;
 const {{camelName}}ReducerTest = () => describe('Reducer', () => {
     let initialStore; // instantiate beforehand
+    const mockStore = util.buildMockStore;
     beforeEach(() => {
         {{#if util}}
             initialStore = util.buildInitialStore(); // assign for each test block

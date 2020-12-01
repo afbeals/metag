@@ -20,7 +20,7 @@ const promps = [
     name: 'includes',
     type: 'checkbox',
     message: 'Options to include',
-    choices: ['hooks', 'utility', 'persist', 'sagas', 'selectors'],
+    choices: ['hooks', 'utility', 'persist', 'sagas', 'selectors', 'types'],
   },
 ];
 
@@ -46,11 +46,7 @@ const requiredFiles = [
     pre: 'src/modules/',
     post: '/__test__/reducer.testPartial.js',
   },
-  {
-    src: 'module/types.handlebars',
-    pre: 'src/modules/',
-    post: '/types.js',
-  },
+
   {
     src: 'module/test_templates/test.handlebars',
     pre: 'src/modules/',
@@ -104,6 +100,11 @@ const optionalFiles = {
       post: '/selectors.js',
     },
   ],
+  types: {
+    src: 'module/types.handlebars',
+    pre: 'src/modules/',
+    post: '/types.js',
+  },
 };
 
 // handle optional array's obj vs arrays

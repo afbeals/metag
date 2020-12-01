@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>14/14</span>
+                <span class='fraction'>13/13</span>
             </div>
         
             
@@ -39,14 +39,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>9/9</span>
+                <span class='fraction'>8/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>14/14</span>
+                <span class='fraction'>13/13</span>
             </div>
         
             
@@ -167,9 +167,7 @@
 <a name='L108'></a><a href='#L108'>108</a>
 <a name='L109'></a><a href='#L109'>109</a>
 <a name='L110'></a><a href='#L110'>110</a>
-<a name='L111'></a><a href='#L111'>111</a>
-<a name='L112'></a><a href='#L112'>112</a>
-<a name='L113'></a><a href='#L113'>113</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L111'></a><a href='#L111'>111</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -193,7 +191,6 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -260,7 +257,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -307,87 +303,85 @@ const {
 /* eslint-disable max-len */
 const userSagasTest = () =&gt;
   describe('Sagas', () =&gt; {
-    describe('Sagas: ', () =&gt; {
-      describe('Section Sagas: ', () =&gt; {
-        describe('Watchers: ', () =&gt; {
-          it('Should catch request for login', () =&gt; {
-            testSaga(userSagas.watchRequestForLogin) // match to watcher
-              .next() // start generator
-              .takeLatest(userLoginRequest.type, userSagas.login) // match to generator
-              .next() // step through generator
-              .isDone();
-          });
+    describe('Login Sagas: ', () =&gt; {
+      describe('Watchers: ', () =&gt; {
+        it('Should catch request for login', () =&gt; {
+          testSaga(userSagas.watchRequestForLogin) // match to watcher
+            .next() // start generator
+            .takeLatest(userLoginRequest.type, userSagas.login) // match to generator
+            .next() // step through generator
+            .isDone();
         });
+      });
 &nbsp;
-        describe('Login Series: ', () =&gt; {
-          it('Should be successful login', () =&gt; {
-            const request = {
-              username: 'username',
-            };
-            return expectSaga(userSagas.login, { payload: request }) // promise/generator
-              .provide([
-                // mock selector and api calls
-                [
-                  matchers.call.fn(api.userLogin, request),
-                  {
-                    data: {
-                      id: 2,
-                      username: 'user',
-                      first_name: 'first',
-                      last_name: 'last',
-                    },
-                  },
-                ], // supply mock return data from api
-              ])
-              .withReducer(reducer)
-              .hasFinalState(
-                util.buildMockStore({
-                  info: {
+      describe('Login Series: ', () =&gt; {
+        it('Should be successful login', () =&gt; {
+          const request = {
+            username: 'username',
+          };
+          return expectSaga(userSagas.login, { payload: request }) // promise/generator
+            .provide([
+              // mock selector and api calls
+              [
+                matchers.call.fn(api.userLogin, request),
+                {
+                  data: {
                     id: 2,
                     username: 'user',
-                    firstName: 'first',
-                    lastName: 'last',
+                    first_name: 'first',
+                    last_name: 'last',
                   },
-                })
-              )
-              .put(
-                userLoginSuccess({
+                },
+              ], // supply mock return data from api
+            ])
+            .withReducer(reducer)
+            .hasFinalState(
+              util.buildMockStore({
+                info: {
                   id: 2,
                   username: 'user',
                   firstName: 'first',
                   lastName: 'last',
-                })
-              ) // eventual action that will be called
-              .put(
-                userReset({
-                  id: 2,
-                  username: 'user',
-                  firstName: 'first',
-                  lastName: 'last',
-                })
-              )
-              .dispatch(userLoginRequest(request)) // dispatch action that starts saga
-              .run();
-          });
-&nbsp;
-          it('Should fail ', () =&gt;
-            expectSaga(userSagas.login, { payload: 'some data' })
-              .provide([
-                [
-                  matchers.call.fn(api.userLogin),
-                  throwError('Error retrieving devices'),
-                ], // supply error that will be thrown by api
-              ])
-              .withReducer(reducer)
-              .hasFinalState(
-                util.buildMockStore({
-                  info: null,
-                })
-              )
-              .put(userLoginFail()) // eventual action that will be called
-              .dispatch(userLoginRequest({ username: 'user' })) // dispatch action that starts saga
-              .run());
+                },
+              })
+            )
+            .put(
+              userLoginSuccess({
+                id: 2,
+                username: 'user',
+                firstName: 'first',
+                lastName: 'last',
+              })
+            ) // eventual action that will be called
+            .put(
+              userReset({
+                id: 2,
+                username: 'user',
+                firstName: 'first',
+                lastName: 'last',
+              })
+            )
+            .dispatch(userLoginRequest(request)) // dispatch action that starts saga
+            .run();
         });
+&nbsp;
+        it('Should fail ', () =&gt;
+          expectSaga(userSagas.login, { payload: 'some data' })
+            .provide([
+              [
+                matchers.call.fn(api.userLogin),
+                throwError('Error retrieving devices'),
+              ], // supply error that will be thrown by api
+            ])
+            .withReducer(reducer)
+            .hasFinalState(
+              util.buildMockStore({
+                info: null,
+              })
+            )
+            .put(userLoginFail()) // eventual action that will be called
+            .dispatch(userLoginRequest({ username: 'user' })) // dispatch action that starts saga
+            .run());
       });
     });
   });
@@ -400,7 +394,7 @@ export default userSagasTest;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Sun Nov 29 2020 19:41:51 GMT-0800 (Pacific Standard Time)
+                at Mon Nov 30 2020 20:01:40 GMT-0800 (Pacific Standard Time)
             </div>
         </div>
         <script src="../../../../prettify.js"></script>

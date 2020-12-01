@@ -19,7 +19,7 @@ import normalize from '~GlobalUtil/normalize';
 
 // Constants
 const { sagaRequest } = normalize;
-const { {{moduleName}} } = {{camelName}}Actions;
+const { {{name}} } = {{camelName}}Actions;
 
 // success generators
 function* successActions() {
@@ -31,7 +31,7 @@ function* successActions() {
 export function* saga({ payload }) {
   try {
     {{#if selectors}}const selector = yield select{{camelName}}Selectors;{{/if}}
-    const request = { payload };
+    const { request } = payload;
 
     const apiCalls = yield all([
       fork(sagaRequest, {
