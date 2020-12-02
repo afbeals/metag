@@ -13,6 +13,13 @@ const constants = {
       FETCH_ALL: `/getAllTags`,
       UPDATE: `/updateTag`,
     },
+    CATEGORIES: {
+      CREATE: `/createCategory`,
+      DELETE: `/deleteCategory`,
+      FETCH_ALL: `/getAllCategories`,
+      FETCH_AVAIL: `/getAvailableCategories`,
+      UPDATE: `/updateCategory`,
+    },
   },
 };
 

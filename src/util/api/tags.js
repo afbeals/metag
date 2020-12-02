@@ -33,7 +33,7 @@ const tagsAPI = {
    * @desc api request to delete tag
    * @method delete
    * @param {object} tagData
-   * @param {string} tagData.tag the tag to create
+   * @param {string} tagData.tag the tag to delete
    * @return {object} return data from query
    */
   delete: async tagData => {

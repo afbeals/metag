@@ -33,7 +33,7 @@ const tagsHooks = {
       tagsList: useSelector(selectors.getTagsList),
       tagsListArray: useSelector(selectors.getTagsListArray),
       // actions
-      tagsFetch: info => dispatch(getTags(info)),
+      tagsFetch: () => dispatch(getTags()),
       tagsFetchFail: () => dispatch(getTagsCancel()),
       tagsCreate: info => dispatch(createTags(info)),
       tagsCreateFail: () => dispatch(createTagsCancel()),
@@ -48,7 +48,6 @@ const tagsHooks = {
       tagsStore: object.isRequired,
       tagsList: object,
       tagsListArray: array,
-      userLogin: func.isRequired,
       tagsFetch: func.isRequired,
       tagsFetchFail: func.isRequired,
       tagsCreate: func.isRequired,
