@@ -34,13 +34,13 @@ const tagsHooks = {
       tagsListArray: useSelector(selectors.getTagsListArray),
       // actions
       tagsFetch: () => dispatch(getTags()),
-      tagsFetchFail: () => dispatch(getTagsCancel()),
+      tagsFetchCancel: () => dispatch(getTagsCancel()),
       tagsCreate: info => dispatch(createTags(info)),
-      tagsCreateFail: () => dispatch(createTagsCancel()),
+      tagsCreateCancel: () => dispatch(createTagsCancel()),
       tagsDelete: info => dispatch(updateTags(info)),
-      tagsDeleteFail: () => dispatch(updateTagsCancel()),
+      tagsDeleteCancel: () => dispatch(updateTagsCancel()),
       tagsUpdate: info => dispatch(deleteTags(info)),
-      tagsUpdateFail: () => dispatch(deleteTagsCancel()),
+      tagsUpdateCancel: () => dispatch(deleteTagsCancel()),
       tagsReset: () => dispatch(resetTags()),
     };
 
@@ -49,13 +49,13 @@ const tagsHooks = {
       tagsList: object,
       tagsListArray: array,
       tagsFetch: func.isRequired,
-      tagsFetchFail: func.isRequired,
+      tagsFetchCancel: func.isRequired,
       tagsCreate: func.isRequired,
-      tagsCreateFail: func.isRequired,
+      tagsCreateCancel: func.isRequired,
       tagsDelete: func.isRequired,
-      tagsDeleteFail: func.isRequired,
+      tagsDeleteCancel: func.isRequired,
       tagsUpdate: func.isRequired,
-      tagsUpdateFail: func.isRequired,
+      tagsUpdateCancel: func.isRequired,
       tagsReset: func.isRequired,
     };
 

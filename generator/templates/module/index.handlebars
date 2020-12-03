@@ -5,6 +5,7 @@ import actions from './actions';
 import reducer from './reducer';
 {{#if sagas}}import sagas from './sagas';{{/if}}
 {{#if selectors}}import * as selectors from './selectors';{{/if}}
+{{#if types}}import types from './types';{{/if}}
 {{#if util}}import util from './util';{{/if}}
 
 export {default as actions} from './actions';
@@ -13,6 +14,7 @@ export {default as actions} from './actions';
 export { default as reducer } from './reducer';
 {{#if sagas}}export {default as sagas} from './sagas';{{/if}}
 {{#if selectors}}export * as selectors from './selectors';{{/if}}
+{{#if types}}export { default as types} from './types';{{/if}}
 {{#if util}}export {default as util} from './util';{{/if}}
 
 export default {
@@ -22,5 +24,6 @@ export default {
   reducer,
 {{#if sagas}}  sagas,{{/if}}
 {{#if selectors}}  selectors,{{/if}}
+{{#if types}}  types,{{/if}}
 {{#if util}}  util,{{/if}}
 };

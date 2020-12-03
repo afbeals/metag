@@ -37,7 +37,7 @@ export function* login({ payload }) {
 
     const apiCalls = yield all([
       fork(sagaRequest, {
-        params: [api.userLogin, payload],
+        params: [api.user.login, payload],
         successActs: [userReset, userLoginSuccess],
         successDataTrns: normalizeUserInfo,
         failActs: userLoginFail,

@@ -64,7 +64,7 @@ export function* tagsFetch() {
   try {
     const apiCalls = yield all([
       fork(sagaRequest, {
-        params: [api.tagsFetch],
+        params: [api.tags.fetch],
         successActs: [resetTags, getTagsSuccess],
         successDataTrns: null,
         failActs: getTagsFail,
@@ -92,7 +92,7 @@ export function* tagsDelete({ payload }) {
   try {
     const apiCalls = yield all([
       fork(sagaRequest, {
-        params: [api.tagsDelete, payload],
+        params: [api.tags.delete, payload],
         successActs: deleteTagsSuccess,
         successDataTrns: () => payload.id,
         failActs: deleteTagsFail,
@@ -120,7 +120,7 @@ export function* tagsUpdate({ payload }) {
   try {
     const apiCalls = yield all([
       fork(sagaRequest, {
-        params: [api.tagsUpdate, payload],
+        params: [api.tags.update, payload],
         successActs: updateTagsSuccess,
         successDataTrns: null,
         failActs: updateTagsFail,
@@ -148,7 +148,7 @@ export function* tagsCreate({ payload }) {
   try {
     const apiCalls = yield all([
       fork(sagaRequest, {
-        params: [api.tagsCreate, payload],
+        params: [api.tags.create, payload],
         successActs: createTagsSuccess,
         successDataTrns: null,
         failActs: createTagsFail,

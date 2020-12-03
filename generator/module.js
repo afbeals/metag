@@ -20,7 +20,15 @@ const promps = [
     name: 'includes',
     type: 'checkbox',
     message: 'Options to include',
-    choices: ['hooks', 'utility', 'persist', 'sagas', 'selectors', 'types'],
+    choices: [
+      'hooks',
+      'utility',
+      'persist',
+      'sagas',
+      'selectors',
+      'types',
+      'action test',
+    ],
   },
 ];
 
@@ -30,11 +38,6 @@ const requiredFiles = [
     src: 'module/actions.handlebars',
     pre: 'src/modules/',
     post: '/actions.js',
-  },
-  {
-    src: 'module/test_templates/actions.handlebars',
-    pre: 'src/modules/',
-    post: '/__test__/actions.testPartial.js',
   },
   {
     src: 'module/reducer.handlebars',
@@ -105,6 +108,11 @@ const optionalFiles = {
     pre: 'src/modules/',
     post: '/types.js',
   },
+  'action test': {
+    src: 'module/test_templates/actions.handlebars',
+    pre: 'src/modules/',
+    post: '/__test__/actions.testPartial.js',
+  },
 };
 
 // handle optional array's obj vs arrays
@@ -144,6 +152,8 @@ inquirer
         ...(includes.includes('persist') && { persist: true }),
         ...(includes.includes('selectors') && { selectors: true }),
         ...(includes.includes('sagas') && { sagas: true }),
+        ...(includes.includes('types') && { types: true }),
+        ...(includes.includes('types') && { actionTest: true }),
       };
 
       const contents = handlebarsTemplate({

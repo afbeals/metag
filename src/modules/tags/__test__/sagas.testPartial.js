@@ -52,7 +52,7 @@ const tagsSagasTest = () =>
             .provide([
               // mock selector and api calls
               [
-                matchers.call.fn(api.tagsFetch),
+                matchers.call.fn(api.tags.fetch),
                 { data: [{ id: 1, tag: 'adfa' }] },
               ], // supply mock return data from api
             ])
@@ -71,7 +71,7 @@ const tagsSagasTest = () =>
           expectSaga(tagsSagas.tagsFetch)
             .provide([
               [
-                matchers.call.fn(api.tagsFetch),
+                matchers.call.fn(api.tags.fetch),
                 throwError('Error retrieving devices'),
               ], // supply error that will be thrown by api
             ])
@@ -103,7 +103,7 @@ const tagsSagasTest = () =>
             .provide([
               // mock selector and api calls
               [
-                matchers.call.fn(api.tagsCreate, request),
+                matchers.call.fn(api.tags.create, request),
                 { data: [{ id: 1, tag: '12' }] },
               ], // supply mock return data from api
             ])
@@ -123,7 +123,7 @@ const tagsSagasTest = () =>
           expectSaga(tagsSagas.tagsCreate, { payload: { tag: '12' } })
             .provide([
               [
-                matchers.call.fn(api.tagsCreate),
+                matchers.call.fn(api.tags.create),
                 throwError('Error retrieving devices'),
               ], // supply error that will be thrown by api
             ])
@@ -156,7 +156,7 @@ const tagsSagasTest = () =>
             .provide([
               // mock selector and api calls
               [
-                matchers.call.fn(api.tagsUpdate, request),
+                matchers.call.fn(api.tags.update, request),
                 {
                   data: request,
                 },
@@ -180,7 +180,7 @@ const tagsSagasTest = () =>
           expectSaga(tagsSagas.tagsUpdate, { payload: 'some data' })
             .provide([
               [
-                matchers.call.fn(api.tagsUpdate),
+                matchers.call.fn(api.tags.update),
                 throwError('Error retrieving devices'),
               ], // supply error that will be thrown by api
             ])
@@ -209,7 +209,7 @@ const tagsSagasTest = () =>
           return expectSaga(tagsSagas.tagsDelete, { payload: request }) // promise/generator
             .provide([
               // mock selector and api calls
-              [matchers.call.fn(api.tagsDelete, request), { status: 200 }], // supply mock return data from api
+              [matchers.call.fn(api.tags.delete, request), { status: 200 }], // supply mock return data from api
             ])
             .withReducer(reducer)
             .withState(
@@ -231,7 +231,7 @@ const tagsSagasTest = () =>
           expectSaga(tagsSagas.tagsDelete, { payload: { id: 2 } })
             .provide([
               [
-                matchers.call.fn(api.tagsDelete),
+                matchers.call.fn(api.tags.delete),
                 throwError('Error retrieving devices'),
               ], // supply error that will be thrown by api
             ])

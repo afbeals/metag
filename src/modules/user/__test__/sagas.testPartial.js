@@ -44,7 +44,7 @@ const userSagasTest = () =>
             .provide([
               // mock selector and api calls
               [
-                matchers.call.fn(api.userLogin, request),
+                matchers.call.fn(api.user.login, request),
                 {
                   data: {
                     id: 2,
@@ -90,7 +90,7 @@ const userSagasTest = () =>
           expectSaga(userSagas.login, { payload: 'some data' })
             .provide([
               [
-                matchers.call.fn(api.userLogin),
+                matchers.call.fn(api.user.login),
                 throwError('Error retrieving devices'),
               ], // supply error that will be thrown by api
             ])

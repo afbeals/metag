@@ -45,7 +45,7 @@ const categoriesSagasTest = () =>
             .provide([
               // mock selector and api calls
               [
-                matchers.call.fn(api.catFetchAll),
+                matchers.call.fn(api.cat.fetchAll),
                 { data: [{ id: 1, name: 'adfa' }] },
               ], // supply mock return data from api
             ])
@@ -64,7 +64,7 @@ const categoriesSagasTest = () =>
           expectSaga(categoriesSagas.categoriesFetchAll)
             .provide([
               [
-                matchers.call.fn(api.catFetchAll),
+                matchers.call.fn(api.cat.fetchAll),
                 throwError('Error retrieving devices'),
               ], // supply error that will be thrown by api
             ])
@@ -92,7 +92,7 @@ const categoriesSagasTest = () =>
           expectSaga(categoriesSagas.categoriesFetchAvailable) // promise/generator
             .provide([
               // mock selector and api calls
-              [matchers.call.fn(api.catFetchAvail), { data: ['adfa'] }], // supply mock return data from api
+              [matchers.call.fn(api.cat.fetchAvail), { data: ['adfa'] }], // supply mock return data from api
             ])
             .put(getAvailSuccess(['adfa'])) // eventual action that will be called
             .dispatch(getAvail()) // dispatch action that starts saga
@@ -102,7 +102,7 @@ const categoriesSagasTest = () =>
           expectSaga(categoriesSagas.categoriesFetchAvailable)
             .provide([
               [
-                matchers.call.fn(api.catFetchAvail),
+                matchers.call.fn(api.cat.fetchAvail),
                 throwError('Error retrieving devices'),
               ], // supply error that will be thrown by api
             ])
@@ -134,7 +134,7 @@ const categoriesSagasTest = () =>
             .provide([
               // mock selector and api calls
               [
-                matchers.call.fn(api.catCreate, request),
+                matchers.call.fn(api.cat.create, request),
                 { data: [{ id: 1, name: '12' }] },
               ], // supply mock return data from api
             ])
@@ -156,7 +156,7 @@ const categoriesSagasTest = () =>
           })
             .provide([
               [
-                matchers.call.fn(api.catCreate),
+                matchers.call.fn(api.cat.create),
                 throwError('Error retrieving devices'),
               ], // supply error that will be thrown by api
             ])
@@ -191,7 +191,7 @@ const categoriesSagasTest = () =>
             .provide([
               // mock selector and api calls
               [
-                matchers.call.fn(api.catUpdate, request),
+                matchers.call.fn(api.cat.update, request),
                 {
                   data: [request],
                 },
@@ -215,7 +215,7 @@ const categoriesSagasTest = () =>
           expectSaga(categoriesSagas.categoriesUpdate, { payload: 'some data' })
             .provide([
               [
-                matchers.call.fn(api.catUpdate),
+                matchers.call.fn(api.cat.update),
                 throwError('Error retrieving devices'),
               ], // supply error that will be thrown by api
             ])
@@ -246,7 +246,7 @@ const categoriesSagasTest = () =>
           }) // promise/generator
             .provide([
               // mock selector and api calls
-              [matchers.call.fn(api.catDelete, request), { status: 200 }], // supply mock return data from api
+              [matchers.call.fn(api.cat.delete, request), { status: 200 }], // supply mock return data from api
             ])
             .withReducer(reducer)
             .withState(
@@ -268,7 +268,7 @@ const categoriesSagasTest = () =>
           expectSaga(categoriesSagas.categoriesDelete, { payload: { id: 2 } })
             .provide([
               [
-                matchers.call.fn(api.catDelete),
+                matchers.call.fn(api.cat.delete),
                 throwError('Error retrieving devices'),
               ], // supply error that will be thrown by api
             ])

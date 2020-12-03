@@ -1,12 +1,12 @@
 // Internal
-import {{camelName}}ActionsTest from './actions.testPartial';
+{{#if actionTest}}import {{camelName}}ActionsTest from './actions.testPartial';{{/if}}
 import {{camelName}}ReducerTest from './reducer.testPartial';
 {{#if selectors}}import {{camelName}}SelectorsTest from './selectors.testPartial';{{/if}}
 {{#if sagas}}import {{camelName}}SagasTest from './sagas.testPartial';{{/if}}
 
 describe('{{capitalName}} Module Tests: ', () => {
   // run all test in block
-  {{camelName}}ActionsTest();
+  {{#if actionTest}}{{camelName}}ActionsTest();{{/if}}
   {{camelName}}ReducerTest();
 {{#if selectors}}  {{camelName}}SelectorsTest();{{/if}}
 {{#if sagas}}  {{camelName}}SagasTest();{{/if}}

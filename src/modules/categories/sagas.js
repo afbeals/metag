@@ -75,7 +75,7 @@ export function* categoriesFetchAll() {
   try {
     const apiCalls = yield all([
       fork(sagaRequest, {
-        params: [api.catFetchAll],
+        params: [api.cat.fetchAll],
         successActs: [reset, getAllSuccess],
         successDataTrns: null,
         failActs: getAllFail,
@@ -103,7 +103,7 @@ export function* categoriesFetchAvailable() {
   try {
     const apiCalls = yield all([
       fork(sagaRequest, {
-        params: [api.catFetchAvail],
+        params: [api.cat.fetchAvail],
         successActs: [getAvailableSuccess],
         successDataTrns: null,
         failActs: getAvailableFail,
@@ -131,7 +131,7 @@ export function* categoriesDelete({ payload }) {
   try {
     const apiCalls = yield all([
       fork(sagaRequest, {
-        params: [api.catDelete, payload],
+        params: [api.cat.delete, payload],
         successActs: deleteReqSuccess,
         successDataTrns: () => payload.id,
         failActs: deleteReqFail,
@@ -159,7 +159,7 @@ export function* categoriesUpdate({ payload }) {
   try {
     const apiCalls = yield all([
       fork(sagaRequest, {
-        params: [api.catUpdate, payload],
+        params: [api.cat.update, payload],
         successActs: updateSuccess,
         successDataTrns: null,
         failActs: updateFail,
@@ -187,7 +187,7 @@ export function* categoriesCreate({ payload }) {
   try {
     const apiCalls = yield all([
       fork(sagaRequest, {
-        params: [api.catCreate, payload],
+        params: [api.cat.create, payload],
         successActs: createSuccess,
         successDataTrns: null,
         failActs: createFail,
