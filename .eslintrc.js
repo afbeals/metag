@@ -63,10 +63,10 @@ const eslintrc = {
   rules: {
     // Eslint rules:
     'arrow-parens': [2, 'as-needed'], // parens around arrow function parameters
-    'max-len': [2, { ignoreTrailingComments: true }],
+    'max-len': [2, { ignoreTrailingComments: true, ignoreComments: true }],
     'no-debugger': 1,
     'no-return-assign': ['error', 'except-parens'],
-    'import/no-unresolved': [2, { ignore: ['^~'] }],
+    'import/no-unresolved': [2, { ignore: ['^~', '^(.*)/$'] }],
     'no-unused-vars': [
       2,
       {

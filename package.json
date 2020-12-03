@@ -19,8 +19,8 @@
     "server:watch": "nodemon --exec babel-node server/index.js",
     "server": "nodemon",
     "build": "react-app-rewired build",
-    "test": "react-app-rewired test --watchAll=false --no-cache",
-    "test:watch": "react-app-rewired test",
+    "test": "react-app-rewired test --watchAll=false",
+    "test:watch": "react-app-rewired test --coverage=false",
     "test:view": "cross-env CI=true react-app-rewired test&& start chrome --incognito %cd%/reports/test/index.html&& start chrome --incognito %cd%/reports/coverage/index.html",
     "transpile": "babel ./server --out-dir bundle-server",
     "clean": "rimraf bundle-server && rimraf build && rimraf dist && rimraf debug.log",
@@ -46,6 +46,7 @@
   "dependencies": {
     "@emotion/core": "^10.1.1",
     "@emotion/styled": "^10.0.27",
+    "@reduxjs/toolkit": "^1.4.0",
     "@testing-library/jest-dom": "^5.11.5",
     "@testing-library/react": "^11.1.1",
     "@testing-library/user-event": "^12.2.0",
@@ -53,10 +54,14 @@
     "customize-cra": "^1.0.0",
     "node-sass": "^4.14.1",
     "node-windows": "file:C:/Users/Abg/AppData/Roaming/nvm/v15.2.1/node_modules/node-windows",
+    "prop-types": "^15.7.2",
     "react": "^17.0.1",
     "react-app-rewired": "^2.1.6",
     "react-dom": "^17.0.1",
+    "react-redux": "^7.2.2",
     "react-scripts": "4.0.0",
+    "redux-saga": "^1.1.3",
+    "reselect": "^4.0.0",
     "web-vitals": "^0.2.4"
   },
   "devDependencies": {
@@ -67,6 +72,7 @@
     "@babel/preset-env": "^7.12.1",
     "babel-eslint": "^10.1.0",
     "babel-plugin-emotion": "^10.0.33",
+    "chai": "^4.2.0",
     "colors": "^1.4.0",
     "cors": "^2.8.5",
     "cross-env": "^7.0.2",
@@ -89,6 +95,7 @@
     "nodemon": "^2.0.6",
     "pg": "^8.4.2",
     "prettier": "^2.1.2",
+    "redux-saga-test-plan": "^4.0.1",
     "rimraf": "^2.6.3",
     "webpack-bundle-analyzer": "^4.1.0"
   },
@@ -152,10 +159,10 @@
     ],
     "coverageThreshold": {
       "global": {
-        "branches": 50,
-        "functions": 50,
-        "lines": 50,
-        "statements": -10
+        "branches": 58,
+        "functions": 71,
+        "lines": 71,
+        "statements": 72
       }
     }
   }

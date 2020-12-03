@@ -10,7 +10,7 @@ describe('Root Reducer Test', () => {
     });
 
     it('Should export an object', () => {
-      expect(typeof rootReducer).toBe('object');
+      expect(typeof rootReducer).toBe('function');
       expect(Object.keys(rootReducer).length).toBeGreaterThanOrEqual(0);
     });
   });

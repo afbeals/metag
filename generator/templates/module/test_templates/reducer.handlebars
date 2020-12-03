@@ -1,12 +1,15 @@
 // External
+import { expect } from 'chai';
 
 // Internal
 import reducer from '../reducer';
-import types from '../types';
+import actions from '../actions';
 {{#if util}}import util from '../util';{{/if}}
 
+const { {{name}}: {} } = actions;
 const {{camelName}}ReducerTest = () => describe('Reducer', () => {
     let initialStore; // instantiate beforehand
+    const mockStore = util.buildMockStore;
     beforeEach(() => {
         {{#if util}}
             initialStore = util.buildInitialStore(); // assign for each test block
@@ -16,10 +19,9 @@ const {{camelName}}ReducerTest = () => describe('Reducer', () => {
     });
 
     it('Should have initial store', () => {
-        expect.deepEqual(
-            reducer(undefined, {}),
-            initialStore,
-        );
+        expect(
+            reducer(undefined, {})
+        ).to.deep.equal(initialStore);
     });
 });
 

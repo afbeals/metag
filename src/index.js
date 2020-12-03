@@ -1,15 +1,28 @@
+// External
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { render } from 'react-dom';
+import { Provider } from 'react-redux';
+
+// Internal
 import '~Styles/main.scss';
-import { App, reportWebVitals } from './app/';
+import { reportWebVitals, config } from './app/';
+import App from './App';
+
+// Constants
+const { store } = config;
 
 /* istanbul ignore next */
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+const renderApp = () =>
+  render(
+    <React.StrictMode>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </React.StrictMode>,
+    document.getElementById('root')
+  );
+
+renderApp();
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

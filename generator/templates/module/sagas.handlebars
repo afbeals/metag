@@ -12,7 +12,6 @@ import {
 } from 'redux-saga/effects';
 
 // Internal
-import types from './types';
 import actions from './actions';
 import api from '~GlobalUtil/api';
 import normalize from '~GlobalUtil/normalize';
@@ -20,11 +19,11 @@ import normalize from '~GlobalUtil/normalize';
 
 // Constants
 const { sagaRequest } = normalize;
-const { FETCH, SUCCESS, CANCEL } = actionTypes;
+const { {{name}} } = {{camelName}}Actions;
 
 // success generators
 function* successActions() {
-  yield all([take(SUCCESS)]);
+  yield all([take(success.type)]);
   return true;
 }
 
@@ -32,23 +31,19 @@ function* successActions() {
 export function* saga({ payload }) {
   try {
     {{#if selectors}}const selector = yield select{{camelName}}Selectors;{{/if}}
-    const request = { payload };
+    const { request } = payload;
 
     const apiCalls = yield all([
       fork(sagaRequest, {
-        apiParams: [api.fetch, request],
-        onSuccess: actions.actionName,
-        successHnd: null,
-        onFail: actions.,
-        errorParams: {
-          keyValue: '',
-          clientErr: '',
-        },
+        params: [api.fetch, request],
+        successActs: actions.actionName,
+        successDataTrns: null,
+        failActs: actions.,
       }),
     ]);
 
     const { cancelSagas, success } = yield race({
-      cancelSagas: take(CANCEL),
+      cancelSagas: take(cancel.type),
       success: successActions(),
     });
 
@@ -57,7 +52,8 @@ export function* saga({ payload }) {
         yield cancel(apiCalls[i]);
       }
     } else {
-      yield successActionData = yield join(apiCalls);
+      const successActionData = yield join(apiCalls);
+      console.log('success', successActionData);
       return success;
     }
   } catch (e) {

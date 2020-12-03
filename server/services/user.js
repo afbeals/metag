@@ -9,15 +9,22 @@ const usersTable = process.env.SERVER_USERS_TABLE;
 const getAllUsers = pool =>
   queryHandler(pool, `SELECT * FROM ${usersTable} ORDER BY id ASC`);
 
-const getUser = (pool, { query: { user: value } }) => {
+const getUser = async (pool, { query: { username: value } }) => {
   const query = {
-    text: `SELECT * FROM ${usersTable} WHERE username = $1;`,
+    text: `SELECT * FROM users WHERE username = $1;`,
     values: [value],
   };
-  return queryHandler(pool, query);
+  const { rows } = await queryHandler(pool, query);
+
+  if (!rows || rows.length < 1)
+    return Promise.reject({ message: 'no user found' });
+  return { ...rows[0] };
 };
 
-const createUser = (pool, { body: { username, first_name, last_name } }) => {
+const createUser = async (
+  pool,
+  { body: { username, first_name, last_name } }
+) => {
   const query = {
     text: `
       INSERT INTO ${usersTable}(username, first_name, last_name)
@@ -25,18 +32,18 @@ const createUser = (pool, { body: { username, first_name, last_name } }) => {
       RETURNING *;`,
     values: [username, first_name, last_name],
   };
-  return queryHandler(pool, query);
+  return await queryHandler(pool, query);
 };
 
-const deleteUser = (pool, { body: { id } }) => {
+const deleteUser = async (pool, { body: { id } }) => {
   const query = {
     text: `DELETE FROM ${usersTable} WHERE id = $1;`,
     values: [id],
   };
-  return queryHandler(pool, query);
+  return await queryHandler(pool, query);
 };
 
-const updateUser = (pool, { body }) => {
+const updateUser = async (pool, { body }) => {
   const { id, ...restBody } = body;
   const updates = Object.entries(restBody);
 
@@ -56,8 +63,8 @@ const updateUser = (pool, { body }) => {
     text: text.join(' '),
     values,
   };
-
-  return queryHandler(pool, query);
+  const results = await queryHandler(pool, query);
+  return results;
 };
 
 export default {

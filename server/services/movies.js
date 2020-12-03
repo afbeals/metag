@@ -93,7 +93,7 @@ const getMoviesByCategory = (
 // fetch db movies under tag(s) (db);
 const getMoviesByTags = (
   pool,
-  { query: { tags, prevId, orderBy = 'mv.id', limit, dir } }
+  { query: { tags, prevId, orderBy, limit, dir } }
 ) => {
   if (!tags || tags.length < 1)
     return Promise.reject({ message: 'No tags specified' });

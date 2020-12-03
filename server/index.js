@@ -13,7 +13,7 @@ import routes from './routes';
 const app = express();
 const pool = getPool();
 const envFilePath = path.join(__dirname, '../.env.local');
-const { SERVER_APP_PORT: port } = process.env;
+const { SERVER_PORT: port } = process.env;
 
 env.config({ path: envFilePath });
 

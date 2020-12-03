@@ -6,23 +6,24 @@ import { select } from 'redux-saga/effects'; // mock selectors call
 
 // Internal
 import reducer from '../reducer';
-import actions from '../actions';
-import types from '../types';
+import {{camelName}}Actions from '../actions';
 {{#if util}}import util from '../util';{{/if}}
 import * as {{camelName}}Sagas from '../sagas';
 import api from '~GlobalUtil/api';
 {{#if selectors}}import { getStore } from '../selectors';{{/if}}
 
+const { {{name}} } = {{camelName}}Actions;
+
 /* eslint-disable max-len */
-const {{camelName}}SagasTest = () => describe('Sagas', () => {
+const {{camelName}}SagasTest = () =>
   describe('Sagas: ', () => {
     describe('Section Sagas: ', () => {
       describe('Watchers: ', () => {
-        it('Should catch request ', () => testSaga({{camelName}}Sagas.watchRequestForGeneratorName) // match to watcher
+        it('Should catch request ', () => {testSaga({{camelName}}Sagas.watchRequestForGeneratorName) // match to watcher
           .next() // start generator
           .takeLatest(types, {{camelName}}Sagas) // match to generator
           .next() // step through generator
-          .isDone());
+          .isDone()});
       });
 
       describe('Section Series: ', () => {
@@ -53,6 +54,6 @@ const {{camelName}}SagasTest = () => describe('Sagas', () => {
       })
     })
   })
-});
+
 
 export default {{camelName}}SagasTest;
