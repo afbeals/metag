@@ -39,18 +39,18 @@ const moviesReducerTest = () =>
       it(`Should add the movie when ${type}`, () => {
         const action = {
           type,
-          payload: [
-            {
+          payload: {
+            2: {
               name: 'movie name',
               tag: [1, 2],
               id: 2,
             },
-          ],
+          },
         };
         expect(reducer(initialStore, action)).to.deep.equal(
           mockStore({
             list: {
-              [action.payload[0]['id']]: action.payload[0],
+              [action.payload[2]['id']]: action.payload[2],
             },
           })
         );

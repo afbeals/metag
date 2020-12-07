@@ -28,7 +28,6 @@ const {
       success: deleteTagsSuccess,
       fail: deleteTagsFail,
     },
-    reset: resetTags,
   },
 } = tagsActions;
 
@@ -63,7 +62,6 @@ const tagsSagasTest = () =>
               })
             )
             .put(getTagsSuccess([{ id: 1, tag: 'adfa' }])) // eventual action that will be called
-            .put(resetTags([{ id: 1, tag: 'adfa' }])) // eventual action that will be called
             .dispatch(getTags([{ id: 1, tag: 'adfa' }])) // dispatch action that starts saga
             .run());
 

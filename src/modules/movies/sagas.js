@@ -5,6 +5,7 @@ import { takeLatest, all, fork, race, take, cancel } from 'redux-saga/effects';
 import actions from './actions';
 import api from '~GlobalUtil/api';
 import normalize from '~GlobalUtil/normalize';
+import { arrayToIndexed } from '~GlobalUtil/normalize';
 
 // Constants
 const { sagaRequest } = normalize;
@@ -94,11 +95,20 @@ function* updateSuccesses() {
 // Series Generators
 export function* fetchAll() {
   try {
+    const normalizeData = data =>
+      arrayToIndexed({
+        array: data.map(({ movie_id, tag_ids, ...rest }) => ({
+          ...rest,
+          tag_ids: tag_ids ? tag_ids.split(',') : [],
+          id: movie_id,
+        })),
+      });
+
     const apiCalls = yield all([
       fork(sagaRequest, {
         params: [api.movie.all],
         successActs: allSuccess,
-        successDataTrns: null,
+        successDataTrns: normalizeData,
         failActs: allFail,
       }),
     ]);
@@ -122,11 +132,20 @@ export function* fetchAll() {
 
 export function* fetchUnderCat({ payload: request }) {
   try {
+    const normalizeData = data =>
+      arrayToIndexed({
+        array: data.map(({ movie_id, tag_ids, ...rest }) => ({
+          ...rest,
+          tag_ids: tag_ids ? tag_ids.split(',') : [],
+          id: movie_id,
+        })),
+      });
+
     const apiCalls = yield all([
       fork(sagaRequest, {
         params: [api.movie.underCat, request],
         successActs: under_catSuccess,
-        successDataTrns: null,
+        successDataTrns: normalizeData,
         failActs: under_catFail,
       }),
     ]);
@@ -150,11 +169,20 @@ export function* fetchUnderCat({ payload: request }) {
 
 export function* fetchUnderTag({ payload: request }) {
   try {
+    const normalizeData = data =>
+      arrayToIndexed({
+        array: data.map(({ movie_id, tag_ids, ...rest }) => ({
+          ...rest,
+          tag_ids: tag_ids ? tag_ids.split(',') : [],
+          id: movie_id,
+        })),
+      });
+
     const apiCalls = yield all([
       fork(sagaRequest, {
         params: [api.movie.underTag, request],
         successActs: under_tagSuccess,
-        successDataTrns: null,
+        successDataTrns: normalizeData,
         failActs: under_tagFail,
       }),
     ]);
@@ -178,11 +206,20 @@ export function* fetchUnderTag({ payload: request }) {
 
 export function* searchMovie({ payload: request }) {
   try {
+    const normalizeData = data =>
+      arrayToIndexed({
+        array: data.map(({ movie_id, tag_ids, ...rest }) => ({
+          ...rest,
+          tag_ids: tag_ids ? tag_ids.split(',') : [],
+          id: movie_id,
+        })),
+      });
+
     const apiCalls = yield all([
       fork(sagaRequest, {
         params: [api.movie.search, request],
         successActs: searchSuccess,
-        successDataTrns: null,
+        successDataTrns: normalizeData,
         failActs: searchFail,
       }),
     ]);

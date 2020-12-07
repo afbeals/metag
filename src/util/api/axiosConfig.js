@@ -2,13 +2,12 @@
 import fetch from 'axios';
 
 // Local
+import constants from '../constants';
 
 // Constants
-const { REACT_APP_SERVER_PORT } = process.env;
-const localServer = `http://localhost:${REACT_APP_SERVER_PORT}`;
 
 const axios = fetch.create({
-  baseURL: localServer,
+  baseURL: constants.API.ROOT,
 });
 
 export default axios;

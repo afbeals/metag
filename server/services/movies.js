@@ -34,12 +34,14 @@ const selectMovieInfoQuery = (
     SELECT
       mv.img_src as img_src,
       mv.name as movie_name,
+      mv.notes as notes,
       string_agg(
         distinct tg.id::varchar(255),
         ',' order by tg.id::varchar(255)
       ) as tag_ids,
       cat.id as category_id,
-      mv.id AS movie_id
+      mv.id AS movie_id,
+      mv.duration AS movie_duration
     FROM ${moviesTable} AS mv
       LEFT JOIN ${moviesTagsTable} AS mvt
           ON mv.id = mvt.movies_id
@@ -172,12 +174,12 @@ const updateMovie = async (
     const movieSrc = path.join(
       adPath,
       old_category_src,
-      addDefault(movie.file_name)
+      addDefault(movie.file_src)
     );
     const movieDst = path.join(
       adPath,
       new_category_src,
-      addDefault(movie.file_name)
+      addDefault(movie.file_src)
     );
     const updateMovieCat = {
       text: `
@@ -217,7 +219,8 @@ const updateMovie = async (
       ',' order by tg.id::varchar(255)
     ) as tag_ids,
     cat.id as category_id,
-    mv.id AS movie_id
+    mv.id AS movie_id,
+    mv.duration AS movie_duration
   FROM ${moviesTable} AS mv
     LEFT JOIN ${moviesTagsTable} AS mvt
         ON mv.id = mvt.movies_id
@@ -277,7 +280,7 @@ const deleteMovie = async (pool, { body: { id } }) => {
   const getMovieInfoQuery = {
     text: `
   SELECT
-    mv.file_name AS file_name,
+    mv.file_src AS file_src,
     mv.img_src AS img_src,
     cg.src_folder AS categories_src
   FROM ${moviesCatTable} AS m_c
@@ -296,13 +299,13 @@ const deleteMovie = async (pool, { body: { id } }) => {
 
   if (!rows || rows.length < 1)
     return Promise.reject({ message: "Movie doesn't exist" });
-  const { file_name = null, img_src = null, categories_src = null } = rows[0];
+  const { file_src = null, img_src = null, categories_src = null } = rows[0];
   // if no info, then don't try to do anything else
-  if (!file_name || !categories_src)
+  if (!file_src || !categories_src)
     return Promise.reject({ message: 'Movie info corrupted' });
 
   // remove movie first
-  const moviePath = path.join(adPath, categories_src, file_name);
+  const moviePath = path.join(adPath, categories_src, file_src);
   return fs
     .remove(moviePath)
     .then(() => {
@@ -324,26 +327,52 @@ const deleteMovie = async (pool, { body: { id } }) => {
 };
 
 // get available movies (by category)
-const getAvailableMovies = ({ query: { category } }) =>
-  new Promise((res, rej) => {
-    const ad = path.resolve(adPath, category);
+const getAvailableMovies = async (pool, { query: { category } }) => {
+  const catInfoQuery = {
+    text: `SELECT * FROM ${categoriesTable} WHERE id = $1;`,
+    values: [category],
+  };
+  const { rows: catInfoRows } = await queryHandler(pool, catInfoQuery);
+
+  if (!catInfoRows || catInfoRows.length < 1)
+    return Promise.reject({ message: "Category doesn't exist" });
+
+  const { src_folder } = catInfoRows[0];
+  const currentFiles = await new Promise((res, rej) => {
+    const ad = path.resolve(adPath, src_folder);
     return fs.readdir(ad, (err, files) => {
       if (err) rej(err);
       res(files);
     });
   });
 
+  const inGroup = currentFiles.map((_, i) => `$${i + 1}`).join(', ');
+
+  const getPrevAddedQuery = {
+    text: `SELECT * FROM movies WHERE file_src IN (${inGroup})`,
+    values: currentFiles,
+  };
+
+  const { rows: prevAddRows = [] } = await queryHandler(
+    pool,
+    getPrevAddedQuery
+  );
+  return currentFiles.filter(
+    cf => prevAddRows.findIndex(({ file_src }) => file_src === cf) === -1
+  );
+};
+
 // post create movie/thumb/gif (db)
 const addMovieToDB = async (
   pool,
-  { body: { tag_ids, category_id, file_name, name } }
+  { body: { tag_ids, category_id, file_src, name, notes } }
 ) => {
   // add movie and get row info
   const insertMovieQuery = {
-    text: `INSERT INTO ${moviesTable}(file_name, name)
-      VALUES($1, $2)
+    text: `INSERT INTO ${moviesTable}(file_src, name, notes)
+      VALUES($1, $2, $3)
       RETURNING *;`,
-    values: [file_name, name],
+    values: [file_src, name, notes],
   };
   const catInfoQuery = {
     text: `SELECT * FROM ${categoriesTable} WHERE id = $1;`,
@@ -353,6 +382,7 @@ const addMovieToDB = async (
   const { rows: catRows } = await queryHandler(pool, catInfoQuery);
   const { id: movie_id } = movieRows[0];
   const { src_folder: cat_src, id: cat_id } = catRows[0];
+  let movie_duration = 0;
 
   // make sure dir exists
   const thumbDir = path.join(adThumb, `${movie_id}`);
@@ -360,12 +390,12 @@ const addMovieToDB = async (
 
   // create images
   const thumbPath = path.join(thumbDir, 'thumb.jpg');
-  const createThumb = new Promise((res, rej) =>
+  const createThumb = await new Promise((res, rej) =>
     fsD.access(thumbPath, fs.F_OK, err => {
       // if file doesn't exist
       if (err) {
         // get info from movie file
-        const moviePath = `${adPath}/${cat_src}/${file_name}`;
+        const moviePath = `${adPath}/${cat_src}/${file_src}`;
 
         ffprobe(
           moviePath,
@@ -374,14 +404,13 @@ const addMovieToDB = async (
             if (ffprobeErr) rej(ffprobeErr);
 
             // create thumbnail
-            const startTime = (
-              Math.round(movieStats[0].duration / 3) / 100
-            ).toFixed(2);
+            movie_duration = Math.round(movieStats[0].duration);
+            const startTime = Math.round(movieStats[0].duration / 3).toFixed(2);
 
             const execScript = [
               'ffmpeg', // start process
               `-ss ${startTime}`, // set start time
-              `-i ${moviePath}`, // set input file
+              `-i "${moviePath}"`, // set input file
               '-vframes 1', // set amount of frames per sec
               '-vf "scale=w=480:h=-1"', // use filter scale the image
               `${thumbPath}`, // set the output name
@@ -406,12 +435,12 @@ const addMovieToDB = async (
 
   // create Gif
   const gifPath = path.join(thumbDir, 'gif.gif');
-  const createGif = new Promise((res, rej) =>
+  const createGif = await new Promise((res, rej) =>
     fsD.access(gifPath, fs.F_OK, err => {
       // if file doesn't exist
       if (err) {
         // get info from movie file
-        const moviePath = `${adPath}/${cat_src}/${file_name}`;
+        const moviePath = `${adPath}/${cat_src}/${file_src}`;
         ffprobe(
           moviePath,
           { path: ffprobeS.path },
@@ -419,15 +448,13 @@ const addMovieToDB = async (
             if (ffprobeErr) rej(ffprobeErr);
 
             // create gif starting halfway through
-            const startTime = (
-              Math.round(movieStats[0].duration / 2) / 100
-            ).toFixed(2);
+            const startTime = Math.round(movieStats[0].duration / 2).toFixed(2);
 
             const execScript = [
               'ffmpeg', // start process
               `-ss ${startTime}`, // set start time
-              `-t 3`, // set the gif duration
-              `-i ${moviePath}`, // set input file
+              `-t 6`, // set the gif duration
+              `-i "${moviePath}"`, // set input file
               // https://engineering.giphy.com/how-to-make-gifs-with-ffmpeg/
               // eslint-disable-next-line max-len
               '-filter_complex "[0:v] fps=12,scale=480:-1,split [a][b];[a] palettegen [p];[b][p] paletteuse"',
@@ -451,9 +478,10 @@ const addMovieToDB = async (
   // update img_src
   const updateMovieImgSrc = {
     text: `UPDATE ${moviesTable}
-            SET img_src = $1
+            SET img_src = $1,
+                duration = $2
             WHERE id = $1`,
-    values: [movie_id],
+    values: [movie_id, `${movie_duration}`],
   };
   await queryHandler(pool, updateMovieImgSrc);
 
@@ -478,14 +506,14 @@ const addMovieToDB = async (
   });
 
   // wait for transactions
-  await Promise.all([createThumb, createGif, ...addMovieTags]);
+  return Promise.all([createThumb, createGif, ...addMovieTags]);
 };
 
 // stream movie (db);
 const streamMovie = async (pool, { headers, query: { id: movie_id } }) => {
   const getMovieCatInfo = {
     text: `SELECT
-              mv.file_name as file_name,
+              mv.file_src as file_src,
               cat.src_folder as cat_src
             FROM ${moviesTable} AS mv
             LEFT JOIN ${moviesCatTable} AS mvc
@@ -497,8 +525,9 @@ const streamMovie = async (pool, { headers, query: { id: movie_id } }) => {
   };
 
   const { rows: movieCatRow } = await queryHandler(pool, getMovieCatInfo);
-  const { cat_src, file_name } = movieCatRow[0];
-  const moviePath = path.join(adPath, cat_src, file_name);
+  const { cat_src, file_src } = movieCatRow[0];
+  const moviePath = path.join(adPath, cat_src, file_src);
+
   return new Promise((res, rej) => {
     fsD.stat(moviePath, (err, stat) => {
       // Handle file not found
@@ -553,7 +582,7 @@ const getMovieImg = ({ query: { type = 'jpg', movie_id } }) => {
     return Promise.reject({ message: 'missing movie id parameter' });
   }
   const img = type === 'jpg' ? 'thumb.jpg' : 'gif.gif';
-  return path.join(adThumb, `${movie_id}`, `${img}`);
+  return Promise.resolve(path.join(adThumb, `${movie_id}`, `${img}`));
 };
 
 export default {

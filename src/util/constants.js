@@ -1,7 +1,10 @@
 // Internal
+const { REACT_APP_SERVER_PORT } = process.env;
+const localServer = `http://localhost:${REACT_APP_SERVER_PORT}`;
 
 const constants = {
   API: {
+    ROOT: localServer,
     USER: {
       LOGIN: `/getUser`,
       UPDATE: `/updateUser`,

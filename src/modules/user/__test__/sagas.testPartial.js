@@ -17,7 +17,6 @@ const {
       success: userLoginSuccess,
       fail: userLoginFail,
     },
-    reset: userReset,
   },
 } = actions;
 
@@ -74,14 +73,6 @@ const userSagasTest = () =>
                 lastName: 'last',
               })
             ) // eventual action that will be called
-            .put(
-              userReset({
-                id: 2,
-                username: 'user',
-                firstName: 'first',
-                lastName: 'last',
-              })
-            )
             .dispatch(userLoginRequest(request)) // dispatch action that starts saga
             .run();
         });

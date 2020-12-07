@@ -1,7 +1,6 @@
 // Internal
 import moviesActions from './actions';
 import util from './util';
-import { arrayToIndexed } from '~GlobalUtil/normalize';
 
 // Constants
 const initialStore = util.buildInitialStore();
@@ -25,10 +24,9 @@ export default function reducer(state = initialStore, { type, payload }) {
     case under_tagSuccess.type:
     case searchSuccess.type:
     case allSuccess.type: {
-      const list = arrayToIndexed({ array: payload });
       return {
         ...state,
-        list,
+        list: payload,
       };
     }
 
