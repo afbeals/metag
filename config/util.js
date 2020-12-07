@@ -25,7 +25,7 @@ function jsToSassVariables(obj) {
     if (value instanceof Object) {
       let subkeys = '(';
       subkeys += Object.keys(value)
-        .map((subkey) => `"${subkey}": ${value[subkey] || ''}`)
+        .map(subkey => `"${subkey}": ${value[subkey] || ''}`)
         .join(', ');
       subkeys += ')';
       return subkeys;
@@ -36,7 +36,7 @@ function jsToSassVariables(obj) {
   });
 
   const objAsStrings = Object.keys(objParsed).map(
-    (varName) => `$${varName}: unquote(${JSON.stringify(objParsed[varName])})`
+    varName => `$${varName}: unquote(${JSON.stringify(objParsed[varName])})`
   );
 
   const resString = objAsStrings.join('; ') + ';';

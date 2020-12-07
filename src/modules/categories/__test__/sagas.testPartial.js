@@ -21,7 +21,6 @@ const {
     create: { request: create, success: createSuccess, fail: createFail },
     update: { request: update, success: updateSuccess, fail: updateFail },
     delete: { request: deleteReq, success: deleteSuccess, fail: deleteFail },
-    reset: reset,
   },
 } = categoriesActions;
 
@@ -46,17 +45,16 @@ const categoriesSagasTest = () =>
               // mock selector and api calls
               [
                 matchers.call.fn(api.cat.fetchAll),
-                { data: [{ id: 1, name: 'adfa' }] },
+                { data: [{ id: 1, name: 'adfa', modified_at: 1 }] },
               ], // supply mock return data from api
             ])
             .withReducer(reducer)
             .hasFinalState(
               util.buildMockStore({
-                list: { 1: { id: 1, name: 'adfa' } },
+                list: { 1: { id: 1, name: 'adfa', date: 1 } },
               })
             )
-            .put(getAllSuccess([{ id: 1, name: 'adfa' }])) // eventual action that will be called
-            .put(reset([{ id: 1, name: 'adfa' }])) // eventual action that will be called
+            .put(getAllSuccess([{ id: 1, name: 'adfa', date: 1 }])) // eventual action that will be called
             .dispatch(getAll()) // dispatch action that starts saga
             .run());
 

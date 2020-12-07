@@ -5,7 +5,8 @@ const path = require('path');
 const inquirer = require('inquirer'); // prompt user
 
 // Internal
-const { functional, util, classComp } = require('./component/');
+const { functional, classComp } = require('./component/');
+const util = require('./util');
 
 // const
 // generate normalied data object from answers
@@ -29,13 +30,15 @@ const getCustomLocalImports = importString => {
 };
 const writeFile = ({ isFunctional, directory, ...ans }) => {
   const normalized = normalizedAnswers(ans);
+
   const compTemplate = isFunctional
     ? functional(normalized)
     : classComp(normalized);
+
   const srcDir = path.resolve(__dirname, '../');
 
   fs.writeFile(
-    path.join(srcDir, directory, `${util.capitalize(normalized.name)}.js`),
+    path.join(srcDir, directory, `${util.capitalize(normalized.name)}.jsx`),
     compTemplate,
     err => {
       if (err) {

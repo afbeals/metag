@@ -1,46 +1,78 @@
-// import { useState } from 'react';
-import logo from '~Images/logos/logo.svg';
+// External
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import 'fontsource-roboto';
+
+// Internal
+import { Home } from '~Pages/';
+import AppTheme from '~Components/theme';
+import userActions from '~Modules/user/actions';
+import tagsActions from '~Modules/tags/actions';
+import moviesActions from '~Modules/movies/actions';
+import categoriesActions from '~Modules/categories/actions';
 import '~Styles/main.scss';
 
-function App() {
-  // const [isHover, updateIsHover] = useState(false);
+const {
+  user: {
+    login: {
+      request: userLogin,
+      cancel: userLoginCancel,
+      _meta: { isFetching: userIsFetching },
+    },
+  },
+} = userActions;
 
+const {
+  tags: {
+    get: {
+      request: getTags,
+      cancel: getTagsCancel,
+      _meta: { isFetching: tagsIsFetching },
+    },
+  },
+} = tagsActions;
+
+const {
+  movies: {
+    all: {
+      request: getMovies,
+      cancel: getMoviesCancel,
+      _meta: { isFetching: moviesIsFetching },
+    },
+  },
+} = moviesActions;
+
+const {
+  categories: {
+    getall: {
+      request: getCat,
+      cancel: getCatCancel,
+      _meta: { isFetching: catIsFetching },
+    },
+  },
+} = categoriesActions;
+
+const App = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(userLogin({ username: 'docjrabg' }));
+    dispatch(getTags());
+    dispatch(getMovies());
+    dispatch(getCat());
+    return () => {
+      if (catIsFetching) getCatCancel();
+      if (moviesIsFetching) getMoviesCancel();
+      if (tagsIsFetching) getTagsCancel();
+      if (userIsFetching) userLoginCancel();
+    };
+  }, [dispatch]);
   return (
-    <div className='App'>
-      <header className='App-header'>
-        <img src={logo} className='App-logo' alt='logo' />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <button className='App-link' link='https://create-react-app.dev/'>
-          learn react
-        </button>
-        {/* <img
-          onMouseOver={() => updateIsHover(true)}
-          onMouseOut={() => updateIsHover(false)}
-          onBlur={() => updateIsHover(false)}
-          onFocus={() => updateIsHover(true)}
-          src={
-            !isHover
-              ? 'http://localhost:4250/getMovieImg?movie_id=3'
-              : 'http://localhost:4250/getMovieImg?movie_id=3&type=gif'
-          }
-          alt='movie img'
-        />
-        <video
-          controls
-          width='100%'
-          poster='http://localhost:4250/getMovieImg?movie_id=3&type=gif'
-        >
-          <source
-            src='http://localhost:4250/streamMovie?id=3'
-            type='video/mp4'
-          />
-          Sorry, your browser doesn't support embedded videos.
-        </video> */}
-      </header>
-    </div>
+    <AppTheme>
+      <div id='app'>
+        <Home />
+      </div>
+    </AppTheme>
   );
-}
+};
 
 export default App;

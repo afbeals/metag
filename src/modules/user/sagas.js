@@ -16,7 +16,6 @@ const {
       fail: userLoginFail,
       cancel: userLoginCancel,
     },
-    reset: userReset,
   },
 } = actions;
 
@@ -34,11 +33,10 @@ export function* login({ payload }) {
       const { first_name: firstName, last_name: lastName, username, id } = data;
       return { firstName, lastName, username, id };
     };
-
     const apiCalls = yield all([
       fork(sagaRequest, {
         params: [api.user.login, payload],
-        successActs: [userReset, userLoginSuccess],
+        successActs: [userLoginSuccess],
         successDataTrns: normalizeUserInfo,
         failActs: userLoginFail,
       }),

@@ -34,7 +34,6 @@ const {
       fail: deleteTagsFail,
       cancel: deleteTagsCancel,
     },
-    reset: resetTags,
   },
 } = tagsActions;
 
@@ -65,7 +64,7 @@ export function* tagsFetch() {
     const apiCalls = yield all([
       fork(sagaRequest, {
         params: [api.tags.fetch],
-        successActs: [resetTags, getTagsSuccess],
+        successActs: [getTagsSuccess],
         successDataTrns: null,
         failActs: getTagsFail,
       }),

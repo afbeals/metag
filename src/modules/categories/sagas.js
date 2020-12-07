@@ -40,7 +40,6 @@ const {
       fail: deleteReqFail,
       cancel: deleteReqCancel,
     },
-    reset: reset,
   },
 } = categoriesActions;
 
@@ -73,11 +72,18 @@ function* updateSuccesses() {
 // Series Generators
 export function* categoriesFetchAll() {
   try {
+    const normalizeCat = catArray =>
+      catArray.map(({ id, name, created_at, modified_at = null }) => ({
+        id,
+        name,
+        date: modified_at || created_at,
+      }));
+
     const apiCalls = yield all([
       fork(sagaRequest, {
         params: [api.cat.fetchAll],
-        successActs: [reset, getAllSuccess],
-        successDataTrns: null,
+        successActs: [getAllSuccess],
+        successDataTrns: normalizeCat,
         failActs: getAllFail,
       }),
     ]);

@@ -1,0 +1,58 @@
+html {
+  font-size: 16px;
+  color: $fontColorPrimary;
+  h1 {
+    font-size: 2rem;
+    text-transform: capitalize;
+  }
+  h2 {
+    font-size: 1.7rem;
+    text-transform: capitalize;
+  }
+  h3 {
+    font-size: 1.5rem;
+  }
+  h4 {
+    font-size: 1.3rem;
+  }
+  h5 {
+    font-size: 1.1rem;
+  }
+  body {
+    #root {
+      height: 100vh;
+      width: 100vw;
+      background: $rootBackground;
+      overflow: hidden;
+      #app {
+        height: 100%;
+        width: 100%;
+        background: $appBackground;
+      }
+    }
+  }
+  * {
+    box-sizing: border-box;
+    &::-webkit-scrollbar-track {
+      -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0);
+      background-color: transparent;
+    }
+    &::-webkit-scrollbar {
+      width: 10px;
+      background-color: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: $secondaryLight;
+      background-image: -webkit-linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.2) 25%,
+        transparent 25%,
+        transparent 50%,
+        rgba(255, 255, 255, 0.2) 50%,
+        rgba(255, 255, 255, 0.2) 75%,
+        transparent 75%,
+        transparent
+      );
+    }
+  }
+}

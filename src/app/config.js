@@ -8,10 +8,7 @@ const sagaMW = createSagaMW();
 
 const store = configureStore({
   reducer: rootReducer(),
-  middleware: cdm =>
-    cdm({
-      thunk: false,
-    }).concat(sagaMW),
+  middleware: cdm => cdm().concat(sagaMW),
   devTools: {
     maxAge: 25,
     trace: true,

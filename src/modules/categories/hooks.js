@@ -5,10 +5,15 @@ import { checkPropTypes, object, func, array } from 'prop-types';
 // Internal
 import * as selectors from './selectors';
 import categoriesActions from './actions';
+import { createFetchSelector } from '../fetch/selectors';
 
 const {
   categories: {
-    getall: { request: getAll, cancel: getAllCancel },
+    getall: {
+      request: getAll,
+      cancel: getAllCancel,
+      _meta: { isFetched: getAllisFetched, getAllisFetching },
+    },
     getavailable: { request: getAvailable, cancel: getAvailableCancel },
     create: { request: create, cancel: createCancel },
     update: { request: update, cancel: updateCancel },
@@ -18,56 +23,64 @@ const {
 } = categoriesActions;
 
 // Constants
-const categoriesHooks = {
-  /**
-   * @method useCategoriesStore
-   * @desc connect to category store
-   * @example
-   * const { catList } = useCategoriesStore();
-   */
-  useCategoriesStore: () => {
-    const dispatch = useDispatch();
 
-    const props = {
-      // selectors
-      catStore: useSelector(selectors.getCategoriesStore),
-      catList: useSelector(selectors.getCategoriesList),
-      catListArray: useSelector(selectors.getCategoriesListArray),
-      // actions
-      catFetch: () => dispatch(getAll()),
-      catFetchCancel: () => dispatch(getAllCancel()),
-      catFetchAvail: () => dispatch(getAvailable()),
-      catFetchAvailCancel: () => dispatch(getAvailableCancel()),
-      catCreate: info => dispatch(create(info)),
-      catCreateCancel: () => dispatch(createCancel()),
-      catDelete: info => dispatch(update(info)),
-      catDeleteCancel: () => dispatch(updateCancel()),
-      catUpdate: info => dispatch(deleteReq(info)),
-      catUpdateCancel: () => dispatch(deleteReqCancel()),
-      catReset: () => dispatch(resetCategories()),
-    };
+/**
+ * @method useCategoriesStore
+ * @desc connect to category store
+ * @example
+ * const { catList } = useCategoriesStore();
+ */
+export const useCategoriesStore = () => {
+  const dispatch = useDispatch();
+  const fetchSelector = createFetchSelector();
 
-    const propTypes = {
-      catStore: object.isRequired,
-      catList: object,
-      catListArray: array,
-      catFetch: func.isRequired,
-      catFetchCancel: func.isRequired,
-      catFetchAvail: func.isRequired,
-      catFetchAvailCancel: func.isRequired,
-      catCreate: func.isRequired,
-      catCreateCancel: func.isRequired,
-      catDelete: func.isRequired,
-      catDeleteCancel: func.isRequired,
-      catUpdate: func.isRequired,
-      catUpdateCancel: func.isRequired,
-      catReset: func.isRequired,
-    };
+  const props = {
+    // selectors
+    catStore: useSelector(selectors.getCategoriesStore),
+    catList: useSelector(selectors.getCategoriesList),
+    catListArray: useSelector(selectors.getCategoriesListArray),
+    catAllIsFetching: useSelector(store =>
+      fetchSelector(store, getAllisFetching)
+    ),
+    catAllIsFetched: useSelector(store =>
+      fetchSelector(store, getAllisFetched)
+    ),
+    // actions
+    catFetch: () => dispatch(getAll()),
+    catFetchCancel: () => dispatch(getAllCancel()),
+    catFetchAvail: () => dispatch(getAvailable()),
+    catFetchAvailCancel: () => dispatch(getAvailableCancel()),
+    catCreate: info => dispatch(create(info)),
+    catCreateCancel: () => dispatch(createCancel()),
+    catDelete: info => dispatch(update(info)),
+    catDeleteCancel: () => dispatch(updateCancel()),
+    catUpdate: info => dispatch(deleteReq(info)),
+    catUpdateCancel: () => dispatch(deleteReqCancel()),
+    catReset: () => dispatch(resetCategories()),
+  };
 
-    checkPropTypes(propTypes, props, 'prop', `Hook: useCategoriesStore`);
+  const propTypes = {
+    catStore: object.isRequired,
+    catList: object,
+    catListArray: array,
+    catFetch: func.isRequired,
+    catFetchCancel: func.isRequired,
+    catFetchAvail: func.isRequired,
+    catFetchAvailCancel: func.isRequired,
+    catCreate: func.isRequired,
+    catCreateCancel: func.isRequired,
+    catDelete: func.isRequired,
+    catDeleteCancel: func.isRequired,
+    catUpdate: func.isRequired,
+    catUpdateCancel: func.isRequired,
+    catReset: func.isRequired,
+  };
 
-    return props;
-  },
+  checkPropTypes(propTypes, props, 'prop', `Hook: useCategoriesStore`);
+
+  return props;
 };
 
-export default categoriesHooks;
+export default {
+  useCategoriesStore,
+};

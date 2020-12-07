@@ -26,6 +26,20 @@ export const getCapitalized = string =>
     .join(' ');
 
 /**
+ * @function constructClass
+ * @desc construct class based on array of strings
+ * @param {array} classnames list of strings/expressions to evaluate and concat
+ * @example
+ * const list = ['open', 'full', 2>3 ? 1 : 2, 'classname', null, '', false || 'true' ];
+ * const classList = constructClass(list);
+ *
+ * // output: 'open full 2 classname true'
+ */
+
+export const constructClass = classnames =>
+  classnames.filter(cname => !!cname).join(' ');
+
+/**
  * @name createActions
  * @desc create actions from map
  * @param {object} entries the map of actions to create
@@ -253,6 +267,7 @@ export const indexedToArray = ({
 export { createAction as actionCreator } from '@reduxjs/toolkit';
 
 export default {
+  constructClass,
   createActions,
   getCapitalized,
   getRequestMatch,

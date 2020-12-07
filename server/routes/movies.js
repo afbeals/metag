@@ -17,20 +17,16 @@ export default (app, pool) => {
 
   app.get('/getAvailableMovies', (req, res) =>
     movies
-      .getAvailableMovies(req)
+      .getAvailableMovies(pool, req)
       .then(data => res.status(200).send(data))
-      .catch(err => {
-        res.status(500).send(err);
-      })
+      .catch(err => res.status(500).send(err))
   );
 
   app.get('/getMovies', (req, res) =>
     movies
       .getMovies(pool, req)
       .then(results => res.status(200).json(results.rows))
-      .catch(err => {
-        res.status(500).send(err);
-      })
+      .catch(err => res.status(500).send(err))
   );
 
   app.get('/getMoviesByCategory', (req, res) =>

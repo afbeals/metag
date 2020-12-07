@@ -42,7 +42,7 @@ export const getSelectedMovieId = createSelector(
  */
 export const getSelectedMovie = createSelector(
   [getMoviesList, getSelectedMovieId],
-  (movieList, id) => movieList[id] || null
+  (movieList, id) => (movieList && id ? movieList[id] : null)
 );
 
 /**

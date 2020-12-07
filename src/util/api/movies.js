@@ -31,7 +31,7 @@ const moviesAPI = {
    * @return {object} return data from query
    */
   getMovies: async movieData => {
-    const response = await axios.get(constants.API.MOVIES.GET.AVAIL, {
+    const response = await axios.get(constants.API.MOVIES.GET.ALL, {
       params: movieData,
     });
     const data = await response;
@@ -133,8 +133,9 @@ const moviesAPI = {
    * @param {object} movieData
    * @param {string} movieData.tag_ids the tag ids to add to movie
    * @param {string} movieData.category_id the category id to add
-   * @param {string} movieData.file_name the associated file name of the movie
+   * @param {string} movieData.file_src the associated file name of the movie
    * @param {string} movieData.name the db name for the movie
+   * @param {string} movieData.notes notes for the movie
    * @return {object} return data from query
    */
   add: async movieData => {
