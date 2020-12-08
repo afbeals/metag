@@ -7,9 +7,11 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 
 // Internal
 import { api } from '~GlobalUtil/';
+import { Modal } from '~Components/';
 import { useCategoriesStore } from '~Modules/categories/hooks';
 import { useTagsStore } from '~Modules/tags/hooks';
 import { useMovies } from '~Modules/movies/hooks';
+import constants from '~GlobalUtil/constants';
 import {
   AddMovie as AddMovieStyled,
   Input,
@@ -21,8 +23,15 @@ import {
 } from './AddMovie_';
 
 // Constants
+const {
+  API: {
+    ROOT,
+    MOVIES: { STREAM },
+  },
+} = constants;
 
 const AddMovie = () => {
+  const [showMovie, updateShowMovie] = useState(false);
   const [availableMovies, updateAvailabeMovies] = useState([]);
   const [editorValues, updateEditorValues] = useState({
     tag_ids: [],
@@ -156,10 +165,28 @@ const AddMovie = () => {
           disabled={!editorValues.file_src}
           color='primary'
           size='small'
-          onClick={() => console.log('play movie in modal')}
+          onClick={() => updateShowMovie(true)}
         >
           <VisibilityIcon />
         </IconButton>
+        {showMovie && (
+          <Modal
+            title={null}
+            onCancel={() => updateShowMovie(false)}
+            onClose={() => updateShowMovie(false)}
+          >
+            <video
+              controls
+              autoPlay
+              width='100%'
+              // eslint-disable-next-line max-len
+              src={`${ROOT}${STREAM}?suggestedPath=${editorValues.file_src}&suggestedCat=${editorValues.category_id}`}
+              type='video/mp4'
+            >
+              Sorry, your browser doesn't support embedded videos.
+            </video>
+          </Modal>
+        )}
       </MovieSelector>
 
       <FormControl fullWidth variant='standard'>

@@ -164,7 +164,7 @@ export const sagaRequest = function* ({
       const failures = failActs.map(act => put(act(e)));
       yield all(failures);
     } else {
-      yield put(failActs(e.message));
+      yield put(failActs(e.response?.data?.message || e.message));
     }
   }
 };

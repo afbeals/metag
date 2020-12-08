@@ -5,9 +5,16 @@ import { string, array, number, func } from 'prop-types';
 
 // Internal
 import constants from '~GlobalUtil/constants';
-import { Container, Tags, ImageWrapper, InfoLine, Pill } from './Card_';
+import {
+  Card as CardStyled,
+  Tags,
+  ImageWrapper,
+  InfoLine,
+  Pill,
+} from './Card_';
 import { getTagsList } from '~Modules/tags/selectors';
 import { getCategoriesList } from '~Modules/categories/selectors';
+import ErrorBoundary from '~Components/ErrorBoundary';
 
 // Constants
 const classname = 'card';
@@ -45,37 +52,39 @@ const Card = ({
   const tagList = useSelector(getTagsList);
 
   return (
-    <Container
-      className={classname}
-      selected={selectedId === id}
-      onMouseOver={() => updateIsHover(true)}
-      onMouseOut={() => updateIsHover(false)}
-      onBlur={() => updateIsHover(false)}
-      onFocus={() => updateIsHover(true)}
-      onClick={() => selectMovie(id)}
-    >
-      <ImageWrapper>
-        <img
-          src={`${ROOT}${IMG}?movie_id=${id}${isHover ? '&type=gif' : ''}`}
-          alt={`${movie_name}`}
-        />
-        <div className='duration'>{convertSecToTime(movie_duration)}</div>
-      </ImageWrapper>
-      <InfoLine>
-        <div className={'name'}>{movie_name}</div>
-        <div className='category'>{catList[category_id].name}</div>
-      </InfoLine>
-      <Tags>
-        {tag_ids.map(tag => (
-          <Pill
-            key={tag}
-            label={tagList[tag].name}
-            color='secondary'
-            size='small'
+    <ErrorBoundary>
+      <CardStyled
+        className={classname}
+        selected={selectedId === id}
+        onMouseOver={() => updateIsHover(true)}
+        onMouseOut={() => updateIsHover(false)}
+        onBlur={() => updateIsHover(false)}
+        onFocus={() => updateIsHover(true)}
+        onClick={() => selectMovie(id)}
+      >
+        <ImageWrapper>
+          <img
+            src={`${ROOT}${IMG}?movie_id=${id}${isHover ? '&type=gif' : ''}`}
+            alt={`${movie_name}`}
           />
-        ))}
-      </Tags>
-    </Container>
+          <div className='duration'>{convertSecToTime(movie_duration)}</div>
+        </ImageWrapper>
+        <InfoLine>
+          <div className={'name'}>{movie_name}</div>
+          <div className='category'>{catList[category_id].name}</div>
+        </InfoLine>
+        <Tags>
+          {tag_ids.map(tag => (
+            <Pill
+              key={tag}
+              label={tagList[tag].name}
+              color='secondary'
+              size='small'
+            />
+          ))}
+        </Tags>
+      </CardStyled>
+    </ErrorBoundary>
   );
 };
 
