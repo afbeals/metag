@@ -69,12 +69,14 @@ const moviesSagasTest = () =>
             .provide([
               [
                 matchers.call.fn(api.movie.all),
-                throwError('Error retrieving devices'),
+                throwError({
+                  response: { data: { message: 'Error occured' } },
+                }),
               ], // supply error that will be thrown by api
             ])
             .withReducer(reducer)
             .hasFinalState(util.buildInitialStore())
-            .put(allFail())
+            .put(allFail('Error occured'))
             .dispatch(allReq())
             .run());
       });
@@ -118,12 +120,14 @@ const moviesSagasTest = () =>
             .provide([
               [
                 matchers.call.fn(api.movie.underCat),
-                throwError('Error retrieving devices'),
+                throwError({
+                  response: { data: { message: 'Error occured' } },
+                }),
               ], // supply error that will be thrown by api
             ])
             .withReducer(reducer)
             .hasFinalState(util.buildInitialStore())
-            .put(under_catFail())
+            .put(under_catFail('Error occured'))
             .dispatch(under_catReq())
             .run());
       });
@@ -167,13 +171,15 @@ const moviesSagasTest = () =>
             .provide([
               [
                 matchers.call.fn(api.movie.underTag),
-                throwError('Error retrieving devices'),
+                throwError({
+                  response: { data: { message: 'Error occured' } },
+                }),
               ], // supply error that will be thrown by api
             ])
             .withReducer(reducer, util.buildInitialStore())
             .withState(util.buildInitialStore())
             .hasFinalState({ list: null, selectedId: null, search: null })
-            .put(under_tagFail())
+            .put(under_tagFail('Error occured'))
             .dispatch(under_tagReq({ payload: {} }))
             .run());
       });
@@ -219,12 +225,14 @@ const moviesSagasTest = () =>
             .provide([
               [
                 matchers.call.fn(api.movie.search),
-                throwError('Error retrieving devices'),
+                throwError({
+                  response: { data: { message: 'Error occured' } },
+                }),
               ], // supply error that will be thrown by api
             ])
             .withReducer(reducer)
             .hasFinalState(util.buildInitialStore())
-            .put(searchFail())
+            .put(searchFail('Error occured'))
             .dispatch(searchReq())
             .run());
       });
@@ -270,12 +278,14 @@ const moviesSagasTest = () =>
             .provide([
               [
                 matchers.call.fn(api.movie.add),
-                throwError('Error retrieving devices'),
+                throwError({
+                  response: { data: { message: 'Error occured' } },
+                }),
               ], // supply error that will be thrown by api
             ])
             .withReducer(reducer)
             .hasFinalState(util.buildInitialStore())
-            .put(addFail())
+            .put(addFail('Error occured'))
             .dispatch(addReq())
             .run());
       });
@@ -319,7 +329,9 @@ const moviesSagasTest = () =>
             .provide([
               [
                 matchers.call.fn(api.movie.delete, { id: 2 }),
-                throwError('Error retrieving devices'),
+                throwError({
+                  response: { data: { message: 'Error occured' } },
+                }),
               ], // supply error that will be thrown by api
             ])
             .withReducer(reducer)
@@ -333,7 +345,7 @@ const moviesSagasTest = () =>
                 list: { 1: { id: 1 }, 2: { id: 2 } },
               })
             )
-            .put(deleteFail()) // eventual action that will be called
+            .put(deleteFail('Error occured')) // eventual action that will be called
             .dispatch(deleteReq({ id: 2 })) // dispatch action that starts saga
             .run();
         });
@@ -387,7 +399,9 @@ const moviesSagasTest = () =>
             .provide([
               [
                 matchers.call.fn(api.movie.update),
-                throwError('Error retrieving devices'),
+                throwError({
+                  response: { data: { message: 'Error occured' } },
+                }),
               ], // supply error that will be thrown by api
             ])
             .withReducer(
@@ -401,7 +415,7 @@ const moviesSagasTest = () =>
                 list: { 1: { id: 1 }, 2: { id: 2 } },
               })
             )
-            .put(updateFail()) // eventual action that will be called
+            .put(updateFail('Error occured')) // eventual action that will be called
             .dispatch(updateReq({ id: 2 })) // dispatch action that starts saga
             .run();
         });

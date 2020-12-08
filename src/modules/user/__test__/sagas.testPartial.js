@@ -82,7 +82,9 @@ const userSagasTest = () =>
             .provide([
               [
                 matchers.call.fn(api.user.login),
-                throwError('Error retrieving devices'),
+                throwError({
+                  response: { data: { message: 'Error occured' } },
+                }),
               ], // supply error that will be thrown by api
             ])
             .withReducer(reducer)
@@ -91,7 +93,7 @@ const userSagasTest = () =>
                 info: null,
               })
             )
-            .put(userLoginFail()) // eventual action that will be called
+            .put(userLoginFail('Error occured')) // eventual action that will be called
             .dispatch(userLoginRequest({ username: 'user' })) // dispatch action that starts saga
             .run());
       });

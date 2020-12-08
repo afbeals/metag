@@ -42,9 +42,7 @@ export default (app, pool) => {
     movies
       .getMoviesByTags(pool, req)
       .then(results => res.status(200).json(results.rows))
-      .catch(err => {
-        res.status(500).send(err);
-      })
+      .catch(err => res.status(500).send(err))
   );
 
   app.get('/getMovieImg', (req, res) =>

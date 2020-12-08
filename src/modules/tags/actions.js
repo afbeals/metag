@@ -4,7 +4,7 @@
 import { createActions } from '~GlobalUtil/normalize';
 
 // Constants
-const MODULE = `${process.env.REACT_APP_MODULE_NAME}/TAGS/`; // module action prefix
+const MODULE = `${process.env.REACT_APP_MODULE_NAME}/`; // module action prefix
 
 // Actions
 const actions = createActions(

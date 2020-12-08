@@ -70,12 +70,14 @@ const tagsSagasTest = () =>
             .provide([
               [
                 matchers.call.fn(api.tags.fetch),
-                throwError('Error retrieving devices'),
+                throwError({
+                  response: { data: { message: 'Error occured' } },
+                }),
               ], // supply error that will be thrown by api
             ])
             .withReducer(reducer)
             .hasFinalState(util.buildInitialStore())
-            .put(getTagsFail())
+            .put(getTagsFail('Error occured'))
             .dispatch(getTags())
             .run());
       });
@@ -122,12 +124,14 @@ const tagsSagasTest = () =>
             .provide([
               [
                 matchers.call.fn(api.tags.create),
-                throwError('Error retrieving devices'),
+                throwError({
+                  response: { data: { message: 'Error occured' } },
+                }),
               ], // supply error that will be thrown by api
             ])
             .withReducer(reducer)
             .hasFinalState(util.buildInitialStore())
-            .put(createTagsFail())
+            .put(createTagsFail('Error occured'))
             .dispatch(createTags())
             .run());
       });
@@ -156,7 +160,7 @@ const tagsSagasTest = () =>
               [
                 matchers.call.fn(api.tags.update, request),
                 {
-                  data: request,
+                  data: [{ id: 1, tag: 'data' }],
                 },
               ], // supply mock return data from api
             ])
@@ -169,7 +173,7 @@ const tagsSagasTest = () =>
                 list: { 1: request },
               })
             )
-            .put(updateTagsSuccess(request)) // eventual action that will be called
+            .put(updateTagsSuccess([request])) // eventual action that will be called
             .dispatch(updateTags(request)) // dispatch action that starts saga
             .run();
         });
@@ -179,12 +183,14 @@ const tagsSagasTest = () =>
             .provide([
               [
                 matchers.call.fn(api.tags.update),
-                throwError('Error retrieving devices'),
+                throwError({
+                  response: { data: { message: 'Error occured' } },
+                }),
               ], // supply error that will be thrown by api
             ])
             .withReducer(reducer)
             .hasFinalState(util.buildInitialStore())
-            .put(updateTagsFail()) // eventual action that will be called
+            .put(updateTagsFail('Error occured')) // eventual action that will be called
             .dispatch(updateTags({ id: 1, tag: 'tag' })) // dispatch action that starts saga
             .run());
       });
@@ -230,7 +236,9 @@ const tagsSagasTest = () =>
             .provide([
               [
                 matchers.call.fn(api.tags.delete),
-                throwError('Error retrieving devices'),
+                throwError({
+                  response: { data: { message: 'Error occured' } },
+                }),
               ], // supply error that will be thrown by api
             ])
             .withReducer(reducer)
@@ -244,7 +252,7 @@ const tagsSagasTest = () =>
                 list: { 1: { id: 1 }, 2: { id: 2 } },
               })
             )
-            .put(deleteTagsFail()) // eventual action that will be called
+            .put(deleteTagsFail('Error occured')) // eventual action that will be called
             .dispatch(deleteTags({ id: 2 })) // dispatch action that starts saga
             .run());
       });

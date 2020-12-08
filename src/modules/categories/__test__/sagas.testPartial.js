@@ -63,12 +63,14 @@ const categoriesSagasTest = () =>
             .provide([
               [
                 matchers.call.fn(api.cat.fetchAll),
-                throwError('Error retrieving devices'),
+                throwError({
+                  response: { data: { message: 'Error occured' } },
+                }),
               ], // supply error that will be thrown by api
             ])
             .withReducer(reducer)
             .hasFinalState(util.buildInitialStore())
-            .put(getAllFail())
+            .put(getAllFail('Error occured'))
             .dispatch(getAll())
             .run());
       });
@@ -101,10 +103,12 @@ const categoriesSagasTest = () =>
             .provide([
               [
                 matchers.call.fn(api.cat.fetchAvail),
-                throwError('Error retrieving devices'),
+                throwError({
+                  response: { data: { message: 'Error occured' } },
+                }),
               ], // supply error that will be thrown by api
             ])
-            .put(getAvailFail())
+            .put(getAvailFail('Error occured'))
             .dispatch(getAvail())
             .run());
       });
@@ -155,12 +159,14 @@ const categoriesSagasTest = () =>
             .provide([
               [
                 matchers.call.fn(api.cat.create),
-                throwError('Error retrieving devices'),
+                throwError({
+                  response: { data: { message: 'Error occured' } },
+                }),
               ], // supply error that will be thrown by api
             ])
             .withReducer(reducer)
             .hasFinalState(util.buildInitialStore())
-            .put(createFail())
+            .put(createFail('Error occured'))
             .dispatch(create())
             .run());
       });
@@ -214,12 +220,14 @@ const categoriesSagasTest = () =>
             .provide([
               [
                 matchers.call.fn(api.cat.update),
-                throwError('Error retrieving devices'),
+                throwError({
+                  response: { data: { message: 'Error occured' } },
+                }),
               ], // supply error that will be thrown by api
             ])
             .withReducer(reducer)
             .hasFinalState(util.buildInitialStore())
-            .put(updateFail()) // eventual action that will be called
+            .put(updateFail('Error occured')) // eventual action that will be called
             .dispatch(update({ id: 1, name: 'tag' })) // dispatch action that starts saga
             .run());
       });
@@ -267,7 +275,9 @@ const categoriesSagasTest = () =>
             .provide([
               [
                 matchers.call.fn(api.cat.delete),
-                throwError('Error retrieving devices'),
+                throwError({
+                  response: { data: { message: 'Error occured' } },
+                }),
               ], // supply error that will be thrown by api
             ])
             .withReducer(reducer)
@@ -281,7 +291,7 @@ const categoriesSagasTest = () =>
                 list: { 1: { id: 1 }, 2: { id: 2 } },
               })
             )
-            .put(deleteFail()) // eventual action that will be called
+            .put(deleteFail('Error occured')) // eventual action that will be called
             .dispatch(deleteReq({ id: 2 })) // dispatch action that starts saga
             .run());
       });

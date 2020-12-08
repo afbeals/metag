@@ -11,7 +11,7 @@ import {
   white,
 } from '~Styles/abstract/_variables';
 
-export const Container = styled.div(({ selected }) => ({
+export const Card = styled.div(({ selected }) => ({
   height: '175px',
   width: '225px',
   margin: '10px 5px',
@@ -88,7 +88,7 @@ export const Pill = styled(Chip)`
 `;
 
 export default {
-  Container,
+  Card,
   Tags,
   Category,
   InfoLine,

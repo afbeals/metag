@@ -510,24 +510,41 @@ const addMovieToDB = async (
 };
 
 // stream movie (db);
-const streamMovie = async (pool, { headers, query: { id: movie_id } }) => {
-  const getMovieCatInfo = {
-    text: `SELECT
-              mv.file_src as file_src,
-              cat.src_folder as cat_src
-            FROM ${moviesTable} AS mv
-            LEFT JOIN ${moviesCatTable} AS mvc
-            ON mv.id = mvc.movies_id
-            LEFT JOIN ${categoriesTable} AS cat
-            ON mvc.categories_id = cat.id
-            WHERE mv.id = $1`,
-    values: [movie_id],
-  };
+const streamMovie = async (
+  pool,
+  {
+    headers,
+    query: { suggestedPath = null, suggestedCat = null, id: movie_id },
+  }
+) => {
+  let moviePath;
+  if (suggestedPath && suggestedCat) {
+    const getCathPathQuery = {
+      text: `SELECT src_folder FROM ${categoriesTable}
+      WHERE id = $1;`,
+      values: [suggestedCat],
+    };
+    const { rows } = await queryHandler(pool, getCathPathQuery);
+    const { src_folder } = rows[0];
+    moviePath = path.join(adPath, src_folder, suggestedPath);
+  } else {
+    const getMovieCatInfo = {
+      text: `SELECT
+                mv.file_src as file_src,
+                cat.src_folder as cat_src
+              FROM ${moviesTable} AS mv
+              LEFT JOIN ${moviesCatTable} AS mvc
+              ON mv.id = mvc.movies_id
+              LEFT JOIN ${categoriesTable} AS cat
+              ON mvc.categories_id = cat.id
+              WHERE mv.id = $1`,
+      values: [movie_id],
+    };
 
-  const { rows: movieCatRow } = await queryHandler(pool, getMovieCatInfo);
-  const { cat_src, file_src } = movieCatRow[0];
-  const moviePath = path.join(adPath, cat_src, file_src);
-
+    const { rows: movieCatRow } = await queryHandler(pool, getMovieCatInfo);
+    const { cat_src, file_src } = movieCatRow[0];
+    moviePath = path.join(adPath, cat_src, file_src);
+  }
   return new Promise((res, rej) => {
     fsD.stat(moviePath, (err, stat) => {
       // Handle file not found

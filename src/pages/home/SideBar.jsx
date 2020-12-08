@@ -13,6 +13,7 @@ import {
 
 // Internal
 import styles from '~Styles/abstract/_variables';
+import ErrorBoundary from '~Components/ErrorBoundary';
 import { constructClass } from '~GlobalUtil/normalize';
 import {
   List,
@@ -91,58 +92,60 @@ const SideBar = () => {
   );
 
   return (
-    <SideBarStyled className={baseClass}>
-      <Selector isOpen={currentView} className={`${classname}__selector`}>
-        <SelectorMain>
-          {Object.entries(selectorOptions).map(
-            ([key, { label, value, icon: Icon, color = '' }]) => (
-              <SelectorIcon
-                role='button'
-                key={`${label}-${value}`}
-                onKeyDown={() => handleUpdateCurrentview(key)}
-                tabIndex={0}
-                selected={
-                  currentView && value === selectorOptions[currentView].value
-                }
-                onClick={() => handleUpdateCurrentview(key)}
-              >
-                <SvgIcon component={Icon} color={color} fontSize='inherit' />
-                <p>{label}</p>
-              </SelectorIcon>
-            )
-          )}
-        </SelectorMain>
-        <SelectorBottom isOpen={currentView}>
-          <SelectorIcon
-            role='button'
-            onKeyDown={() => handleUpdateCurrentview()}
-            tabIndex={0}
-            onClick={() => handleUpdateCurrentview()}
-            className={`${currentView ? '' : 'hide'}`}
-          >
-            <SvgIcon
-              component={ChevronLeftOutlined}
-              color='secondary'
-              fontSize='inherit'
-            />
-            <p>close</p>
-          </SelectorIcon>
-        </SelectorBottom>
-      </Selector>
-      <List isOpen={currentView}>
-        <TransitionGroup component={null}>
-          <CSSTransition
-            timeout={Number(`${styles.animSpeed.replace('.', '')}0`)}
-            key={currentView}
-            classNames='fade'
-          >
-            <div className={'trans'}>
-              {currentView && selectorOptions[currentView].Comp}
-            </div>
-          </CSSTransition>
-        </TransitionGroup>
-      </List>
-    </SideBarStyled>
+    <ErrorBoundary>
+      <SideBarStyled className={baseClass}>
+        <Selector isOpen={currentView} className={`${classname}__selector`}>
+          <SelectorMain>
+            {Object.entries(selectorOptions).map(
+              ([key, { label, value, icon: Icon, color = '' }]) => (
+                <SelectorIcon
+                  role='button'
+                  key={`${label}-${value}`}
+                  onKeyDown={() => handleUpdateCurrentview(key)}
+                  tabIndex={0}
+                  selected={
+                    currentView && value === selectorOptions[currentView].value
+                  }
+                  onClick={() => handleUpdateCurrentview(key)}
+                >
+                  <SvgIcon component={Icon} color={color} fontSize='inherit' />
+                  <p>{label}</p>
+                </SelectorIcon>
+              )
+            )}
+          </SelectorMain>
+          <SelectorBottom isOpen={currentView}>
+            <SelectorIcon
+              role='button'
+              onKeyDown={() => handleUpdateCurrentview()}
+              tabIndex={0}
+              onClick={() => handleUpdateCurrentview()}
+              className={`${currentView ? '' : 'hide'}`}
+            >
+              <SvgIcon
+                component={ChevronLeftOutlined}
+                color='secondary'
+                fontSize='inherit'
+              />
+              <p>close</p>
+            </SelectorIcon>
+          </SelectorBottom>
+        </Selector>
+        <List isOpen={currentView}>
+          <TransitionGroup component={null}>
+            <CSSTransition
+              timeout={Number(`${styles.animSpeed.replace('.', '')}0`)}
+              key={currentView}
+              classNames='fade'
+            >
+              <div className={'trans'}>
+                {currentView && selectorOptions[currentView].Comp}
+              </div>
+            </CSSTransition>
+          </TransitionGroup>
+        </List>
+      </SideBarStyled>
+    </ErrorBoundary>
   );
 };
 
