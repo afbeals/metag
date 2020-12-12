@@ -32,7 +32,6 @@ const createCategory = async (pool, { body: { category } }) => {
       const query = {
         text: `INSERT INTO ${categoriesTable}(name, src_folder)
             VALUES($1, $2)
-            ON CONFLICT (name) DO NOTHING
             RETURNING *;`,
         values: [category, normalizedCat],
       };
@@ -98,14 +97,28 @@ const getAllCategories = pool => {
 };
 
 // get fetch source all available categories (folders, no files)
-const getAvailableCategories = () =>
-  new Promise((res, rej) => {
-    const ad = path.resolve(adPath);
-    return fs.readdir(ad, (err, files) => {
+const getAvailableCategories = async pool => {
+  const catListQuery = {
+    text: `SELECT * FROM ${categoriesTable}`,
+    values: [],
+  };
+  const { rows: catRows = [] } = await queryHandler(pool, catListQuery);
+
+  // get all folders in dir
+  const ad = path.resolve(adPath);
+  const dirList = await new Promise((res, rej) =>
+    fs.readdir(ad, (err, files) => {
       if (err) rej(err);
       res(files);
-    });
-  });
+    })
+  );
+
+  const filteredList = dirList.filter(
+    cD => catRows.findIndex(({ src_folder }) => src_folder === cD) === -1
+  );
+
+  return filteredList;
+};
 
 export default {
   createCategory,
