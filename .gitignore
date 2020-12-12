@@ -4,9 +4,15 @@
 .pnp.js
 
 # tests
-/reports
-/blah
-# !reports/test/
+
+reports/*
+!reports/**/
+reports/coverage/*
+!reports/coverage
+!reports/coverage/coverage-final.json
+reports/test/*
+!reports/test
+!reports/test/index.html
 
 
 
