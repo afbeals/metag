@@ -25,7 +25,7 @@ export default (app, pool) => {
 
   app.get('/getAvailableCategories', (_, res) =>
     categories
-      .getAvailableCategories()
+      .getAvailableCategories(pool)
       .then(results => res.status(200).send(results))
       .catch(err => res.status(500).send(err))
   );

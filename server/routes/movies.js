@@ -22,6 +22,13 @@ export default (app, pool) => {
       .catch(err => res.status(500).send(err))
   );
 
+  app.get('/getAvailableGroupMovies', (req, res) =>
+    movies
+      .getAvailableGroupMovies(pool, req)
+      .then(results => res.status(200).send(results))
+      .catch(err => res.status(500).send(err))
+  );
+
   app.get('/getMovies', (req, res) =>
     movies
       .getMovies(pool, req)
@@ -41,6 +48,13 @@ export default (app, pool) => {
   app.get('/getMoviesByTags', (req, res) =>
     movies
       .getMoviesByTags(pool, req)
+      .then(results => res.status(200).json(results.rows))
+      .catch(err => res.status(500).send(err))
+  );
+
+  app.get('/getMoviesByGroup', (req, res) =>
+    movies
+      .getMoviesByGroup(pool, req)
       .then(results => res.status(200).json(results.rows))
       .catch(err => res.status(500).send(err))
   );

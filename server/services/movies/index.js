@@ -1,0 +1,12 @@
+export { default as addMovieToDB } from './addMovieToDB';
+export { default as deleteMovie } from './deleteMovie';
+export { default as getAvailableMovies } from './getAvailableMovies';
+export { default as getAvailableGroupMovies } from './getAvailableGroupMovies';
+export { default as getMovies } from './getMovies';
+export { default as getMoviesByCategory } from './getMoviesByCategory';
+export { default as getMoviesByGroup } from './getMoviesByGroup';
+export { default as getMoviesByTags } from './getMoviesByTags';
+export { default as getMovieImg } from './getMovieImg';
+export { default as searchMovies } from './searchMovies';
+export { default as streamMovie } from './streamMovie';
+export { default as updateMovie } from './updateMovie';

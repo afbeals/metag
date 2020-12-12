@@ -1,3 +1,7 @@
+// External
+import fs from 'fs-extra';
+import path from 'path';
+
 /**
  * @name queryHandler
  * @description normalized function for interacting with db
@@ -25,29 +29,30 @@ export const queryHandler = (pool, query, handler = null) => {
 };
 
 /**
- * @function pageLimiter
- * @desc add pagination limiter to query
- * @param {Object} param
- * @param {Object} param.dir
- * @param {Object} param.where
- * @param {Object} param.group
- * @param {number} currentValLength
+ * @name rreaddir
+ * @desc recursively search through directory get files/folders
+ * @param {String} dir The directory to search
+ * @param {Array} [allFiles] The list of files
+ * @param {Array} [dirs] The list of directories
  * @example
- * const `SELECT * FROM table ${pageLimiter(options)}`;
+ *
+ * const [filesList, dirsList] = await rreaddir('my/dir'); // ['file.wmv']
  */
-export const pageLimiter = ({ dir, where, group }, currentValLength) =>
-  `WHERE $${currentValLength + 2} ${dir === 'ASC' ? '>' : '<'} $${
-    currentValLength + 1
-  }
-  ${where ? `AND ${where}` : ''}
-  ${group}
-  ${
-    dir === 'ASC'
-      ? `ORDER BY $${currentValLength + 2} ASC LIMIT $${currentValLength + 3};`
-      : `ORDER BY $${currentValLength + 2} DESC LIMIT $${currentValLength + 3};`
-  }`;
+export const rreaddir = async (dir, allFiles = [], dirs = []) => {
+  const files = (await fs.readdir(dir)).map(f => path.join(dir, f));
+  await Promise.all(
+    files.map(async f => (await fs.stat(f)).isDirectory() && dirs.push(f))
+  );
+  allFiles.push(...files);
+  await Promise.all(
+    files.map(
+      async f => (await fs.stat(f)).isDirectory() && rreaddir(f, allFiles, dirs)
+    )
+  );
+  return [allFiles, dirs];
+};
 
 export default {
-  pageLimiter,
   queryHandler,
+  rreaddir,
 };
