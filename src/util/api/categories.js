@@ -35,7 +35,7 @@ const categoriesAPI = {
    * @return {object} return data from query
    */
   create: async catData => {
-    const response = await axios.post(constants.API.TAGS.CREATE, catData);
+    const response = await axios.post(constants.API.CATEGORIES.CREATE, catData);
     const data = await response;
     return data;
   },

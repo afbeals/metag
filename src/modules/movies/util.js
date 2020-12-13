@@ -1,3 +1,6 @@
+// Internal
+import { arrayToIndexed } from '~GlobalUtil/normalize';
+
 const moviesUtilityDefs = {};
 
 const moviesUtilityFuncs = {
@@ -21,6 +24,18 @@ const moviesUtilityFuncs = {
     ...moviesUtilityFuncs.buildInitialStore(),
     ...props,
   }),
+  /**
+   *  @name normalizeMoviesArray
+   * @desc normalize data from api for movies
+   */
+  normalizeMoviesArray: data =>
+    arrayToIndexed({
+      array: data.map(({ movie_id, tag_ids, ...rest }) => ({
+        ...rest,
+        tag_ids: tag_ids ? tag_ids.split(',') : [],
+        id: movie_id,
+      })),
+    }),
 };
 
 export default { ...moviesUtilityDefs, ...moviesUtilityFuncs };

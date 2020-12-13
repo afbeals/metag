@@ -2,16 +2,16 @@
 import { takeLatest, all, fork, race, take, cancel } from 'redux-saga/effects';
 
 // Internal
-import categoriesActions from './actions';
+import actions from './actions';
 import api from '~GlobalUtil/api';
 import normalize from '~GlobalUtil/normalize';
-import catUtil from './util';
+import groupsUtil from './util';
 
 // Constants
 const { sagaRequest } = normalize;
-const { normalizeCategoriesArray } = catUtil;
+const { normalizeGroupsArray } = groupsUtil;
 const {
-  categories: {
+  groups: {
     getall: {
       request: getAll,
       success: getAllSuccess,
@@ -37,7 +37,7 @@ const {
       cancel: deleteReqCancel,
     },
   },
-} = categoriesActions;
+} = actions;
 
 // success generators
 function* getAllSuccesses() {
@@ -61,13 +61,13 @@ function* updateSuccesses() {
 }
 
 // Series Generators
-export function* categoriesFetchAll() {
+export function* groupsFetchAll() {
   try {
     const apiCalls = yield all([
       fork(sagaRequest, {
-        params: [api.cat.fetchAll],
+        params: [api.group.get_all],
         successActs: [getAllSuccess],
-        successDataTrns: normalizeCategoriesArray,
+        successDataTrns: normalizeGroupsArray,
         failActs: getAllFail,
       }),
     ]);
@@ -89,11 +89,11 @@ export function* categoriesFetchAll() {
   }
 }
 
-export function* categoriesDelete({ payload }) {
+export function* groupsDelete({ payload }) {
   try {
     const apiCalls = yield all([
       fork(sagaRequest, {
-        params: [api.cat.delete, payload],
+        params: [api.group.delete, payload],
         successActs: deleteReqSuccess,
         successDataTrns: () => payload.id,
         failActs: deleteReqFail,
@@ -117,11 +117,11 @@ export function* categoriesDelete({ payload }) {
   }
 }
 
-export function* categoriesUpdate({ payload }) {
+export function* groupsUpdate({ payload }) {
   try {
     const apiCalls = yield all([
       fork(sagaRequest, {
-        params: [api.cat.update, payload],
+        params: [api.group.update, payload],
         successActs: updateSuccess,
         successDataTrns: null,
         failActs: updateFail,
@@ -145,11 +145,11 @@ export function* categoriesUpdate({ payload }) {
   }
 }
 
-export function* categoriesCreate({ payload }) {
+export function* groupsCreate({ payload }) {
   try {
     const apiCalls = yield all([
       fork(sagaRequest, {
-        params: [api.cat.create, payload],
+        params: [api.group.create, payload],
         successActs: createSuccess,
         successDataTrns: null,
         failActs: createFail,
@@ -174,28 +174,28 @@ export function* categoriesCreate({ payload }) {
 }
 
 // WATCHERS
-export function* watchReqForCreateCategories() {
-  yield takeLatest(create.type, categoriesCreate);
+export function* watchReqForCreateGroups() {
+  yield takeLatest(create.type, groupsCreate);
 }
 
-export function* watchReqForFetchAllCategories() {
-  yield takeLatest(getAll.type, categoriesFetchAll);
+export function* watchReqForFetchAllGroups() {
+  yield takeLatest(getAll.type, groupsFetchAll);
 }
 
-export function* watchReqForDeleteCategories() {
-  yield takeLatest(deleteReq.type, categoriesDelete);
+export function* watchReqForDeleteGroups() {
+  yield takeLatest(deleteReq.type, groupsDelete);
 }
 
-export function* watchReqForUpdateCategories() {
-  yield takeLatest(update.type, categoriesUpdate);
+export function* watchReqForUpdateGroups() {
+  yield takeLatest(update.type, groupsUpdate);
 }
 
 function* watcher() {
   yield all([
-    watchReqForCreateCategories(),
-    watchReqForFetchAllCategories(),
-    watchReqForDeleteCategories(),
-    watchReqForUpdateCategories(),
+    watchReqForCreateGroups(),
+    watchReqForFetchAllGroups(),
+    watchReqForDeleteGroups(),
+    watchReqForUpdateGroups(),
   ]);
 }
 

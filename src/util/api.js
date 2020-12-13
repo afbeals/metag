@@ -1,5 +1,5 @@
 // Internal
-import { user, tags, categories, movies } from './api/';
+import { user, tags, categories, movies, groups } from './api/';
 
 // Constants
 const api = {
@@ -18,6 +18,13 @@ const api = {
     create: categories.create,
     delete: categories.delete,
     update: categories.update,
+  },
+  group: {
+    create: groups.create,
+    update: groups.update,
+    delete: groups.delete,
+    get_all: groups.getAll,
+    get_avail: groups.getAvail,
   },
   movie: {
     avail: movies.getAvailable,

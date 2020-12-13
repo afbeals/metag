@@ -2,20 +2,20 @@
 import { expect } from 'chai';
 
 // Internal
+import actions from '../actions';
 import reducer from '../reducer';
-import tagsActions from '../actions';
 import util from '../util';
 
 const {
-  tags: {
-    get: { success: getTagsSuccess },
-    create: { success: createTagsSuccess },
-    update: { success: updateTagsSuccess },
-    delete: { success: deleteTagsSuccess },
-    reset: tagsReset,
+  groups: {
+    getall: { success: getGroupsSuccess },
+    create: { success: createGroupsSuccess },
+    update: { success: updateGroupsSuccess },
+    delete: { success: deleteGroupsSuccess },
+    reset,
   },
-} = tagsActions;
-const tagsReducerTest = () =>
+} = actions;
+const groupsReducerTest = () =>
   describe('Reducer', () => {
     let initialStore; // instantiate beforehand
     const mockStore = util.buildMockStore;
@@ -27,12 +27,12 @@ const tagsReducerTest = () =>
       expect(reducer(undefined, {})).to.deep.equal(initialStore);
     });
 
-    it('Should get all tags', () => {
+    it('Should get all categories', () => {
       const action = {
-        type: getTagsSuccess.type,
+        type: getGroupsSuccess.type,
         payload: {
           2: {
-            tag: 'username',
+            name: 'username',
             id: 2,
           },
         },
@@ -44,12 +44,12 @@ const tagsReducerTest = () =>
       );
     });
 
-    it('Should create a new tag', () => {
+    it('Should create a new name', () => {
       const action = {
-        type: createTagsSuccess.type,
+        type: createGroupsSuccess.type,
         payload: [
           {
-            tag: 'username',
+            name: 'username',
             id: 2,
           },
         ],
@@ -58,7 +58,7 @@ const tagsReducerTest = () =>
         list: {
           1: {
             id: 1,
-            tag: '1',
+            name: '1',
           },
         },
       });
@@ -72,9 +72,9 @@ const tagsReducerTest = () =>
       );
     });
 
-    it('Should delete a tag', () => {
+    it('Should delete a name', () => {
       const action = {
-        type: deleteTagsSuccess.type,
+        type: deleteGroupsSuccess.type,
         payload: 2,
       };
       expect(
@@ -83,11 +83,11 @@ const tagsReducerTest = () =>
             list: {
               1: {
                 id: 1,
-                tag: '1',
+                name: '1',
               },
               2: {
                 id: 2,
-                tag: 'no',
+                name: 'no',
               },
             },
           }),
@@ -98,19 +98,19 @@ const tagsReducerTest = () =>
           list: {
             1: {
               id: 1,
-              tag: '1',
+              name: '1',
             },
           },
         })
       );
     });
 
-    it('Should update a tag', () => {
+    it('Should update a name', () => {
       const action = {
-        type: updateTagsSuccess.type,
+        type: updateGroupsSuccess.type,
         payload: [
           {
-            tag: 'updated',
+            name: 'updated',
             id: 2,
           },
         ],
@@ -119,11 +119,11 @@ const tagsReducerTest = () =>
         list: {
           1: {
             id: 1,
-            tag: '1',
+            name: '1',
           },
           2: {
             id: 2,
-            tag: 'no',
+            name: 'no',
           },
         },
       });
@@ -139,7 +139,7 @@ const tagsReducerTest = () =>
 
     it('Should reset the store', () => {
       const action = {
-        type: tagsReset.type,
+        type: reset.type,
       };
       expect(
         reducer(
@@ -152,4 +152,4 @@ const tagsReducerTest = () =>
     });
   });
 
-export default tagsReducerTest;
+export default groupsReducerTest;

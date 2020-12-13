@@ -5,29 +5,29 @@ import { throwError } from 'redux-saga-test-plan/providers';
 
 // Internal
 import reducer from '../reducer';
-import categoriesActions from '../actions';
+import actions from '../actions';
 import util from '../util';
-import * as categoriesSagas from '../sagas';
+import * as sagas from '../sagas';
 import api from '~GlobalUtil/api';
 
 const {
-  categories: {
+  groups: {
     getall: { request: getAll, success: getAllSuccess, fail: getAllFail },
     create: { request: create, success: createSuccess, fail: createFail },
     update: { request: update, success: updateSuccess, fail: updateFail },
     delete: { request: deleteReq, success: deleteSuccess, fail: deleteFail },
   },
-} = categoriesActions;
+} = actions;
 
 /* eslint-disable max-len */
-const categoriesSagasTest = () =>
+const groupsSagasTest = () =>
   describe('Sagas', () => {
     describe('Fetch All Sagas: ', () => {
       describe('Watchers: ', () => {
         it('Should catch request ', () => {
-          testSaga(categoriesSagas.watchReqForFetchAllCategories) // match to watcher
+          testSaga(sagas.watchReqForFetchAllGroups) // match to watcher
             .next() // start generator
-            .takeLatest(getAll.type, categoriesSagas.categoriesFetchAll) // match to generator
+            .takeLatest(getAll.type, sagas.groupsFetchAll) // match to generator
             .next() // step through generator
             .isDone();
         });
@@ -35,29 +35,42 @@ const categoriesSagasTest = () =>
 
       describe('Section Series: ', () => {
         it('Should be successful ', () =>
-          expectSaga(categoriesSagas.categoriesFetchAll) // promise/generator
+          expectSaga(sagas.groupsFetchAll) // promise/generator
             .provide([
               // mock selector and api calls
               [
-                matchers.call.fn(api.cat.fetchAll),
-                { data: [{ id: 1, name: 'adfa', modified_at: 1 }] },
+                matchers.call.fn(api.group.get_all),
+                {
+                  data: [
+                    {
+                      id: 1,
+                      name: 'adfa',
+                      modified_at: 1,
+                      related_groups_ids: [],
+                    },
+                  ],
+                },
               ], // supply mock return data from api
             ])
             .withReducer(reducer)
             .hasFinalState(
               util.buildMockStore({
-                list: { 1: { id: 1, name: 'adfa', date: 1 } },
+                list: { 1: { id: 1, name: 'adfa', date: 1, addtIds: [] } },
               })
             )
-            .put(getAllSuccess({ 1: { id: 1, name: 'adfa', date: 1 } })) // eventual action that will be called
+            .put(
+              getAllSuccess({
+                1: { id: 1, name: 'adfa', date: 1, addtIds: [] },
+              })
+            ) // eventual action that will be called
             .dispatch(getAll()) // dispatch action that starts saga
             .run());
 
         it('Should fail ', () =>
-          expectSaga(categoriesSagas.categoriesFetchAll)
+          expectSaga(sagas.groupsFetchAll)
             .provide([
               [
-                matchers.call.fn(api.cat.fetchAll),
+                matchers.call.fn(api.group.get_all),
                 throwError({
                   response: { data: { message: 'Error occured' } },
                 }),
@@ -74,9 +87,9 @@ const categoriesSagasTest = () =>
     describe('Create Sagas: ', () => {
       describe('Watchers: ', () => {
         it('Should catch request ', () => {
-          testSaga(categoriesSagas.watchReqForCreateCategories) // match to watcher
+          testSaga(sagas.watchReqForCreateGroups) // match to watcher
             .next() // start generator
-            .takeLatest(create.type, categoriesSagas.categoriesCreate) // match to generator
+            .takeLatest(create.type, sagas.groupsCreate) // match to generator
             .next() // step through generator
             .isDone();
         });
@@ -87,13 +100,13 @@ const categoriesSagasTest = () =>
           const request = {
             category: '12',
           };
-          return expectSaga(categoriesSagas.categoriesCreate, {
+          return expectSaga(sagas.groupsCreate, {
             payload: request,
           }) // promise/generator
             .provide([
               // mock selector and api calls
               [
-                matchers.call.fn(api.cat.create, request),
+                matchers.call.fn(api.group.create, request),
                 { data: [{ id: 1, name: '12' }] },
               ], // supply mock return data from api
             ])
@@ -110,12 +123,12 @@ const categoriesSagasTest = () =>
         });
 
         it('Should fail ', () =>
-          expectSaga(categoriesSagas.categoriesCreate, {
+          expectSaga(sagas.groupsCreate, {
             payload: { name: '12' },
           })
             .provide([
               [
-                matchers.call.fn(api.cat.create),
+                matchers.call.fn(api.group.create),
                 throwError({
                   response: { data: { message: 'Error occured' } },
                 }),
@@ -132,9 +145,9 @@ const categoriesSagasTest = () =>
     describe('Update Sagas: ', () => {
       describe('Watchers: ', () => {
         it('Should catch request ', () => {
-          testSaga(categoriesSagas.watchReqForUpdateCategories) // match to watcher
+          testSaga(sagas.watchReqForUpdateGroups) // match to watcher
             .next() // start generator
-            .takeLatest(update.type, categoriesSagas.categoriesUpdate) // match to generator
+            .takeLatest(update.type, sagas.groupsUpdate) // match to generator
             .next() // step through generator
             .isDone();
         });
@@ -146,13 +159,13 @@ const categoriesSagasTest = () =>
             name: 'data2',
             id: 1,
           };
-          return expectSaga(categoriesSagas.categoriesUpdate, {
+          return expectSaga(sagas.groupsUpdate, {
             payload: request,
           }) // promise/generator
             .provide([
               // mock selector and api calls
               [
-                matchers.call.fn(api.cat.update, request),
+                matchers.call.fn(api.group.update, request),
                 {
                   data: [request],
                 },
@@ -173,10 +186,10 @@ const categoriesSagasTest = () =>
         });
 
         it('Should fail ', () =>
-          expectSaga(categoriesSagas.categoriesUpdate, { payload: 'some data' })
+          expectSaga(sagas.groupsUpdate, { payload: 'some data' })
             .provide([
               [
-                matchers.call.fn(api.cat.update),
+                matchers.call.fn(api.group.update),
                 throwError({
                   response: { data: { message: 'Error occured' } },
                 }),
@@ -193,9 +206,9 @@ const categoriesSagasTest = () =>
     describe('Delete Sagas: ', () => {
       describe('Watchers: ', () => {
         it('Should catch request ', () => {
-          testSaga(categoriesSagas.watchReqForDeleteCategories) // match to watcher
+          testSaga(sagas.watchReqForDeleteGroups) // match to watcher
             .next() // start generator
-            .takeLatest(deleteReq.type, categoriesSagas.categoriesDelete) // match to generator
+            .takeLatest(deleteReq.type, sagas.groupsDelete) // match to generator
             .next() // step through generator
             .isDone();
         });
@@ -204,12 +217,12 @@ const categoriesSagasTest = () =>
       describe('Delete Series: ', () => {
         it('Should be successful ', () => {
           const request = { id: 1 };
-          return expectSaga(categoriesSagas.categoriesDelete, {
+          return expectSaga(sagas.groupsDelete, {
             payload: request,
           }) // promise/generator
             .provide([
               // mock selector and api calls
-              [matchers.call.fn(api.cat.delete, request), { status: 200 }], // supply mock return data from api
+              [matchers.call.fn(api.group.delete, request), { status: 200 }], // supply mock return data from api
             ])
             .withReducer(reducer)
             .withState(
@@ -228,10 +241,10 @@ const categoriesSagasTest = () =>
         });
 
         it('Should fail ', () =>
-          expectSaga(categoriesSagas.categoriesDelete, { payload: { id: 2 } })
+          expectSaga(sagas.groupsDelete, { payload: { id: 2 } })
             .provide([
               [
-                matchers.call.fn(api.cat.delete),
+                matchers.call.fn(api.group.delete),
                 throwError({
                   response: { data: { message: 'Error occured' } },
                 }),
@@ -255,4 +268,4 @@ const categoriesSagasTest = () =>
     });
   });
 
-export default categoriesSagasTest;
+export default groupsSagasTest;

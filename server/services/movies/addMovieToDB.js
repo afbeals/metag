@@ -31,12 +31,15 @@ const addMovieToDB = async (
       related_groups = [],
       tag_ids,
       category_id,
-      file_src,
+      file_src: init_file_src,
       name,
       notes,
     },
   }
 ) => {
+  // rename wmv files for insert
+  const file_src = init_file_src.replace('.wmv', '.mp4');
+
   // add movie and get row info
   const insertMovieQuery = {
     text: `INSERT INTO ${moviesTable}(file_src, name, notes)
@@ -64,17 +67,24 @@ const addMovieToDB = async (
   const { src_folder: cat_src, id: cat_id } = catRows[0];
   let movie_duration = 0;
 
+  // get moviePath
+  let moviePath = groupInfo
+    ? `${adGroup}/${groupInfo.src_folder}/${init_file_src}`
+    : `${adPath}/${cat_src}/${init_file_src}`;
+
+  //rename wmv files
+  if (moviePath.includes('.wmv')) {
+    const newPath = moviePath.replace('.wmv', '.mp4');
+    await fs.rename(moviePath, newPath);
+    moviePath = newPath;
+  }
+
+  // create images
   // make sure dir exists
   const thumbDir = path.join(adThumb, `${movie_id}`);
   await fs.ensureDir(thumbDir);
-
-  // create images
   const thumbPath = path.join(thumbDir, 'thumb.jpg');
 
-  // get moviePath
-  const moviePath = groupInfo
-    ? `${adGroup}/${groupInfo.src_folder}/${file_src}`
-    : `${adPath}/${cat_src}/${file_src}`;
   const createThumb = await new Promise((res, rej) =>
     fsD.access(thumbPath, fs.F_OK, err => {
       // if file doesn't exist

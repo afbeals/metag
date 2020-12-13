@@ -4,10 +4,10 @@ import { takeLatest, all, fork, race, take, cancel } from 'redux-saga/effects';
 // Internal
 import tagsActions from './actions';
 import api from '~GlobalUtil/api';
-import normalize from '~GlobalUtil/normalize';
+import { normalize } from '~GlobalUtil/';
 
 // Constants
-const { sagaRequest } = normalize;
+const { sagaRequest, arrayToIndexed } = normalize;
 const {
   tags: {
     get: {
@@ -61,11 +61,12 @@ function* updateTagsSuccesses() {
 // Series Generators
 export function* tagsFetch() {
   try {
+    const indexedList = data => arrayToIndexed({ array: data });
     const apiCalls = yield all([
       fork(sagaRequest, {
         params: [api.tags.fetch],
         successActs: [getTagsSuccess],
-        successDataTrns: null,
+        successDataTrns: indexedList,
         failActs: getTagsFail,
       }),
     ]);

@@ -1,6 +1,7 @@
 // External
 import path from 'path';
 import fsD from 'fs';
+import ws from 'windows-shortcuts';
 
 // Internal
 import { queryHandler } from '../util';
@@ -78,6 +79,17 @@ const streamMovie = async (
       ? path.join(adGroup, grp_src, file_src)
       : path.join(adPath, cat_src, file_src);
   }
+
+  if (moviePath.includes('.lnk')) {
+    const linkData = await new Promise((res, rej) =>
+      ws.query(path.resolve(moviePath), (err, stats) => {
+        if (err) rej(err);
+        res(stats);
+      })
+    );
+    moviePath = path.resolve(linkData.target);
+  }
+
   return new Promise((res, rej) => {
     fsD.stat(moviePath, (err, stat) => {
       // Handle file not found
@@ -91,6 +103,7 @@ const streamMovie = async (
       let file;
       let head;
       let status;
+      let filePath;
 
       // if range, stream video in chunks
       if (range) {
@@ -106,21 +119,22 @@ const streamMovie = async (
           'Content-Range': `bytes ${start}-${end}/${fileSize}`,
           'Accept-Ranges': 'bytes',
           'Content-Length': chunksize,
-          'Content-Type': 'video/mp4',
         };
+        filePath = path.resolve(moviePath);
         status = 206;
       } else {
         head = {
           'Content-Length': fileSize,
-          'Content-Type': 'video/mp4',
         };
         status = 200;
         file = fsD.createReadStream(moviePath);
+        filePath = path.resolve(moviePath);
       }
       res({
         file,
         head,
         status,
+        filePath,
       });
     });
   });

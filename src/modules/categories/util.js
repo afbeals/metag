@@ -1,3 +1,6 @@
+// Internal
+import { arrayToIndexed } from '~GlobalUtil/normalize';
+
 const categoriesUtilityDefs = {};
 
 const categoriesUtilityFuncs = {
@@ -19,6 +22,19 @@ const categoriesUtilityFuncs = {
     ...categoriesUtilityFuncs.buildInitialStore(),
     ...props,
   }),
+
+  /**
+   *  @name normalizeCategoriesArray
+   * @desc normalize data from api for categories
+   */
+  normalizeCategoriesArray: catArray =>
+    arrayToIndexed({
+      array: catArray.map(({ id, name, created_at, modified_at = null }) => ({
+        id,
+        name,
+        date: modified_at || created_at,
+      })),
+    }),
 };
 
 export default { ...categoriesUtilityDefs, ...categoriesUtilityFuncs };

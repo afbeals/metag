@@ -30,18 +30,16 @@ const categoriesReducerTest = () =>
     it('Should get all categories', () => {
       const action = {
         type: getCategoriesSuccess.type,
-        payload: [
-          {
+        payload: {
+          2: {
             name: 'username',
             id: 2,
           },
-        ],
+        },
       };
       expect(reducer(initialStore, action)).to.deep.equal(
         mockStore({
-          list: {
-            2: action.payload[0],
-          },
+          list: action.payload,
         })
       );
     });

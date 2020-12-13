@@ -25,6 +25,15 @@ const constants = {
       FETCH_AVAIL: `/getAvailableCategories`,
       UPDATE: `/updateCategory`,
     },
+    GROUPS: {
+      CREATE: `/createGroup`,
+      UPDATE: `/updateGroup`,
+      DELETE: `/deleteGroup`,
+      GET: {
+        ALL_GROUPS: `/getAllGroups`,
+        AVAIL_GROUPS: `/getAvailableGroups`,
+      },
+    },
     MOVIES: {
       ADD: `/addMovieToDB`,
       DELETE: `/deleteMovie`,

@@ -181,7 +181,6 @@ const AddMovie = () => {
               width='100%'
               // eslint-disable-next-line max-len
               src={`${ROOT}${STREAM}?suggestedPath=${editorValues.file_src}&suggestedCat=${editorValues.category_id}`}
-              type='video/mp4'
             >
               Sorry, your browser doesn't support embedded videos.
             </video>

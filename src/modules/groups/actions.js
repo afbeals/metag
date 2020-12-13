@@ -9,7 +9,7 @@ const MODULE = `${process.env.REACT_APP_MODULE_NAME}/`; // module action prefix
 // Actions
 const actions = createActions(
   {
-    categories: {
+    groups: {
       getall: {
         request: [],
         success: [],
