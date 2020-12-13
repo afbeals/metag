@@ -1,6 +1,6 @@
 // External
 import { useDispatch, useSelector } from 'react-redux';
-import { checkPropTypes, object, func, array } from 'prop-types';
+import { checkPropTypes, object, func, array, bool } from 'prop-types';
 
 // Internal
 import * as selectors from './selectors';
@@ -14,7 +14,6 @@ const {
       cancel: getAllCancel,
       _meta: { isFetched: getAllisFetched, getAllisFetching },
     },
-    getavailable: { request: getAvailable, cancel: getAvailableCancel },
     create: { request: create, cancel: createCancel },
     update: { request: update, cancel: updateCancel },
     delete: { request: deleteReq, cancel: deleteReqCancel },
@@ -48,8 +47,6 @@ export const useCategoriesStore = () => {
     // actions
     catFetch: () => dispatch(getAll()),
     catFetchCancel: () => dispatch(getAllCancel()),
-    catFetchAvail: () => dispatch(getAvailable()),
-    catFetchAvailCancel: () => dispatch(getAvailableCancel()),
     catCreate: info => dispatch(create(info)),
     catCreateCancel: () => dispatch(createCancel()),
     catDelete: info => dispatch(update(info)),
@@ -63,10 +60,10 @@ export const useCategoriesStore = () => {
     catStore: object.isRequired,
     catList: object,
     catListArray: array,
+    catAllIsFetching: bool.isRequired,
+    catAllIsFetched: bool.isRequired,
     catFetch: func.isRequired,
     catFetchCancel: func.isRequired,
-    catFetchAvail: func.isRequired,
-    catFetchAvailCancel: func.isRequired,
     catCreate: func.isRequired,
     catCreateCancel: func.isRequired,
     catDelete: func.isRequired,

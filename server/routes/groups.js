@@ -24,8 +24,8 @@ export default (app, pool) => {
 
   app.get('/getAllGroups', (req, res) =>
     groups
-      .deleteGroup(pool)
-      .then(results => res.status(200).json(results))
+      .getAllGroups(pool)
+      .then(results => res.status(200).json(results.rows))
       .catch(err => res.status(500).send(err))
   );
 

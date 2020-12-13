@@ -1,6 +1,5 @@
 // Internal
 import categoriesActions from './actions';
-import { arrayToIndexed } from '~GlobalUtil/normalize';
 import util from './util';
 
 // Constants
@@ -18,10 +17,9 @@ const {
 export default function reducer(state = initialStore, { type, payload }) {
   switch (type) {
     case getAllSuccess.type: {
-      const indexedList = arrayToIndexed({ array: payload });
       return {
         ...state,
-        list: indexedList,
+        list: payload,
       };
     }
 

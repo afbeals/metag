@@ -40,7 +40,6 @@ const Player = () => {
               width='100%'
               poster={`${ROOT}${IMG}?movie_id=${movieSelected.id}`}
               src={`${ROOT}${STREAM}?id=${movieSelected.id}`}
-              type='video/mp4'
             >
               Sorry, your browser doesn't support embedded videos.
             </video>

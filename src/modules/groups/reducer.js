@@ -1,30 +1,30 @@
 // Internal
-import tagsActions from './actions';
+import groupsActions from './actions';
 import util from './util';
 
 // Constants
 const initialStore = util.buildInitialStore();
 const {
-  tags: {
-    get: { success: getTagsSuccess },
-    create: { success: createTagsSuccess },
-    update: { success: updateTagsSuccess },
-    delete: { success: deleteTagsSuccess },
-    reset: tagsReset,
+  groups: {
+    getall: { success: getAllSuccess },
+    create: { success: createSuccess },
+    update: { success: updateSuccess },
+    delete: { success: deleteSuccess },
+    reset,
   },
-} = tagsActions;
+} = groupsActions;
 
 export default function reducer(state = initialStore, { type, payload }) {
   switch (type) {
-    case getTagsSuccess.type: {
+    case getAllSuccess.type: {
       return {
         ...state,
         list: payload,
       };
     }
 
-    case createTagsSuccess.type:
-    case updateTagsSuccess.type: {
+    case createSuccess.type:
+    case updateSuccess.type: {
       const currentList = { ...state.list };
       payload.forEach(({ id, ...rest }) => {
         currentList[id] = { id, ...rest };
@@ -35,7 +35,7 @@ export default function reducer(state = initialStore, { type, payload }) {
       };
     }
 
-    case deleteTagsSuccess.type: {
+    case deleteSuccess.type: {
       const { [payload]: removed, ...rest } = { ...state.list };
       return {
         ...state,
@@ -43,7 +43,7 @@ export default function reducer(state = initialStore, { type, payload }) {
       };
     }
 
-    case tagsReset.type: {
+    case reset.type: {
       return initialStore;
     }
 

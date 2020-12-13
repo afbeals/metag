@@ -61,8 +61,8 @@ const tagsSagasTest = () =>
                 list: { 1: { id: 1, tag: 'adfa' } },
               })
             )
-            .put(getTagsSuccess([{ id: 1, tag: 'adfa' }])) // eventual action that will be called
-            .dispatch(getTags([{ id: 1, tag: 'adfa' }])) // dispatch action that starts saga
+            .put(getTagsSuccess({ 1: { id: 1, tag: 'adfa' } })) // eventual action that will be called
+            .dispatch(getTags()) // dispatch action that starts saga
             .run());
 
         it('Should fail ', () =>

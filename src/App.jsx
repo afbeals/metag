@@ -1,87 +1,86 @@
 // External
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import 'fontsource-roboto';
 
 // Internal
 import { Home } from '~Pages/';
-import { theme as AppTheme } from '~Components/';
 import userActions from '~Modules/user/actions';
 import tagsActions from '~Modules/tags/actions';
 import moviesActions from '~Modules/movies/actions';
 import categoriesActions from '~Modules/categories/actions';
-import { createFetchSelector } from '~Modules/fetch/selectors';
+import { actions as groupsActions } from '~Modules/groups/';
+import { util as movieUtil } from '~Modules/movies/';
+import { util as catUtil } from '~Modules/categories/';
+import { util as groupsUtil } from '~Modules/groups/';
+import { theme as AppTheme } from '~Components/';
+import { api, normalize } from '~GlobalUtil';
 import '~Styles/main.scss';
 
+// Constants
+const { arrayToIndexed } = normalize;
 const {
   user: {
-    login: {
-      request: userLogin,
-      cancel: userLoginCancel,
-      _meta: { isFetching: userIsFetching, isFetched: userIsFetched },
-    },
+    login: { success: userLoginSuccess },
   },
 } = userActions;
 
 const {
   tags: {
-    get: {
-      request: getTags,
-      cancel: getTagsCancel,
-      _meta: { isFetching: tagsIsFetching, isFetched: tagsIsFetched },
-    },
+    get: { success: getTagsSuccess },
   },
 } = tagsActions;
 
 const {
   movies: {
-    all: {
-      request: getMovies,
-      cancel: getMoviesCancel,
-      _meta: { isFetching: moviesIsFetching, isFetched: moviesIsFetched },
-    },
+    all: { success: getMoviesSuccess },
   },
 } = moviesActions;
 
 const {
   categories: {
-    getall: {
-      request: getCat,
-      cancel: getCatCancel,
-      _meta: { isFetching: catIsFetching, isFetched: catIsFetched },
-    },
+    getall: { success: getCatSuccess },
   },
 } = categoriesActions;
 
+const {
+  groups: {
+    getall: { success: getGroupsSuccess },
+  },
+} = groupsActions;
+
 const App = () => {
   const [isLoaded, updateIsLoaded] = useState(false);
-
   const dispatch = useDispatch();
-  const fetchSelector = createFetchSelector();
-  const catFetched = useSelector(state => fetchSelector(state, catIsFetched));
-  const movieFetched = useSelector(state =>
-    fetchSelector(state, moviesIsFetched)
-  );
-  const tagsFetched = useSelector(state => fetchSelector(state, tagsIsFetched));
-  const userFetched = useSelector(state => fetchSelector(state, userIsFetched));
 
   useEffect(() => {
-    if (catFetched && movieFetched && tagsFetched && userFetched && !isLoaded) {
+    Promise.all([
+      api.movie
+        .all()
+        .then(({ data }) =>
+          dispatch(getMoviesSuccess(movieUtil.normalizeMoviesArray(data)))
+        ),
+      api.user
+        .login({ username: 'docjrabg' })
+        .then(({ data }) => dispatch(userLoginSuccess(data))),
+      api.tags
+        .fetch()
+        .then(({ data }) =>
+          dispatch(getTagsSuccess(arrayToIndexed({ array: data })))
+        ),
+      api.cat
+        .fetchAll()
+        .then(({ data }) =>
+          dispatch(getCatSuccess(catUtil.normalizeCategoriesArray(data)))
+        ),
+      api.group
+        .get_all()
+        .then(({ data }) =>
+          dispatch(getGroupsSuccess(groupsUtil.normalizeGroupsArray(data)))
+        ),
+    ]).then(() => {
       updateIsLoaded(true);
-    }
-  }, [catFetched, movieFetched, tagsFetched, userFetched]);
-  useEffect(() => {
-    dispatch(userLogin({ username: 'docjrabg' }));
-    dispatch(getTags());
-    dispatch(getMovies());
-    dispatch(getCat());
-
-    return () => {
-      if (catIsFetching) getCatCancel();
-      if (moviesIsFetching) getMoviesCancel();
-      if (tagsIsFetching) getTagsCancel();
-      if (userIsFetching) userLoginCancel();
-    };
+    });
   }, []);
 
   return (

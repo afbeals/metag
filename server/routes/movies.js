@@ -69,7 +69,8 @@ export default (app, pool) => {
   app.get('/streamMovie', (req, res) =>
     movies
       .streamMovie(pool, req)
-      .then(({ file, head, status = 206 }) => {
+      .then(({ file, head, status = 206, filePath }) => {
+        res.contentType(filePath);
         res.writeHead(status, head);
         file.pipe(res);
       })
