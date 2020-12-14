@@ -7,6 +7,7 @@ const initialStore = util.buildInitialStore();
 const {
   groups: {
     getall: { success: getAllSuccess },
+    add: { success: addSuccess },
     create: { success: createSuccess },
     update: { success: updateSuccess },
     delete: { success: deleteSuccess },
@@ -23,6 +24,7 @@ export default function reducer(state = initialStore, { type, payload }) {
       };
     }
 
+    case addSuccess.type:
     case createSuccess.type:
     case updateSuccess.type: {
       const currentList = { ...state.list };

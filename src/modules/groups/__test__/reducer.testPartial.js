@@ -10,6 +10,7 @@ const {
   groups: {
     getall: { success: getGroupsSuccess },
     create: { success: createGroupsSuccess },
+    add: { success: addGroupsSuccess },
     update: { success: updateGroupsSuccess },
     delete: { success: deleteGroupsSuccess },
     reset,
@@ -40,6 +41,34 @@ const groupsReducerTest = () =>
       expect(reducer(initialStore, action)).to.deep.equal(
         mockStore({
           list: action.payload,
+        })
+      );
+    });
+
+    it('Should add a new name', () => {
+      const action = {
+        type: addGroupsSuccess.type,
+        payload: [
+          {
+            name: 'username',
+            id: 2,
+          },
+        ],
+      };
+      const mocked = mockStore({
+        list: {
+          1: {
+            id: 1,
+            name: '1',
+          },
+        },
+      });
+      expect(reducer(mocked, action)).to.deep.equal(
+        mockStore({
+          list: {
+            ...mocked.list,
+            ...{ 2: { ...action.payload[0] } },
+          },
         })
       );
     });

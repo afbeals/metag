@@ -18,6 +18,12 @@ const {
       fail: getAllFail,
       cancel: getAllCancel,
     },
+    add: {
+      request: add,
+      success: addSuccess,
+      fail: addFail,
+      cancel: addCancel,
+    },
     create: {
       request: create,
       success: createSuccess,
@@ -47,6 +53,11 @@ function* getAllSuccesses() {
 
 function* deleteReqSuccesses() {
   yield all([take(deleteReqSuccess.type)]);
+  return true;
+}
+
+function* addSuccesses() {
+  yield all([take(addSuccess.type)]);
   return true;
 }
 
@@ -145,6 +156,34 @@ export function* groupsUpdate({ payload }) {
   }
 }
 
+export function* groupsAdd({ payload }) {
+  try {
+    const apiCalls = yield all([
+      fork(sagaRequest, {
+        params: [api.group.add, payload],
+        successActs: addSuccess,
+        successDataTrns: null,
+        failActs: addFail,
+      }),
+    ]);
+
+    const { cancelSagas, success } = yield race({
+      cancelSagas: take(addCancel.type),
+      success: addSuccesses(),
+    });
+
+    if (cancelSagas) {
+      for (let i = 0; i < apiCalls.length; i++) {
+        yield cancel(apiCalls[i]);
+      }
+    } else {
+      return success;
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 export function* groupsCreate({ payload }) {
   try {
     const apiCalls = yield all([
@@ -178,6 +217,10 @@ export function* watchReqForCreateGroups() {
   yield takeLatest(create.type, groupsCreate);
 }
 
+export function* watchReqForAddGroups() {
+  yield takeLatest(add.type, groupsAdd);
+}
+
 export function* watchReqForFetchAllGroups() {
   yield takeLatest(getAll.type, groupsFetchAll);
 }
@@ -194,6 +237,7 @@ function* watcher() {
   yield all([
     watchReqForCreateGroups(),
     watchReqForFetchAllGroups(),
+    watchReqForAddGroups(),
     watchReqForDeleteGroups(),
     watchReqForUpdateGroups(),
   ]);

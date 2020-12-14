@@ -26,6 +26,7 @@ const constants = {
       UPDATE: `/updateCategory`,
     },
     GROUPS: {
+      ADD: `/addGroup`,
       CREATE: `/createGroup`,
       UPDATE: `/updateGroup`,
       DELETE: `/deleteGroup`,
@@ -42,6 +43,7 @@ const constants = {
         AVAIL: `/getAvailableMovies`,
         CATEGORY: `/getMoviesByCategory`,
         TAG: `/getMoviesByTags`,
+        GROUP: `/getMoviesByGroup`,
         IMG: `/getMovieImg`,
       },
       STREAM: `/streamMovie`,

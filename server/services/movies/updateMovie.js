@@ -224,8 +224,7 @@ const updateMovie = async (
       mv.name,
       mv.id,
       cat.id,
-      grp.name,
-      grp.src_folder,
+      grp.id,
       mvg.related_groups_ids`,
     values: [movie_id],
   });

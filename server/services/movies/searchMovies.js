@@ -44,8 +44,7 @@ const searchMovies = async (
   mv.name,
   mv.id,
   cat.id,
-  grp.name,
-  grp.src_folder,
+  grp.id,
   mvg.related_groups_ids`;
   const searchQuery = selectMovieInfoQuery(
     {

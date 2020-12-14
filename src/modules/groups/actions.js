@@ -16,6 +16,12 @@ const actions = createActions(
         fail: [],
         cancel: [],
       },
+      add: {
+        request: [],
+        success: [],
+        fail: [],
+        cancel: [],
+      },
       create: {
         request: [],
         success: [],

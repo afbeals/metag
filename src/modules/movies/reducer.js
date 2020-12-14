@@ -8,6 +8,7 @@ const {
   movies: {
     all: { success: allSuccess },
     under_cat: { success: under_catSuccess },
+    under_group: { success: under_groupSuccess },
     under_tag: { success: under_tagSuccess },
     search: { request: searchReq, success: searchSuccess, clear: searchClear },
     select: { movie: selectMovie },
@@ -22,6 +23,7 @@ export default function reducer(state = initialStore, { type, payload }) {
   switch (type) {
     case under_catSuccess.type:
     case under_tagSuccess.type:
+    case under_groupSuccess.type:
     case searchSuccess.type:
     case allSuccess.type: {
       return {

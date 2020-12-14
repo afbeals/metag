@@ -13,6 +13,7 @@ import api from '~GlobalUtil/api';
 const {
   groups: {
     getall: { request: getAll, success: getAllSuccess, fail: getAllFail },
+    add: { request: add, success: addSuccess, fail: addFail },
     create: { request: create, success: createSuccess, fail: createFail },
     update: { request: update, success: updateSuccess, fail: updateFail },
     delete: { request: deleteReq, success: deleteSuccess, fail: deleteFail },
@@ -47,6 +48,7 @@ const groupsSagasTest = () =>
                       name: 'adfa',
                       modified_at: 1,
                       related_groups_ids: [],
+                      amount: 0,
                     },
                   ],
                 },
@@ -55,12 +57,14 @@ const groupsSagasTest = () =>
             .withReducer(reducer)
             .hasFinalState(
               util.buildMockStore({
-                list: { 1: { id: 1, name: 'adfa', date: 1, addtIds: [] } },
+                list: {
+                  1: { id: 1, name: 'adfa', date: 1, related: [], amount: 0 },
+                },
               })
             )
             .put(
               getAllSuccess({
-                1: { id: 1, name: 'adfa', date: 1, addtIds: [] },
+                1: { id: 1, name: 'adfa', date: 1, related: [], amount: 0 },
               })
             ) // eventual action that will be called
             .dispatch(getAll()) // dispatch action that starts saga
@@ -80,6 +84,64 @@ const groupsSagasTest = () =>
             .hasFinalState(util.buildInitialStore())
             .put(getAllFail('Error occured'))
             .dispatch(getAll())
+            .run());
+      });
+    });
+
+    describe('Add Sagas: ', () => {
+      describe('Watchers: ', () => {
+        it('Should catch request ', () => {
+          testSaga(sagas.watchReqForAddGroups) // match to watcher
+            .next() // start generator
+            .takeLatest(add.type, sagas.groupsAdd) // match to generator
+            .next() // step through generator
+            .isDone();
+        });
+      });
+
+      describe('Section Series: ', () => {
+        it('Should be successful ', () => {
+          const request = {
+            name: '12',
+          };
+          return expectSaga(sagas.groupsAdd, {
+            payload: request,
+          }) // promise/generator
+            .provide([
+              // mock selector and api calls
+              [
+                matchers.call.fn(api.group.add, request),
+                { data: [{ id: 1, name: '12' }] },
+              ], // supply mock return data from api
+            ])
+            .withReducer(reducer)
+            .withState(util.buildInitialStore())
+            .hasFinalState(
+              util.buildMockStore({
+                list: { 1: { id: 1, name: '12' } },
+              })
+            )
+            .put(addSuccess([{ id: 1, name: '12' }])) // eventual action that will be called
+            .dispatch(add(request)) // dispatch action that starts saga
+            .run();
+        });
+
+        it('Should fail ', () =>
+          expectSaga(sagas.groupsAdd, {
+            payload: { name: '12' },
+          })
+            .provide([
+              [
+                matchers.call.fn(api.group.add),
+                throwError({
+                  response: { data: { message: 'Error occured' } },
+                }),
+              ], // supply error that will be thrown by api
+            ])
+            .withReducer(reducer)
+            .hasFinalState(util.buildInitialStore())
+            .put(addFail('Error occured'))
+            .dispatch(add())
             .run());
       });
     });

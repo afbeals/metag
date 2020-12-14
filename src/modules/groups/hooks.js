@@ -15,6 +15,11 @@ const {
       cancel: getAllCancel,
       _meta: { isFetching: getAllisFetching },
     },
+    add: {
+      request: add,
+      cancel: addCancel,
+      _meta: { isFetching: getAddisFetching },
+    },
     create: { request: create, cancel: createCancel },
     update: { request: update, cancel: updateCancel },
     delete: { request: deleteReq, cancel: deleteReqCancel },
@@ -37,12 +42,17 @@ export const useGroupsHook = () => {
     groupStore: useSelector(selectors.getGroupsStore),
     groupList: useSelector(selectors.getGroupsList),
     groupListArray: useSelector(selectors.getGroupsListArray),
+    groupAddIsFetching: useSelector(store =>
+      fetchSelector(store, getAddisFetching)
+    ),
     groupAllIsFetching: useSelector(store =>
       fetchSelector(store, getAllisFetching)
     ),
     // actions
     groupFetch: () => dispatch(getAll()),
     groupFetchCancel: () => dispatch(getAllCancel()),
+    groupAdd: info => dispatch(add(info)),
+    groupAddCancel: () => dispatch(addCancel()),
     groupCreate: info => dispatch(create(info)),
     groupCreateCancel: () => dispatch(createCancel()),
     groupDelete: info => dispatch(update(info)),
@@ -57,10 +67,13 @@ export const useGroupsHook = () => {
     groupList: object,
     groupListArray: array,
     groupAllIsFetching: bool.isRequired,
+    groupAddIsFetching: bool.isRequired,
     groupFetch: func.isRequired,
     groupFetchCancel: func.isRequired,
     groupCreate: func.isRequired,
     groupCreateCancel: func.isRequired,
+    groupAdd: func.isRequired,
+    groupAddCancel: func.isRequired,
     groupDelete: func.isRequired,
     groupDeleteCancel: func.isRequired,
     groupUpdate: func.isRequired,

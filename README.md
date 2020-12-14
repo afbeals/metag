@@ -1,1 +1,2 @@
-# metag
+# MyTag
+Home streaming library

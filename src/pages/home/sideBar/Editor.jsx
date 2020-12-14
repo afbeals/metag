@@ -5,7 +5,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 
 // Internal
 import { Editor as EditorStyled, Selector, NoSelection } from './Editor_.js';
-import { AddMovie } from './editor/';
+import { AddMovie, AddGroup } from './editor/';
 import ErrorBoundary from '~Components/ErrorBoundary';
 
 // Constants
@@ -14,6 +14,11 @@ const options = {
     label: 'add Movie',
     comp: <AddMovie />,
     value: 'addMovie',
+  },
+  addGroup: {
+    label: 'add Group',
+    comp: <AddGroup />,
+    value: 'addGroup',
   },
 };
 

@@ -12,8 +12,8 @@ import {
 } from '~Styles/abstract/_variables';
 
 export const Card = styled.div(({ selected }) => ({
-  height: '175px',
-  width: '225px',
+  height: '190px',
+  width: '240px',
   margin: '10px 5px',
   display: 'flex',
   'flex-direction': 'column',
@@ -23,9 +23,6 @@ export const Card = styled.div(({ selected }) => ({
   cursor: 'pointer',
   ':hover': {
     border: `1px solid ${secondary}`,
-  },
-  '*': {
-    'pointer-events': 'none',
   },
   ...(selected && { border: '2px solid #8d2626', 'border-radius': '2px' }),
 }));
@@ -56,14 +53,33 @@ export const InfoLine = styled.div`
   justify-content: space-between;
   padding: 5px 2px;
   text-transform: capitalize;
-  .category {
-    background: ${secondaryDark};
-    color: ${fontColorPrimary};
+  .groupCatWrapper {
     font-size: 0.75em;
-    padding: 2px 5px;
-    font-style: italic;
-    font-weight: 700;
     letter-spacing: 0.5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    .group {
+      max-width: 61px;
+      background: ${secondaryDark};
+      padding: 2px 5px;
+      margin-right: 2px;
+      pointer-events: auto;
+      .tooltip__children {
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+    }
+    .category {
+      background: ${secondaryDark};
+      color: ${fontColorPrimary};
+      padding: 2px 5px;
+      font-style: italic;
+      font-weight: 700;
+    }
   }
 `;
 
@@ -84,10 +100,42 @@ export const Tags = styled.div`
 
 export const Pill = styled(Chip)`
   font-size: 0.6em !important;
+  height: 18px !important;
   text-transform: capitalize;
+  span {
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+  }
+`;
+
+export const AltGroups = styled.div`
+  margin-left: auto;
+  background: ${secondaryDark};
+  pointer-events: auto;
+  min-height: 12px;
+  margin-right: 2px;
+  .altWrapper {
+    font-size: 0.65em;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    align-items: center;
+    padding: 2px 5px;
+    &__ft {
+      margin-right: 5px;
+    }
+    &__content {
+      font-style: italic;
+      white-space: nowrap;
+      max-width: 180px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
 `;
 
 export default {
+  AltGroups,
   Card,
   Tags,
   Category,

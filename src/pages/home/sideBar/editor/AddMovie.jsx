@@ -67,6 +67,8 @@ const AddMovie = () => {
     if (!tagsIsFetching) {
       tagsFetch();
     }
+
+    // api.group.get_avail().then(d => console.log(d));
     return () => {
       if (catAllIsFetching) {
         catFetchCancel();

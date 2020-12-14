@@ -39,6 +39,25 @@ const moviesAPI = {
   },
 
   /**
+   * @desc api request to get movies under group
+   * @method getMoviesUnderGroup
+   * @param {object} movieData
+   * @param {Number} movieData.prevId the prev id of last query
+   * @param {Array} movieData.groups the group ids to seach under
+   * @param {string} [movieData.limit='15'] the amount to fetch
+   * @param {string} [movieData.orderBy='mv.id'] the field to order the query
+   * @param {string} [movieData.dir='ASC'] the sort direction
+   * @return {object} return data from query
+   */
+  getMoviesUnderGroup: async movieData => {
+    const response = await axios.get(constants.API.MOVIES.GET.GROUP, {
+      params: movieData,
+    });
+    const data = await response;
+    return data;
+  },
+
+  /**
    * @desc api request to get movies under cat
    * @method getMoviesUnderCat
    * @param {object} movieData

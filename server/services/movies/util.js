@@ -50,8 +50,7 @@ export const selectMovieInfoQuery = (
       mv.img_src as img_src,
       mv.name as movie_name,
       mv.notes as notes,
-      grp.name as group_name,
-      grp.src_folder as group_src,
+      grp.id as group_id,
       mvg.related_groups_ids as alt_group,
       string_agg(
         distinct tg.id::varchar(255),

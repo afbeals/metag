@@ -6,6 +6,7 @@ import { checkPropTypes, object, func, array, string } from 'prop-types';
 import * as selectors from './selectors';
 import { createFetchSelector } from '../fetch/selectors';
 import actions from './actions';
+import { bool } from 'prop-types';
 
 const {
   movies: {
@@ -13,6 +14,11 @@ const {
       request: allReq,
       cancel: allCancel,
       _meta: { isFetching: allIsFetching, isFetched: allIsFetched },
+    },
+    under_group: {
+      request: underGroup,
+      cancel: underGroupCancel,
+      _meta: { isFetching: underGroupIsFetching },
     },
     under_cat: { request: under_catReq, cancel: under_catCancel },
     under_tag: {
@@ -49,6 +55,9 @@ export const useMovies = () => {
     movieAllIsFetching: useSelector(store =>
       fetchSelector(store, allIsFetching)
     ),
+    movieUnderGroupIsFetching: useSelector(store =>
+      fetchSelector(store, underGroupIsFetching)
+    ),
     movieAllIsFetched: useSelector(store => fetchSelector(store, allIsFetched)),
     movieUnderTagIsFetching: useSelector(store =>
       fetchSelector(store, underTagIsFetching)
@@ -58,6 +67,8 @@ export const useMovies = () => {
     movieFetchCancel: () => dispatch(allCancel()),
     movieUnderCat: info => dispatch(under_catReq(info)),
     movieUnderCatCancel: () => dispatch(under_catCancel()),
+    movieUnderGroup: info => dispatch(underGroup(info)),
+    movieUnderGroupCancel: () => dispatch(underGroupCancel()),
     movieUnderTag: info => dispatch(under_tagReq(info)),
     movieUnderTagCancel: () => dispatch(under_tagCancel()),
     movieSearch: () => dispatch(searchReq()),
@@ -79,11 +90,17 @@ export const useMovies = () => {
     movieSelected: object,
     movieListArray: array,
     movieSearchInfo: object,
+    movieUnderGroupIsFetching: bool.isRequired,
+    movieUnderTagIsFetching: bool.isRequired,
+    movieAllIsFetching: bool.isRequired,
+    movieAllIsFetched: bool.isRequired,
     // actions
     movieFetch: func.isRequired,
     movieFetchCancel: func.isRequired,
     movieUnderCat: func.isRequired,
     movieUnderCatCancel: func.isRequired,
+    movieUnderGroup: func.isRequired,
+    movieUnderGroupCancel: func.isRequired,
     movieUnderTag: func.isRequired,
     movieUnderTagCancel: func.isRequired,
     movieSearch: func.isRequired,
