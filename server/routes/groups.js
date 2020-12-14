@@ -1,17 +1,23 @@
 import { groups } from '../services/';
 
 export default (app, pool) => {
+  app.post('/addGroup', (req, res) => {
+    groups
+      .addGroup(pool, req)
+      .then(results => res.status(200).json(results.rows))
+      .catch(err => res.status(500).send(err));
+  });
   app.post('/createGroup', (req, res) =>
     groups
       .createGroup(pool, req)
-      .then(results => res.status(200).json(results))
+      .then(results => res.status(200).json(results.rows))
       .catch(err => res.status(500).send(err))
   );
 
   app.post('/updateGroup', (req, res) =>
     groups
       .updateGroup(pool, req)
-      .then(results => res.status(200).json(results))
+      .then(results => res.status(200).json(results.rows))
       .catch(err => res.status(500).send(err))
   );
 

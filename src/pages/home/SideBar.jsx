@@ -9,6 +9,7 @@ import {
   AccountCircleOutlined,
   ChevronLeftOutlined,
   EditOutlined,
+  GroupWork,
 } from '@material-ui/icons';
 
 // Internal
@@ -29,6 +30,7 @@ import {
   Tags,
   Profile,
   Editor,
+  Groups,
 } from './sideBar/';
 
 // Constants
@@ -40,6 +42,13 @@ const selectorOptions = {
     icon: Search,
     color: 'secondary',
     Comp: <SearchComponent />,
+  },
+  GROUP: {
+    label: 'groups',
+    value: 'group',
+    icon: GroupWork,
+    color: 'secondary',
+    Comp: <Groups />,
   },
   CAT: {
     label: 'categories',

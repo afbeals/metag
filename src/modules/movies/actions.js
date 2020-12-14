@@ -16,6 +16,12 @@ const actions = createActions(
         fail: [],
         cancel: [],
       },
+      under_group: {
+        request: [],
+        success: [],
+        fail: [],
+        cancel: [],
+      },
       under_cat: {
         request: [],
         success: [],

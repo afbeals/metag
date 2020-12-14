@@ -6,6 +6,20 @@ import constants from '../constants';
 
 const groupsAPI = {
   /**
+   * @desc api request to add established group to db
+   * @method addGroup
+   * @param {Object} input
+   * @param {String} input.name then name for the folder
+   * @param {String} input.src_folder then source for the folder
+   * @return {object} return data from query
+   */
+  addGroup: async input => {
+    const response = await axios.post(constants.API.GROUPS.ADD, input);
+    const data = await response;
+    return data;
+  },
+
+  /**
    * @desc api request to fetch data
    * @method getAll
    * @return {object} return data from query

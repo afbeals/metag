@@ -18,6 +18,12 @@ const {
       fail: allFail,
       cancel: allCancel,
     },
+    under_group: {
+      request: underGroup,
+      success: underGroupSuccess,
+      fail: underGroupFail,
+      cancel: underGroupCancel,
+    },
     under_cat: {
       request: under_catReq,
       success: under_catSuccess,
@@ -60,6 +66,11 @@ const {
 // success generators
 function* fetchAllSuccesses() {
   yield all([take(allSuccess.type)]);
+  return true;
+}
+
+function* fetchUnderGroupSuccesses() {
+  yield all([take(underGroupSuccess.type)]);
   return true;
 }
 
@@ -108,6 +119,34 @@ export function* fetchAll() {
     const { cancelSagas, success } = yield race({
       cancelSagas: take(allCancel.type),
       success: fetchAllSuccesses(),
+    });
+
+    if (cancelSagas) {
+      for (let i = 0; i < apiCalls.length; i++) {
+        yield cancel(apiCalls[i]);
+      }
+    } else {
+      return success;
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+export function* fetchUnderGroup({ payload: request }) {
+  try {
+    const apiCalls = yield all([
+      fork(sagaRequest, {
+        params: [api.movie.underGroup, request],
+        successActs: underGroupSuccess,
+        successDataTrns: normalizeMoviesArray,
+        failActs: underGroupFail,
+      }),
+    ]);
+
+    const { cancelSagas, success } = yield race({
+      cancelSagas: take(underGroupCancel.type),
+      success: fetchUnderGroupSuccesses(),
     });
 
     if (cancelSagas) {
@@ -295,6 +334,10 @@ export function* watchReqForFetchAll() {
   yield takeLatest(allReq.type, fetchAll);
 }
 
+export function* watchReqForFetchUnderGroup() {
+  yield takeLatest(underGroup.type, fetchUnderGroup);
+}
+
 export function* watchReqForFetchUnderCat() {
   yield takeLatest(under_catReq.type, fetchUnderCat);
 }
@@ -322,6 +365,7 @@ export function* watchReqForUpdateMovie() {
 function* watcher() {
   yield all([
     watchReqForFetchAll(),
+    watchReqForFetchUnderGroup(),
     watchReqForFetchUnderCat(),
     watchReqForFetchUnderTag(),
     watchReqForSearchMovie(),

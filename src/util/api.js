@@ -20,6 +20,7 @@ const api = {
     update: categories.update,
   },
   group: {
+    add: groups.addGroup,
     create: groups.create,
     update: groups.update,
     delete: groups.delete,
@@ -31,6 +32,7 @@ const api = {
     all: movies.getMovies,
     underCat: movies.getMoviesUnderCat,
     underTag: movies.getMoviesUnderTag,
+    underGroup: movies.getMoviesUnderGroup,
     img: movies.getMovieImg,
     search: movies.searchMovies,
     stream: movies.streamMovie,

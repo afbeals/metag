@@ -10,67 +10,68 @@ import IconButton from '@material-ui/core/IconButton';
 import RefreshIcon from '@material-ui/icons/Refresh';
 
 // Internal
-import { useTagsStore } from '~Modules/tags/hooks';
+import { useGroupsHook } from '~Modules/groups/hooks';
 import { useMovies } from '~Modules/movies/hooks';
 import { SidebarTitle } from '~Components/';
 import {
-  Tags as TagsStyled,
+  Groups as GroupsStyled,
   Badge,
   ListItemIcon,
   ListItemText,
   Title,
-} from './Tags_';
+} from './Groups_';
 
-const Tags = () => {
+const Groups = () => {
   const [selected, updateSelected] = useState([]);
   const {
-    tagsList,
-    tagsListArray,
-    tagsIsFetching,
-    tagsFetch,
-    tagsFetchCancel,
-  } = useTagsStore();
+    groupList,
+    groupListArray,
+    groupAllIsFetching,
+    groupFetch,
+    groupFetchCancel,
+  } = useGroupsHook();
   const {
-    movieUnderTagIsFetching,
-    movieUnderTag,
-    movieUnderTagCancel,
+    movieUnderGroupIsFetching,
+    movieUnderGroup,
+    movieUnderGroupCancel,
     movieFetch,
     movieFetchCancel,
     movieAllIsFetching,
   } = useMovies();
 
-  const handleRefetchTags = () => {
-    if (!tagsIsFetching) {
-      tagsFetch();
+  const handleRefetchGroups = () => {
+    if (!groupAllIsFetching) {
+      groupFetch();
     }
   };
 
-  const handleUpdateSelected = tagId => {
-    if (selected.includes(tagId)) {
-      updateSelected(selected.filter(id => id !== tagId));
+  const handleUpdateSelected = groupId => {
+    if (selected.includes(groupId)) {
+      updateSelected(selected.filter(id => id !== groupId));
     } else {
-      updateSelected([...selected, tagId]);
+      updateSelected([...selected, groupId]);
     }
   };
 
   useEffect(
     () => () => {
-      if (tagsIsFetching && !tagsList) {
-        tagsFetchCancel();
+      if (groupAllIsFetching && !groupList) {
+        groupFetchCancel();
       }
     },
     []
   );
 
   useEffect(() => {
-    if (!movieUnderTagIsFetching && selected.length > 0) {
-      movieUnderTag({ tags: selected });
+    if (!movieUnderGroupIsFetching && selected.length > 0) {
+      movieUnderGroup({ groups: selected });
     } else if (!movieAllIsFetching && selected.length === 0) {
       movieFetch();
     }
+
     return () => {
-      if (movieUnderTagIsFetching) {
-        movieUnderTagCancel();
+      if (movieUnderGroupIsFetching) {
+        movieUnderGroupCancel();
       }
       if (movieAllIsFetching) {
         movieFetchCancel();
@@ -79,17 +80,17 @@ const Tags = () => {
   }, [selected]);
 
   return (
-    <TagsStyled>
-      <SidebarTitle title={'Current Tags:'}>
+    <GroupsStyled>
+      <SidebarTitle title={'Current Groups:'}>
         <Title>
-          <h4>Current Tags:</h4>{' '}
-          <IconButton size='small' onClick={handleRefetchTags}>
+          <h4>Current Groups:</h4>{' '}
+          <IconButton size='small' onClick={handleRefetchGroups}>
             <RefreshIcon />
           </IconButton>{' '}
         </Title>
       </SidebarTitle>
       <List dense>
-        {tagsListArray.map(({ id, name, amount }) => (
+        {groupListArray.map(({ id, name, amount }) => (
           <Fragment key={id}>
             <ListItem
               onClick={() => handleUpdateSelected(id)}
@@ -116,8 +117,8 @@ const Tags = () => {
           </Fragment>
         ))}
       </List>
-    </TagsStyled>
+    </GroupsStyled>
   );
 };
 
-export default Tags;
+export default Groups;

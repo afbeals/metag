@@ -11,10 +11,12 @@ import {
   ImageWrapper,
   InfoLine,
   Pill,
+  AltGroups,
 } from './Card_';
 import { getTagsList } from '~Modules/tags/selectors';
 import { getCategoriesList } from '~Modules/categories/selectors';
-import ErrorBoundary from '~Components/ErrorBoundary';
+import { getGroupsList } from '~Modules/groups/selectors';
+import { ErrorBoundary, ToolTip } from '~Components/';
 
 // Constants
 const classname = 'card';
@@ -43,6 +45,8 @@ const Card = ({
   tag_ids,
   category_id,
   movie_duration,
+  group_id,
+  alt_group,
   id,
   selectMovie,
   selectedId,
@@ -50,6 +54,7 @@ const Card = ({
   const [isHover, updateIsHover] = useState(false);
   const catList = useSelector(getCategoriesList);
   const tagList = useSelector(getTagsList);
+  const groupList = useSelector(getGroupsList);
 
   return (
     <ErrorBoundary>
@@ -71,8 +76,32 @@ const Card = ({
         </ImageWrapper>
         <InfoLine>
           <div className={'name'}>{movie_name}</div>
-          <div className='category'>{catList[category_id].name}</div>
+          <div className='groupCatWrapper'>
+            {group_id && (
+              <div className='group'>
+                <ToolTip title={groupList[group_id].name} position='top'>
+                  {groupList[group_id].name}
+                </ToolTip>
+              </div>
+            )}
+            <div className='category'>{catList[category_id].name}</div>
+          </div>
         </InfoLine>
+        <AltGroups>
+          {alt_group.length > 0 && (
+            <div className='altWrapper'>
+              <span className='altWrapper__ft'>Ft.</span>
+              <ToolTip
+                title={alt_group.map(ag => groupList[ag].name).join(', ')}
+                position='top'
+              >
+                <p className='altWrapper__content'>
+                  {alt_group.map(ag => groupList[ag].name).join(', ')}
+                </p>
+              </ToolTip>
+            </div>
+          )}
+        </AltGroups>
         <Tags>
           {tag_ids.map(tag => (
             <Pill
@@ -90,6 +119,8 @@ const Card = ({
 
 Card.defaultProps = {
   tag_ids: [],
+  alt_group: [],
+  group_id: null,
   selectedId: null,
 };
 Card.propTypes = {
@@ -97,7 +128,9 @@ Card.propTypes = {
   movie_name: string.isRequired,
   tag_ids: array,
   category_id: number.isRequired,
-  movie_duration: number.isRequired,
+  group_id: number,
+  alt_group: array,
+  movie_duration: string.isRequired,
   id: number.isRequired,
   selectMovie: func.isRequired,
   selectedId: number,

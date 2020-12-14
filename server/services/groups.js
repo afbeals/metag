@@ -8,10 +8,33 @@ import { queryHandler, rreaddir } from './util';
 // Constants
 const {
   SERVER_GROUPS_TABLE: groupsTable,
+  SERVER_MOVIES_GROUPS_TABLE: moviesGroupsTable,
   SERVER_AD_GROUP: adGroup,
 } = process.env;
 
 // Queries
+// post add group (db only)
+const addGroup = async (pool, { body: { name, src_folder } }) => {
+  // adjust src folder spaces
+  let srcFolder = src_folder;
+  if (srcFolder.includes(' ')) {
+    const re = new RegExp(/\s/, 'g');
+    const replacedSrc = srcFolder.replace(re, '_');
+    const oldPath = path.join(adGroup, srcFolder);
+    const newPath = path.join(adGroup, replacedSrc);
+    await fs.rename(oldPath, newPath);
+    srcFolder = replacedSrc;
+  }
+
+  const adGroupQuery = {
+    text: `INSERT INTO ${groupsTable}(name, src_folder)
+    VALUES($1, $2)
+    RETURNING *;`,
+    values: [name, srcFolder],
+  };
+
+  return queryHandler(pool, adGroupQuery);
+};
 // post create group (db and folder)
 const createGroup = async (pool, { body: { group } }) => {
   const checkDbQuery = {
@@ -24,17 +47,17 @@ const createGroup = async (pool, { body: { group } }) => {
   if (foundDbGrp.rows.length > 0)
     return Promise.reject({ message: 'Category already exists' });
 
-  const groupPath = group.replace(/\s/g, '_');
+  const groupPathReplaced = group.replace(/\s/g, '_');
 
-  const catPath = path.join(adGroup, groupPath);
+  const groupPath = path.join(adGroup, groupPathReplaced);
   return fs
-    .ensureDir(catPath)
+    .ensureDir(groupPath)
     .then(() => {
       const query = {
         text: `INSERT INTO ${groupsTable}(name, src_folder)
             VALUES($1, $2)
             RETURNING *;`,
-        values: [group, groupPath],
+        values: [group, groupPathReplaced],
       };
       return queryHandler(pool, query);
     })
@@ -88,7 +111,11 @@ const deleteGroup = async (pool, { body: { id } }) => {
 
 // get fetch db all groups (db groups);
 const getAllGroups = pool => {
-  const query = `SELECT * FROM ${groupsTable} ORDER BY id ASC;`;
+  const query = `SELECT *,
+  (SELECT count(*)::int AS amount
+    FROM ${moviesGroupsTable}
+  WHERE groups_id = ${groupsTable}.id )
+  FROM ${groupsTable} ORDER BY id ASC;`;
   return queryHandler(pool, query);
 };
 
@@ -107,15 +134,18 @@ const getAvailableGroups = async pool => {
     })
   );
 
-  const availableGroups = dirList.filter(
-    dir =>
-      groupQueryRows.findIndex(({ src_folder }) => dir === src_folder) === -1
-  );
+  const availableGroups = dirList
+    .filter(
+      dir =>
+        groupQueryRows.findIndex(({ src_folder }) => dir === src_folder) === -1
+    )
+    .filter(f => f.toLowerCase() !== 'backup');
 
   return availableGroups;
 };
 
 export default {
+  addGroup,
   createGroup,
   deleteGroup,
   getAllGroups,

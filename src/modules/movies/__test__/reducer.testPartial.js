@@ -10,6 +10,7 @@ const {
   movies: {
     all: { success: allSuccess },
     under_cat: { success: under_catSuccess },
+    under_group: { success: underGroupSuccess },
     under_tag: { success: under_tagSuccess },
     search: { request: searchReq, success: searchSuccess, clear: searchClear },
     add: { success: addSuccess },
@@ -31,6 +32,7 @@ const moviesReducerTest = () =>
     });
 
     [
+      underGroupSuccess.type,
       under_catSuccess.type,
       under_tagSuccess.type,
       searchSuccess.type,

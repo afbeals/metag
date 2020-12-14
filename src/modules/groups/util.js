@@ -36,11 +36,13 @@ const groupsUtilityFuncs = {
           created_at,
           modified_at = null,
           related_groups_ids = [],
+          amount,
         }) => ({
           id,
           name,
           date: modified_at || created_at,
-          addtIds: related_groups_ids,
+          related: related_groups_ids,
+          amount,
         })
       ),
     }),
