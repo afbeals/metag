@@ -20,7 +20,11 @@ const {
       cancel: underGroupCancel,
       _meta: { isFetching: underGroupIsFetching },
     },
-    under_cat: { request: under_catReq, cancel: under_catCancel },
+    under_cat: {
+      request: under_catReq,
+      cancel: under_catCancel,
+      _meta: { isFetching: underCatIsFetching },
+    },
     under_tag: {
       request: under_tagReq,
       cancel: under_tagCancel,
@@ -54,6 +58,9 @@ export const useMovies = () => {
     movieSearchInfo: useSelector(selectors.getMoviesSearch),
     movieAllIsFetching: useSelector(store =>
       fetchSelector(store, allIsFetching)
+    ),
+    movieUnderCatIsFetching: useSelector(store =>
+      fetchSelector(store, underCatIsFetching)
     ),
     movieUnderGroupIsFetching: useSelector(store =>
       fetchSelector(store, underGroupIsFetching)
@@ -91,6 +98,7 @@ export const useMovies = () => {
     movieListArray: array,
     movieSearchInfo: object,
     movieUnderGroupIsFetching: bool.isRequired,
+    movieUnderCatIsFetching: bool.isRequired,
     movieUnderTagIsFetching: bool.isRequired,
     movieAllIsFetching: bool.isRequired,
     movieAllIsFetched: bool.isRequired,

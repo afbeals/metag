@@ -29,6 +29,7 @@ const api = {
   },
   movie: {
     avail: movies.getAvailable,
+    groupAvail: movies.getGroupAvailable,
     all: movies.getMovies,
     underCat: movies.getMoviesUnderCat,
     underTag: movies.getMoviesUnderTag,

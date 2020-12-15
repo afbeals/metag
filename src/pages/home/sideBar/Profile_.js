@@ -14,16 +14,17 @@ export const UserImg = styled.div``;
 
 export const UserInfo = styled.div``;
 
-export const InfoLine = styled.h5`
-  display: flex;
-  flex-direction: row;
-  margin: 5px 0px;
-  span {
-    text-transform: capitalize;
-    font-weight: 700;
-    margin-right: auto;
-  }
-`;
+export const InfoLine = styled.h5(({ noCap }) => ({
+  display: 'flex',
+  'flex-direction': 'row',
+  margin: '5px 0px',
+  'text-transform': 'capitalize',
+  span: {
+    'font-weight': '700',
+    'margin-right': 'auto',
+  },
+  ...(noCap && { 'text-transform': 'initial' }),
+}));
 
 export default {
   Container,

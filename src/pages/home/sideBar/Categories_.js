@@ -1,71 +1,40 @@
 // External
 import styled from '@emotion/styled/macro';
+import MaterialBadge from '@material-ui/core/Badge';
+import MaterialListItemText from '@material-ui/core/ListItemText';
+import MaterialListItemIcon from '@material-ui/core/ListItemIcon';
 
-export const Container = styled.div`
-  height: 100%;
-  width: 100%;
+// Internal
+
+export const Categories = styled.div``;
+
+export const Title = styled.div`
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  position: relative;
 `;
 
-export const List = styled.div`
-  height: 90%;
-  width: 90%;
-  align-self: flex-end;
-  border-radius: 5px;
-  margin-top: auto;
-  margin-bottom: 10px;
-  padding: 5px;
-  background: #929292;
-  overflow-x: hidden;
-  overflow-y: scroll;
+export const ListItemText = styled(MaterialListItemText)`
+  text-transform: capitalize;
 `;
 
-export const ListItem = styled.div(({ selected }) => ({
-  display: 'flex',
-  'flex-direction': 'row',
-  'text-transform': 'capitalize',
-  color: 'white',
-  cursor: 'pointer',
-  margin: '5px 0px',
-  padding: '0px 5px',
-  width: '98%',
-  'align-items': 'center',
-  ':hover': {
-    background: '#ffffff7a',
-    'border-radius': '15px',
-  },
-  div: {
-    outline: 'none',
-    'flex-grow': '1',
-  },
-  ...(selected && { background: '#ffffff7a' }),
-}));
+export const ListItemIcon = styled(MaterialListItemIcon)`
+  min-width: 30px !important;
+`;
 
-export const Editor = styled.div(({ isOpen }) => ({
-  position: 'absolute',
-  top: '42px',
-  right: '0',
-  background: 'white',
-  height: '95%',
-  width: '95%',
-  'max-height': '0px',
-  display: 'flex',
-  overflow: 'hidden',
-  'justify-content': 'flex-start',
-  transition: 'all 1.5s',
-  'z-index': '2',
-  padding: '10px 8px',
-  'flex-direction': 'column',
-
-  ...(isOpen && { 'max-height': '900px' }),
-}));
+export const Badge = styled(MaterialBadge)`
+  span {
+    font-size: .6em;
+    height: 15px;
+    padding: 0 4px;
+    min-width 15px;
+  }
+`;
 
 export default {
-  Container,
-  Editor,
-  List,
+  Badge,
+  ListItemIcon,
+  ListItemText,
+  Categories,
+  Title,
 };
