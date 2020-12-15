@@ -41,6 +41,7 @@ const constants = {
       GET: {
         ALL: `/getMovies`,
         AVAIL: `/getAvailableMovies`,
+        GROUP_AVAIL: `/getAvailableGroupMovies`,
         CATEGORY: `/getMoviesByCategory`,
         TAG: `/getMoviesByTags`,
         GROUP: `/getMoviesByGroup`,

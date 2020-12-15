@@ -8,6 +8,7 @@ import { queryHandler } from './util';
 // Constants
 const {
   SERVER_CATEGORIES_TABLE: categoriesTable,
+  SERVER_MOVIES_CATEGORY_TABLE: moviesCatTable,
   SERVER_AD_PATH: adPath,
 } = process.env;
 
@@ -92,7 +93,11 @@ const deleteCategory = async (pool, { body: { id } }) => {
 
 // get fetch db all categories (db categories);
 const getAllCategories = pool => {
-  const query = `SELECT * FROM ${categoriesTable} ORDER BY id ASC;`;
+  const query = `SELECT *,
+  (SELECT count(*)::int AS amount
+    FROM ${moviesCatTable}
+    WHERE categories_id = ${categoriesTable}.id )
+  FROM ${categoriesTable} ORDER BY id ASC;`;
   return queryHandler(pool, query);
 };
 

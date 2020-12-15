@@ -5,6 +5,7 @@ import fsD from 'fs';
 import ffprobe from 'ffprobe';
 import ffprobeS from 'ffprobe-static';
 import { exec } from 'child_process';
+import ws from 'windows-shortcuts';
 
 // Internal
 import { queryHandler } from '../util';
@@ -31,14 +32,14 @@ const addMovieToDB = async (
       related_groups = [],
       tag_ids,
       category_id,
-      file_src: init_file_src,
+      file_src,
       name,
       notes,
     },
   }
 ) => {
-  // rename wmv files for insert
-  const file_src = init_file_src.replace('.wmv', '.mp4');
+  // // rename wmv files for insert
+  // const file_src = init_file_src.replace('.wmv', '.mp4');
 
   // add movie and get row info
   const insertMovieQuery = {
@@ -69,14 +70,25 @@ const addMovieToDB = async (
 
   // get moviePath
   let moviePath = groupInfo
-    ? `${adGroup}/${groupInfo.src_folder}/${init_file_src}`
-    : `${adPath}/${cat_src}/${init_file_src}`;
+    ? `${adGroup}/${groupInfo.src_folder}/${file_src}`
+    : `${adPath}/${cat_src}/${file_src}`;
 
-  //rename wmv files
-  if (moviePath.includes('.wmv')) {
-    const newPath = moviePath.replace('.wmv', '.mp4');
-    await fs.rename(moviePath, newPath);
-    moviePath = newPath;
+  // //rename wmv files
+  // if (moviePath.includes('.wmv')) {
+  //   const newPath = moviePath.replace('.wmv', '.mp4');
+  //   await fs.rename(moviePath, newPath);
+  //   moviePath = newPath;
+  // }
+
+  // if sysLink, get actual path
+  if (moviePath.includes('.lnk')) {
+    const linkData = await new Promise((res, rej) =>
+      ws.query(path.resolve(moviePath), (err, stats) => {
+        if (err) rej(err);
+        res(stats);
+      })
+    );
+    moviePath = path.resolve(linkData.target);
   }
 
   // create images

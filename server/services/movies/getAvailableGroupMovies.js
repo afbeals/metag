@@ -10,7 +10,7 @@ const {
   SERVER_AD_GROUP: adGroup,
 } = process.env;
 
-// get available movies (by category)
+// get available movies (by group)
 const getAvailableGroupMovies = async (pool, { query: { group_id } }) => {
   const groupInfoQuery = {
     text: `SELECT * FROM ${groupsTable} WHERE id = $1;`,
@@ -62,9 +62,16 @@ const getAvailableGroupMovies = async (pool, { query: { group_id } }) => {
   return {
     group: src_folder,
     dirsList: adjustedDirs,
-    filesList: adjustedList.filter(
-      cf => prevAddRows.findIndex(({ file_src }) => file_src === cf) === -1
-    ),
+    convertNeeded: adjustedList
+      .filter(f => f.includes('.wmv'))
+      .filter(
+        cf => prevAddRows.findIndex(({ file_src }) => file_src === cf) === -1
+      ),
+    filesList: adjustedList
+      .filter(f => !f.includes('.wmv'))
+      .filter(
+        cf => prevAddRows.findIndex(({ file_src }) => file_src === cf) === -1
+      ),
   };
 };
 

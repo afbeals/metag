@@ -21,6 +21,21 @@ const moviesAPI = {
   },
 
   /**
+   * @desc api request to fetch available under group
+   * @method getGroupAvailable
+   * @param {object} movieData
+   * @param {string} movieData.group_id to check for movies
+   * @return {object} return data from query
+   */
+  getGroupAvailable: async movieData => {
+    const response = await axios.get(constants.API.MOVIES.GET.GROUP_AVAIL, {
+      params: movieData,
+    });
+    const data = await response;
+    return data;
+  },
+
+  /**
    * @desc api request to get movies
    * @method getMovies
    * @param {object} movieData

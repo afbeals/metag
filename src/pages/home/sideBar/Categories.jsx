@@ -1,38 +1,28 @@
 // External
-import { useEffect, useState } from 'react';
-import { string } from 'prop-types';
-import { useDispatch } from 'react-redux';
-import TextField from '@material-ui/core/TextField';
-import EditIcon from '@material-ui/icons/Edit';
+import { useEffect, useState, Fragment } from 'react';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import Checkbox from '@material-ui/core/Checkbox';
+import MovieIcon from '@material-ui/icons/Movie';
+import Divider from '@material-ui/core/Divider';
+import IconButton from '@material-ui/core/IconButton';
+import RefreshIcon from '@material-ui/icons/Refresh';
 
 // Internal
-import { Container, List, ListItem } from './Categories_';
 import { useCategoriesStore } from '~Modules/categories/hooks';
-import movieActions from '~Modules/movies/actions';
+import { useMovies } from '~Modules/movies/hooks';
+import { SidebarTitle } from '~Components/';
+import {
+  Categories as CategoriesStyled,
+  Badge,
+  ListItemIcon,
+  ListItemText,
+  Title,
+} from './Categories_';
 
-// Constants
-const classname = '_categories';
-
-const Categories = ({ parentclass }) => {
-  const baseClass = `${parentclass}${classname}`;
-  const dispatch = useDispatch();
-  const [editorOpen, updateEditorOpen] = useState(null);
-  const [editorValues, updateEditorVals] = useState({});
-  const [selectedCat, updateSelected] = useState('');
-  const {
-    movies: {
-      under_cat: {
-        request,
-        cancel,
-        _meta: { isFetching: movieIsFetching },
-      },
-    },
-  } = movieActions;
-
-  const handleUpdateEditorOpen = (pref = null) => {
-    updateEditorOpen(pref);
-  };
-
+const Categories = () => {
+  const [selected, updateSelected] = useState([]);
   const {
     catList,
     catListArray,
@@ -40,101 +30,95 @@ const Categories = ({ parentclass }) => {
     catFetch,
     catFetchCancel,
   } = useCategoriesStore();
+  const {
+    movieUnderCatIsFetching,
+    movieUnderCat,
+    movieUnderCatCancel,
+    movieFetch,
+    movieFetchCancel,
+    movieAllIsFetching,
+  } = useMovies();
 
-  const handleUpdateEditorVals = (v = {}) => {
-    const newVals = {
-      ...editorValues,
-      ...v,
-    };
-    updateEditorVals(newVals);
-  };
-
-  const handleFetchCategories = id => {
-    if (movieIsFetching) {
-      dispatch(cancel());
-    }
-    if (id) {
-      dispatch(request({ categories: [id], limit: 1000 }));
-    }
-  };
-
-  useEffect(() => {
-    if (!catList && !catAllIsFetching) {
+  const handleRefetchGroups = () => {
+    if (!catAllIsFetching) {
       catFetch();
     }
-    return () => {
-      if (catAllIsFetching) {
+  };
+
+  const handleUpdateSelected = catId => {
+    if (selected.includes(catId)) {
+      updateSelected(selected.filter(id => id !== catId));
+    } else {
+      updateSelected([...selected, catId]);
+    }
+  };
+
+  useEffect(
+    () => () => {
+      if (catAllIsFetching && !catList) {
         catFetchCancel();
       }
+    },
+    []
+  );
+
+  useEffect(() => {
+    if (!movieUnderCatIsFetching && selected.length > 0) {
+      movieUnderCat({ categories: selected });
+    } else if (!movieAllIsFetching && selected.length === 0) {
+      movieFetch();
+    }
+
+    return () => {
+      if (movieUnderCatIsFetching) {
+        movieUnderCatCancel();
+      }
+      if (movieAllIsFetching) {
+        movieFetchCancel();
+      }
     };
-  }, [catList, catAllIsFetching, catFetch, catFetchCancel]);
+  }, [selected]);
 
   return (
-    <Container className={baseClass}>
-      <List>
-        {catListArray.map(({ name, id }) => (
-          <ListItem selected={selectedCat === name} key={`${name}`}>
-            {editorOpen === id && (
-              <TextField
-                onChange={e =>
-                  handleUpdateEditorVals({ category: e.target.value })
-                }
-                id='outlined-search'
-                label='Category'
-                type='search'
-                variant='outlined'
-                size='small'
-                value={editorValues.category}
-              />
-            )}
-            {editorOpen !== id && (
-              <div
-                role='button'
-                tabIndex={0}
-                onKeyDown={() => {
-                  if (selectedCat === name) {
-                    updateSelected('');
-                  } else {
-                    updateSelected(name);
-                    handleFetchCategories(id);
-                  }
-                }}
-                onClick={() => {
-                  if (selectedCat === name) {
-                    updateSelected('');
-                  } else {
-                    updateSelected(name);
-                    handleFetchCategories(id);
-                  }
-                }}
-              >
-                {name}
-              </div>
-            )}
-            <EditIcon
-              onClick={() => {
-                if (id !== editorOpen) {
-                  handleUpdateEditorOpen(id);
-                  handleUpdateEditorVals({ category: name });
-                } else {
-                  handleUpdateEditorOpen(null);
-                }
-              }}
-              fontSize={'small'}
-            />
-          </ListItem>
+    <CategoriesStyled>
+      <SidebarTitle title={'Current Groups:'}>
+        <Title>
+          <h4>Current Groups:</h4>{' '}
+          <IconButton size='small' onClick={handleRefetchGroups}>
+            <RefreshIcon />
+          </IconButton>{' '}
+        </Title>
+      </SidebarTitle>
+      <List dense>
+        {catListArray.map(({ id, name, amount }) => (
+          <Fragment key={id}>
+            <ListItem
+              onClick={() => handleUpdateSelected(id)}
+              button
+              selected={selected.indexOf(id) > -1}
+            >
+              <ListItemIcon>
+                <Badge badgeContent={amount} color='secondary'>
+                  <MovieIcon fontSize='small' />
+                </Badge>
+              </ListItemIcon>
+              <ListItemText id={`${name}-${id}`} primary={name} />
+
+              <ListItemSecondaryAction>
+                <Checkbox
+                  edge='end'
+                  checked={selected.indexOf(id) > -1}
+                  inputProps={{ 'aria-labelledby': `${name}-${id}` }}
+                  onClick={() => handleUpdateSelected(id)}
+                />
+              </ListItemSecondaryAction>
+            </ListItem>
+            <Divider variant='middle' />
+          </Fragment>
         ))}
       </List>
-    </Container>
+    </CategoriesStyled>
   );
-};
-
-Categories.propTypes = {
-  parentclass: string,
-};
-
-Categories.defaultProps = {
-  parentclass: '',
 };
 
 export default Categories;

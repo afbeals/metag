@@ -31,7 +31,7 @@ const Profile = ({ parentclass }) => {
     };
   }, []);
 
-  const { firstName = '', lastName = '', username = '', id = '' } =
+  const { first_name = '', last_name = '', username = '', id = '' } =
     userInfo || {};
 
   return (
@@ -41,16 +41,16 @@ const Profile = ({ parentclass }) => {
       </UserImg>
       {userInfo && (
         <UserInfo>
-          <InfoLine>
+          <InfoLine noCap>
             <span>Username:</span> {username} (id: {id})
           </InfoLine>
 
           <InfoLine>
-            <span>First:</span> {firstName}
+            <span>First:</span> {first_name}
           </InfoLine>
           <InfoLine>
             {' '}
-            <span>Last:</span> {lastName}
+            <span>Last:</span> {last_name}
           </InfoLine>
         </UserInfo>
       )}

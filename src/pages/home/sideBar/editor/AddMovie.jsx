@@ -8,6 +8,7 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 // Internal
 import { api } from '~GlobalUtil/';
 import { Modal } from '~Components/';
+import { useGroupsHook } from '~Modules/groups/hooks';
 import { useCategoriesStore } from '~Modules/categories/hooks';
 import { useTagsStore } from '~Modules/tags/hooks';
 import { useMovies } from '~Modules/movies/hooks';
@@ -39,6 +40,8 @@ const AddMovie = () => {
     file_src: '',
     name: '',
     notes: '',
+    primary_group: '',
+    related_groups: [],
   });
 
   const handleUpdateEditor = (val = {}) => {
@@ -47,6 +50,12 @@ const AddMovie = () => {
 
   const { movieFetch } = useMovies();
 
+  const {
+    groupListArray,
+    groupFetch,
+    groupFetchCancel,
+    groupAllIsFetching,
+  } = useGroupsHook();
   const {
     catFetch,
     catFetchCancel,
@@ -67,6 +76,9 @@ const AddMovie = () => {
     if (!tagsIsFetching) {
       tagsFetch();
     }
+    if (!groupAllIsFetching) {
+      groupFetch();
+    }
 
     // api.group.get_avail().then(d => console.log(d));
     return () => {
@@ -75,6 +87,9 @@ const AddMovie = () => {
       }
       if (catAllIsFetching) {
         tagsFetchCancel();
+      }
+      if (groupAllIsFetching) {
+        groupFetchCancel();
       }
     };
   }, []);
@@ -90,29 +105,107 @@ const AddMovie = () => {
         file_src: '',
         name: '',
         note: '',
+        primary_group: '',
+        related_groups: [],
       });
       updateAvailabeMovies(newList);
     });
   };
 
   useEffect(() => {
-    if (editorValues.category_id) {
+    if (editorValues.primary_group) {
+      api.movie
+        .groupAvail({ group_id: editorValues.primary_group })
+        .then(({ data: { filesList } }) => {
+          const normalizedData = filesList.map(f => {
+            const file = f;
+            const splitFileArray = f.split('/');
+            const fileName = splitFileArray[splitFileArray.length - 1];
+            const parsedName = fileName
+              .substring(0, fileName.lastIndexOf('.'))
+              .replace(' - Shortcut', '');
+
+            return {
+              file,
+              name: parsedName,
+            };
+          });
+          updateAvailabeMovies(normalizedData);
+        });
+    }
+  }, [editorValues.primary_group]);
+
+  useEffect(() => {
+    if (editorValues.category_id && !editorValues.primary_group) {
       api.movie
         .avail({ category: editorValues.category_id })
         .then(({ data }) => {
           const normalizedData = data.map(d => ({
             file: d,
-            name: d.substring(0, d.indexOf('.')),
+            name: d.substring(0, d.lastIndexOf('.')),
           }));
           updateAvailabeMovies(normalizedData);
         });
+    } else if (!editorValues.category_id && !editorValues.primary_group) {
+      updateAvailabeMovies([]);
     }
-  }, [editorValues.category_id]);
+  }, [editorValues.category_id, editorValues.primary_group]);
 
   return (
     <AddMovieStyled>
       <FormControl fullWidth variant='standard'>
-        <InputLabel htmlFor='editor-add-movie-categories'>Category:</InputLabel>
+        <InputLabel htmlFor='editor-add-movie-groups'>Groups:</InputLabel>
+        <Select
+          label='Groups:'
+          value={editorValues.primary_group}
+          onChange={({ target: { value } }) =>
+            handleUpdateEditor({ primary_group: +value })
+          }
+          inputProps={{
+            name: 'editorAddMovieGroups',
+            id: 'editor-add-movie-groups',
+          }}
+          native
+          color='secondary'
+        >
+          <option aria-label='None' value='' />
+          {groupListArray.map(({ name, id }) => (
+            <option key={name} value={id}>
+              {name}
+            </option>
+          ))}
+        </Select>
+      </FormControl>
+      <FormControl fullWidth variant='standard'>
+        <InputLabel htmlFor='editor-add-movie-relGroups'>
+          Related Groups:
+        </InputLabel>
+        <Select
+          disabled={!editorValues.primary_group}
+          inputProps={{
+            name: 'editorAddMovieRelGroups',
+            id: 'editor-add-movie-relGroups',
+          }}
+          multiple
+          value={editorValues.related_groups}
+          onChange={({ target: { value } }) =>
+            handleUpdateEditor({ related_groups: value })
+          }
+        >
+          {groupListArray
+            .filter(({ id }) => id !== editorValues.primary_group)
+            .map(({ name, id }) => (
+              <MenuItem key={id} value={id}>
+                {name}
+              </MenuItem>
+            ))}
+        </Select>
+      </FormControl>
+      <FormControl fullWidth variant='standard'>
+        <InputLabel htmlFor='editor-add-movie-categories'>
+          {editorValues.primary_group ? <>Set </> : <>From </>}
+          Category:
+        </InputLabel>
         <Select
           label='Category:'
           value={editorValues.category_id}
@@ -126,7 +219,7 @@ const AddMovie = () => {
           native
           color='secondary'
         >
-          <option aria-label='None' value='' disabled />
+          <option aria-label='None' value='' />
           {catListArray.map(({ name, id }) => (
             <option key={name} value={id}>
               {name}
@@ -182,7 +275,11 @@ const AddMovie = () => {
               autoPlay
               width='100%'
               // eslint-disable-next-line max-len
-              src={`${ROOT}${STREAM}?suggestedPath=${editorValues.file_src}&suggestedCat=${editorValues.category_id}`}
+              src={`${ROOT}${STREAM}?suggestedPath=${editorValues.file_src}&${
+                editorValues.primary_group
+                  ? `suggestedGrp=${editorValues.primary_group}`
+                  : `suggestedCat=${editorValues.category_id}`
+              }`}
             >
               Sorry, your browser doesn't support embedded videos.
             </video>

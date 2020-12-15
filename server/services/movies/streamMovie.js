@@ -50,10 +50,11 @@ const streamMovie = async (
       const { rows } = await queryHandler(pool, getCathPathQuery);
       const { src_folder } = rows[0];
       moviePath = path.join(adPath, src_folder, suggestedPath);
+    } else {
+      return Promise.reject({
+        message: 'Need either category or group with path given',
+      });
     }
-    return Promise.reject({
-      message: 'Need either category or group with path given',
-    });
   } else {
     const getMovieCatInfo = {
       text: `SELECT
