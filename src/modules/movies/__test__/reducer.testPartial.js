@@ -162,7 +162,6 @@ const moviesReducerTest = () =>
           name: 'name',
           tags: [1, 2, 3],
           categories: [52, 3],
-          dontAdd: 'adfaf',
         },
       };
       const mocked = mockStore({
@@ -174,7 +173,7 @@ const moviesReducerTest = () =>
         },
         search: null,
       });
-      const { dontAdd, ...expected } = action.payload;
+      const expected = action.payload;
       expect(reducer(mocked, action)).to.deep.equal(
         mockStore({
           list: {

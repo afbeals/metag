@@ -1,7 +1,7 @@
 .fade {
   &-enter {
     &-done {
-      animation: fade-done-active $animSpeed forwards;
+      animation: fade-done-active #{$animSpeed}s forwards;
       position: relative;
       visibility: initial;
       top: 0;
@@ -13,17 +13,17 @@
       top: 0;
       right: 0;
       width: 100%;
+      z-index: 1;
     }
   }
   &-exit {
     &-active {
-      animation: fade-exit-active $animSpeed forwards;
+      animation: fade-exit-active #{$animSpeed}s forwards;
       position: absolute;
       top: 0;
       right: 0;
       width: 100%;
       z-index: 3;
-
     }
   }
 }

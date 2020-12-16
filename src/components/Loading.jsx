@@ -1,41 +1,39 @@
 // Extenal
 import React from 'react';
-import PropTypes from 'prop-types';
+import { node } from 'prop-types';
+import { oneOf } from 'prop-types';
 
 // Constants
 const classname = 'loading';
 
 // Component
-const Loading = ({ text, dark, size }) => (
-  <div
-    data-testid='loading'
-    className={`${classname}${dark ? ' dark' : ''} ${size}`}
-  >
-    <div>
-      <div className='loader'>
-        <div className='bar1' />
-        <div className='bar2' />
-        <div className='bar3' />
-        <div className='bar4' />
-        <div className='bar5' />
-        <div className='bar6' />
+const Loading = ({ text, size }) => (
+  <>
+    <div className={`${classname}__wrapper`}>
+      <div className={`${classname} ${size}`}>
+        <div className='holder'>
+          <div className='box'></div>
+        </div>
+        <div className='holder'>
+          <div className='box'></div>
+        </div>
+        <div className='holder'>
+          <div className='box'></div>
+        </div>
       </div>
+      <p>{text}</p>
     </div>
-    <p>{`Loading${text ? ` ${text}` : ''}`}</p>
-  </div>
+  </>
 );
 
 Loading.propTypes = {
-  text: PropTypes.node,
-  dark: PropTypes.bool,
-  size: PropTypes.oneOf(['small', 'medium', 'large']),
+  text: node,
+  size: oneOf(['small', 'medium', 'large']),
 };
 
 Loading.defaultProps = {
-  dark: false,
   size: 'medium',
+  text: 'Loading...',
 };
 
 export default Loading;
-
-export { Loading };
