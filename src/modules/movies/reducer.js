@@ -61,19 +61,12 @@ export default function reducer(state = initialStore, { type, payload }) {
     }
 
     case searchReq.type: {
-      const {
-        prevId = 1,
-        name = null,
-        tags = null,
-        categories = null,
-      } = payload;
+      const { prevId = 0, ...rest } = payload;
       return {
         ...state,
         search: {
           prevId,
-          name,
-          tags,
-          categories,
+          ...rest,
         },
       };
     }

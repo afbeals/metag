@@ -30,7 +30,12 @@ const {
       cancel: under_tagCancel,
       _meta: { isFetching: underTagIsFetching },
     },
-    search: { request: searchReq, cancel: searchCancel, clear: searchClear },
+    search: {
+      request: searchReq,
+      cancel: searchCancel,
+      clear: searchClear,
+      _meta: { isFetching: movieSearchIsFetching },
+    },
     select: { movie: selectMovie },
     add: { request: addReq, cancel: addCancel },
     delete: { request: deleteReq, cancel: deleteCancel },
@@ -69,6 +74,9 @@ export const useMovies = () => {
     movieUnderTagIsFetching: useSelector(store =>
       fetchSelector(store, underTagIsFetching)
     ),
+    movieSearchIsFetching: useSelector(store =>
+      fetchSelector(store, movieSearchIsFetching)
+    ),
     // actions
     movieFetch: () => dispatch(allReq()),
     movieFetchCancel: () => dispatch(allCancel()),
@@ -78,7 +86,7 @@ export const useMovies = () => {
     movieUnderGroupCancel: () => dispatch(underGroupCancel()),
     movieUnderTag: info => dispatch(under_tagReq(info)),
     movieUnderTagCancel: () => dispatch(under_tagCancel()),
-    movieSearch: () => dispatch(searchReq()),
+    movieSearch: info => dispatch(searchReq(info)),
     movieSearchCancel: () => dispatch(searchCancel()),
     movieSearchClear: () => dispatch(searchClear()),
     movieSelect: info => dispatch(selectMovie(info)),
@@ -97,6 +105,7 @@ export const useMovies = () => {
     movieSelected: object,
     movieListArray: array,
     movieSearchInfo: object,
+    movieSearchIsFetching: bool.isRequired,
     movieUnderGroupIsFetching: bool.isRequired,
     movieUnderCatIsFetching: bool.isRequired,
     movieUnderTagIsFetching: bool.isRequired,

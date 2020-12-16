@@ -132,7 +132,8 @@ const moviesAPI = {
    * @method searchMovies
    * @param {object} movieData
    * @param {String} movieData.prevId the prev last id of the query
-   * @param {Array} movieData.category the list of category id to search
+   * @param {Array} movieData.categories the list of category ids to search
+   * @param {Array} movieData.groups the list of group ids to search
    * @param {Array} movieData.tags the list of tag ids to search
    * @param {String} movieData.name the name of the movie to search
    * @return {object} return data from query

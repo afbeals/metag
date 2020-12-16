@@ -12,7 +12,7 @@ import RefreshIcon from '@material-ui/icons/Refresh';
 // Internal
 import { useCategoriesStore } from '~Modules/categories/hooks';
 import { useMovies } from '~Modules/movies/hooks';
-import { SidebarTitle } from '~Components/';
+import { SidebarTitle, Loading } from '~Components/';
 import {
   Categories as CategoriesStyled,
   Badge,
@@ -43,6 +43,10 @@ const Categories = () => {
     if (!catAllIsFetching) {
       catFetch();
     }
+    if (!movieAllIsFetching) {
+      movieFetch();
+    }
+    updateSelected([]);
   };
 
   const handleUpdateSelected = catId => {
@@ -81,6 +85,7 @@ const Categories = () => {
 
   return (
     <CategoriesStyled>
+      {catAllIsFetching && <Loading />}
       <SidebarTitle title={'Current Groups:'}>
         <Title>
           <h4>Current Groups:</h4>{' '}

@@ -76,6 +76,7 @@ export const List = styled.div(({ isOpen }) => ({
   color: fontColorSecondary,
   width: '0px',
   height: '100%',
+  position: 'relative',
   '.trans': {
     height: '100%',
   },

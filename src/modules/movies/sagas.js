@@ -1,11 +1,20 @@
 // External
-import { takeLatest, all, fork, race, take, cancel } from 'redux-saga/effects';
+import {
+  takeLatest,
+  all,
+  fork,
+  race,
+  take,
+  cancel,
+  select,
+} from 'redux-saga/effects';
 
 // Internal
 import actions from './actions';
 import api from '~GlobalUtil/api';
 import normalize from '~GlobalUtil/normalize';
 import movieUtil from './util';
+import { getMoviesSearch } from './selectors';
 
 // Constants
 const { sagaRequest } = normalize;
@@ -217,8 +226,10 @@ export function* fetchUnderTag({ payload: request }) {
   }
 }
 
-export function* searchMovie({ payload: request }) {
+export function* searchMovie({ payload }) {
   try {
+    const { prevId } = yield select(getMoviesSearch);
+    const request = { prevId, ...payload };
     const apiCalls = yield all([
       fork(sagaRequest, {
         params: [api.movie.search, request],

@@ -43,6 +43,10 @@ const Tags = () => {
     if (!tagsIsFetching) {
       tagsFetch();
     }
+    if (!movieAllIsFetching) {
+      movieFetch();
+    }
+    updateSelected([]);
   };
 
   const handleUpdateSelected = tagId => {

@@ -14,126 +14,130 @@ const {
     overlay: { show: appShowOverlay, hide: appHideOverlay },
   },
 } = appActions;
-const appHooks = {
-  /**
-   * @method useAppStore
-   * @desc connect to app store
-   * @example
-   * const { modalIsVisiable } = useAppStore();
-   */
-  useAppStore: () => {
-    const dispatch = useDispatch();
 
-    const props = {
-      // selectors
-      appStore: useSelector(appSelectors.getAppStore),
-      overlayIsVisible: useSelector(appSelectors.appOverlayIsVisible),
-      appNotification: useSelector(appSelectors.appNotification),
-      modalIsVisible: useSelector(appSelectors.appModalIsVisible),
-      // actions
-      appShowOverlay: () => dispatch(appShowOverlay()),
-      appHideOverlay: () => dispatch(appHideOverlay()),
-      appShowNotify: info => dispatch(appShowNotify(info)),
-      appHideNotify: () => dispatch(appHideNotify()),
-      appShowModal: () => dispatch(appShowModal()),
-      appHideModal: () => dispatch(appHideModal()),
-    };
+/**
+ * @method useAppStore
+ * @desc connect to app store
+ * @example
+ * const { modalIsVisiable } = useAppStore();
+ */
+export const useAppStore = () => {
+  const dispatch = useDispatch();
 
-    const propTypes = {
-      appStore: object.isRequired,
-      overlayIsVisible: bool.isRequired,
-      appNotification: object,
-      modalIsVisible: bool.isRequired,
-      appShowOverlay: func.isRequired,
-      appHideOverlay: func.isRequired,
-      appShowNotify: func.isRequired,
-      appHideNotify: func.isRequired,
-      appShowModal: func.isRequired,
-      appHideModal: func.isRequired,
-    };
+  const props = {
+    // selectors
+    appStore: useSelector(appSelectors.getAppStore),
+    overlayIsVisible: useSelector(appSelectors.appOverlayIsVisible),
+    appNotification: useSelector(appSelectors.appNotification),
+    modalIsVisible: useSelector(appSelectors.appModalIsVisible),
+    // actions
+    appShowOverlay: () => dispatch(appShowOverlay()),
+    appHideOverlay: () => dispatch(appHideOverlay()),
+    appShowNotify: info => dispatch(appShowNotify(info)),
+    appHideNotify: () => dispatch(appHideNotify()),
+    appShowModal: () => dispatch(appShowModal()),
+    appHideModal: () => dispatch(appHideModal()),
+  };
 
-    checkPropTypes(propTypes, props, 'prop', `Hook: useAppStore`);
+  const propTypes = {
+    appStore: object.isRequired,
+    overlayIsVisible: bool.isRequired,
+    appNotification: object,
+    modalIsVisible: bool.isRequired,
+    appShowOverlay: func.isRequired,
+    appHideOverlay: func.isRequired,
+    appShowNotify: func.isRequired,
+    appHideNotify: func.isRequired,
+    appShowModal: func.isRequired,
+    appHideModal: func.isRequired,
+  };
 
-    return props;
-  },
+  checkPropTypes(propTypes, props, 'prop', `Hook: useAppStore`);
 
-  /**
-   * @method useAppModal
-   * @desc connect to app modal store
-   */
-  useAppModal: () => {
-    const dispatch = useDispatch();
-
-    const props = {
-      // selectors
-      modalIsVisible: useSelector(appSelectors.appModalIsVisible),
-      // actions
-      appShowModal: () => dispatch(appShowModal()),
-      appHideModal: () => dispatch(appHideModal()),
-    };
-
-    const propTypes = {
-      modalIsVisible: bool.isRequired,
-      appShowModal: func.isRequired,
-      appHideModal: func.isRequired,
-    };
-
-    checkPropTypes(propTypes, props, 'prop', `Hook: useAppModal`);
-
-    return props;
-  },
-
-  /**
-   * @method useAppNotification
-   * @desc connect to app notification store
-   */
-  useAppNotification: () => {
-    const dispatch = useDispatch();
-
-    const props = {
-      // selectors
-      appNotification: useSelector(appSelectors.appNotification),
-      // actions
-      appShowNotify: info => dispatch(appShowNotify(info)),
-      appHideNotify: () => dispatch(appHideNotify()),
-    };
-
-    const propTypes = {
-      appNotification: object,
-      appShowNotify: func.isRequired,
-      appHideNotify: func.isRequired,
-    };
-
-    checkPropTypes(propTypes, props, 'prop', `Hook: useAppNotification`);
-
-    return props;
-  },
-
-  /**
-   * @method useAppOverlay
-   * @desc connect to app overlay store
-   */
-  useAppOverlay: () => {
-    const dispatch = useDispatch();
-
-    const props = {
-      // selectors
-      overlayIsVisible: useSelector(appSelectors.appOverlayIsVisible),
-      // actions
-      appShowOverlay: () => dispatch(appShowOverlay()),
-      appHideOverlay: () => dispatch(appHideOverlay()),
-    };
-
-    const propTypes = {
-      overlayIsVisible: bool.isRequired,
-      appShowOverlay: func.isRequired,
-      appHideOverlay: func.isRequired,
-    };
-
-    checkPropTypes(propTypes, props, 'prop', `Hook: useAppOverlay`);
-
-    return props;
-  },
+  return props;
 };
 
-export default appHooks;
+/**
+ * @method useAppModal
+ * @desc connect to app modal store
+ */
+export const useAppModal = () => {
+  const dispatch = useDispatch();
+
+  const props = {
+    // selectors
+    modalIsVisible: useSelector(appSelectors.appModalIsVisible),
+    // actions
+    appShowModal: () => dispatch(appShowModal()),
+    appHideModal: () => dispatch(appHideModal()),
+  };
+
+  const propTypes = {
+    modalIsVisible: bool.isRequired,
+    appShowModal: func.isRequired,
+    appHideModal: func.isRequired,
+  };
+
+  checkPropTypes(propTypes, props, 'prop', `Hook: useAppModal`);
+
+  return props;
+};
+
+/**
+ * @method useAppNotification
+ * @desc connect to app notification store
+ */
+export const useAppNotification = () => {
+  const dispatch = useDispatch();
+
+  const props = {
+    // selectors
+    appNotification: useSelector(appSelectors.appNotification),
+    // actions
+    appShowNotify: info => dispatch(appShowNotify(info)),
+    appHideNotify: () => dispatch(appHideNotify()),
+  };
+
+  const propTypes = {
+    appNotification: object,
+    appShowNotify: func.isRequired,
+    appHideNotify: func.isRequired,
+  };
+
+  checkPropTypes(propTypes, props, 'prop', `Hook: useAppNotification`);
+
+  return props;
+};
+
+/**
+ * @method useAppOverlay
+ * @desc connect to app overlay store
+ */
+export const useAppOverlay = () => {
+  const dispatch = useDispatch();
+
+  const props = {
+    // selectors
+    overlayIsVisible: useSelector(appSelectors.appOverlayIsVisible),
+    // actions
+    appShowOverlay: () => dispatch(appShowOverlay()),
+    appHideOverlay: () => dispatch(appHideOverlay()),
+  };
+
+  const propTypes = {
+    overlayIsVisible: bool.isRequired,
+    appShowOverlay: func.isRequired,
+    appHideOverlay: func.isRequired,
+  };
+
+  checkPropTypes(propTypes, props, 'prop', `Hook: useAppOverlay`);
+
+  return props;
+};
+
+export default {
+  useAppStore,
+  useAppOverlay,
+  useAppModal,
+  useAppNotification,
+};

@@ -5,6 +5,7 @@ import 'fontsource-roboto';
 
 // Internal
 import { Home } from '~Pages/';
+import { useAppOverlay } from '~Modules/app/hooks';
 import userActions from '~Modules/user/actions';
 import tagsActions from '~Modules/tags/actions';
 import moviesActions from '~Modules/movies/actions';
@@ -13,7 +14,7 @@ import { actions as groupsActions } from '~Modules/groups/';
 import { util as movieUtil } from '~Modules/movies/';
 import { util as catUtil } from '~Modules/categories/';
 import { util as groupsUtil } from '~Modules/groups/';
-import { theme as AppTheme } from '~Components/';
+import { theme as AppTheme, Overlay } from '~Components/';
 import { api, normalize } from '~GlobalUtil';
 import '~Styles/main.scss';
 
@@ -50,10 +51,12 @@ const {
 } = groupsActions;
 
 const App = () => {
+  const { appShowOverlay, appHideOverlay } = useAppOverlay();
   const [isLoaded, updateIsLoaded] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(appShowOverlay());
     Promise.all([
       api.movie
         .all()
@@ -80,6 +83,7 @@ const App = () => {
         ),
     ]).then(() => {
       updateIsLoaded(true);
+      appHideOverlay();
     });
   }, []);
 
@@ -87,7 +91,7 @@ const App = () => {
     <AppTheme>
       <div id='app'>
         {isLoaded && <Home />}
-        {!isLoaded && <> loading </>}
+        <Overlay text='Loading App...' />
       </div>
     </AppTheme>
   );

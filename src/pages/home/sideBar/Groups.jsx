@@ -12,7 +12,7 @@ import RefreshIcon from '@material-ui/icons/Refresh';
 // Internal
 import { useGroupsHook } from '~Modules/groups/hooks';
 import { useMovies } from '~Modules/movies/hooks';
-import { SidebarTitle } from '~Components/';
+import { SidebarTitle, Loading } from '~Components/';
 import {
   Groups as GroupsStyled,
   Badge,
@@ -43,6 +43,10 @@ const Groups = () => {
     if (!groupAllIsFetching) {
       groupFetch();
     }
+    if (!movieAllIsFetching) {
+      movieFetch();
+    }
+    updateSelected([]);
   };
 
   const handleUpdateSelected = groupId => {
@@ -81,6 +85,7 @@ const Groups = () => {
 
   return (
     <GroupsStyled>
+      {groupAllIsFetching && <Loading />}
       <SidebarTitle title={'Current Groups:'}>
         <Title>
           <h4>Current Groups:</h4>{' '}

@@ -80,7 +80,6 @@ const AddMovie = () => {
       groupFetch();
     }
 
-    // api.group.get_avail().then(d => console.log(d));
     return () => {
       if (catAllIsFetching) {
         catFetchCancel();
@@ -334,7 +333,11 @@ const AddMovie = () => {
         fullWidth
         variant='contained'
         onClick={handleAddMovie}
-        disabled={Object.values(editorValues).filter(val => !val).length > 0}
+        disabled={
+          Object.entries(editorValues)
+            .filter(([key]) => key !== 'notes')
+            .filter(([_, val]) => !val).length > 0
+        }
       >
         Add Movie
       </Button>

@@ -6,6 +6,7 @@ import { string } from 'prop-types';
 // Internal
 import { Container, UserImg, UserInfo, InfoLine } from './Profile_';
 import { useUserStore } from '~Modules/user/hooks';
+import { Loading } from '~Components/';
 
 // Constants
 const classname = '_profile';
@@ -36,6 +37,7 @@ const Profile = ({ parentclass }) => {
 
   return (
     <Container className={baseClass}>
+      {userIsFetching && <Loading />}
       <UserImg>
         <FaceRoundedIcon fontSize='large' />
       </UserImg>

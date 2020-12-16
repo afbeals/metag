@@ -13,9 +13,9 @@ const searchMovies = async (
     query: {
       name = '',
       tags: tg = [],
-      category: cat = [],
+      categories: cat = [],
       groups: grp = [],
-      prevId,
+      prevId = 0,
     },
   }
 ) => {
@@ -32,10 +32,12 @@ const searchMovies = async (
     .map(([key, val]) => (val.length > 0 ? `${key}.id IN (${val})` : ''))
     .filter(v => !!v);
 
-  whereParts.push('mv.name LIKE $1');
+  whereParts.push('LOWER(mv.name) LIKE LOWER($1)');
 
   const related = `'{${grp.join(', ')}}'::int[] && mvg.related_groups_ids`;
-  const inGroup = grp.map((_, i) => `$${cat.length + 3 + i + 1}`).join(', ');
+  const inGroup = grp
+    .map((_, i) => `$${cat.length + tg.length + i + 1 + 1}`)
+    .join(', ');
   const whereIn = `grp.id IN (${inGroup})`;
   const groupWhere = grp.length > 0 ? [`(${related} OR ${whereIn})`] : [];
   const where = whereParts.concat(groupWhere).join(' AND ');
@@ -48,11 +50,11 @@ const searchMovies = async (
   mvg.related_groups_ids`;
   const searchQuery = selectMovieInfoQuery(
     {
-      prevId,
+      prevId: +prevId,
       where,
       group,
     },
-    [`%${name}%`, ...cat, ...tg] // order is important
+    [`%${name}%`, ...cat, ...tg, ...grp] // order is important
   );
 
   const { rows = [] } = await queryHandler(pool, searchQuery);
