@@ -15,6 +15,7 @@ const api = {
   cat: {
     fetchAll: categories.fetchAll,
     fetchAvail: categories.fetchAvail,
+    add: categories.add,
     create: categories.create,
     delete: categories.delete,
     update: categories.update,

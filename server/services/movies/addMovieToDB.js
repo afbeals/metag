@@ -18,6 +18,7 @@ const {
   SERVER_CATEGORIES_TABLE: categoriesTable,
   SERVER_MOVIES_TABLE: moviesTable,
   SERVER_GROUPS_TABLE: groupsTable,
+  SERVER_TAGS_TABLE: tagsTable,
   SERVER_AD_GROUP: adGroup,
   SERVER_AD_PATH: adPath,
   SERVER_AD_THUMB: adThumb,
@@ -223,7 +224,43 @@ const addMovieToDB = async (
   }
 
   // wait for transactions
-  return Promise.all([createThumb, createGif, ...addMovieTags]);
+  await Promise.all([createThumb, createGif, ...addMovieTags]);
+
+  return queryHandler(pool, {
+    text: `SELECT
+      mv.img_src as img_src,
+      mv.name as movie_name,
+      mv.notes as notes,
+      grp.id as group_id,
+      mvg.related_groups_ids as alt_group,
+      array_agg(
+        distinct tg.id
+      ) FILTER (WHERE tg.id IS NOT NULL) as tag_ids,
+      cat.id as category_id,
+      mv.id AS movie_id,
+      mv.duration AS movie_duration
+    FROM ${moviesTable} AS mv
+      LEFT JOIN ${moviesTagsTable} AS mvt
+          ON mv.id = mvt.movies_id
+      LEFT JOIN ${tagsTable} AS tg
+          ON mvt.tags_id = tg.id
+      LEFT JOIN ${moviesCatTable} AS mvc
+          ON mv.id = mvc.movies_id
+      LEFT JOIN ${categoriesTable} AS cat
+          ON mvc.categories_id = cat.id
+      LEFT JOIN ${moviesGroupsTable} AS mvg
+          ON mv.id = mvg.movies_id
+      LEFT JOIN ${groupsTable} AS grp
+          ON mvg.groups_id = grp.id
+      WHERE mv.id = $1
+      GROUP BY
+        mv.name,
+        mv.id,
+        cat.id,
+        grp.id,
+        mvg.related_groups_ids`,
+    values: [movie_id],
+  });
 };
 
 export default addMovieToDB;

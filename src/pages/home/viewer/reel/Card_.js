@@ -16,10 +16,9 @@ export const Card = styled.div(({ selected }) => ({
   width: '240px',
   margin: '10px 5px',
   display: 'flex',
-  'flex-direction': 'column',
-  overflow: 'hidden',
-  'align-items': 'flex-start',
-  'justify-content': 'flex-start',
+  flexDirection: 'column',
+  alignItems: 'flex-start',
+  justifyContent: 'flex-start',
   cursor: 'pointer',
   ':hover': {
     border: `1px solid ${secondary}`,

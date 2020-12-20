@@ -16,14 +16,14 @@ export const UserInfo = styled.div``;
 
 export const InfoLine = styled.h5(({ noCap }) => ({
   display: 'flex',
-  'flex-direction': 'row',
+  flexDirection: 'row',
   margin: '5px 0px',
-  'text-transform': 'capitalize',
+  textTransform: 'capitalize',
   span: {
     'font-weight': '700',
     'margin-right': 'auto',
   },
-  ...(noCap && { 'text-transform': 'initial' }),
+  ...(noCap && { textTransform: 'initial' }),
 }));
 
 export default {

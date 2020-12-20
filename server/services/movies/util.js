@@ -52,10 +52,9 @@ export const selectMovieInfoQuery = (
       mv.notes as notes,
       grp.id as group_id,
       mvg.related_groups_ids as alt_group,
-      string_agg(
-        distinct tg.id::varchar(255),
-        ',' order by tg.id::varchar(255)
-      ) as tag_ids,
+      array_agg(
+        distinct tg.id
+      ) FILTER (WHERE tg.id IS NOT NULL) as tag_ids,
       cat.id as category_id,
       mv.id AS movie_id,
       mv.duration AS movie_duration

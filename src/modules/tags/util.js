@@ -1,3 +1,6 @@
+// Internal
+import { arrayToIndexed } from '~GlobalUtil/normalize';
+
 const tagsUtilityDefs = {};
 
 const tagsUtilityFuncs = {
@@ -19,6 +22,18 @@ const tagsUtilityFuncs = {
     ...tagsUtilityFuncs.buildInitialStore(),
     ...props,
   }),
+
+  /**
+   *  @name normalizeTagsArray
+   * @desc normalize data from api for tags
+   */
+  normalizeTagsArray: groupArray =>
+    arrayToIndexed({
+      array: groupArray.map(({ created_at, modified_at = null, ...rest }) => ({
+        date: modified_at || created_at,
+        ...rest,
+      })),
+    }),
 };
 
 export default { ...tagsUtilityDefs, ...tagsUtilityFuncs };

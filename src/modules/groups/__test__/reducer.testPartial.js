@@ -48,12 +48,12 @@ const groupsReducerTest = () =>
     it('Should add a new name', () => {
       const action = {
         type: addGroupsSuccess.type,
-        payload: [
-          {
+        payload: {
+          2: {
             name: 'username',
             id: 2,
           },
-        ],
+        },
       };
       const mocked = mockStore({
         list: {
@@ -67,7 +67,7 @@ const groupsReducerTest = () =>
         mockStore({
           list: {
             ...mocked.list,
-            ...{ 2: { ...action.payload[0] } },
+            ...action.payload,
           },
         })
       );
@@ -76,12 +76,12 @@ const groupsReducerTest = () =>
     it('Should create a new name', () => {
       const action = {
         type: createGroupsSuccess.type,
-        payload: [
-          {
+        payload: {
+          2: {
             name: 'username',
             id: 2,
           },
-        ],
+        },
       };
       const mocked = mockStore({
         list: {
@@ -95,7 +95,7 @@ const groupsReducerTest = () =>
         mockStore({
           list: {
             ...mocked.list,
-            ...{ 2: { ...action.payload[0] } },
+            ...action.payload,
           },
         })
       );
@@ -137,12 +137,12 @@ const groupsReducerTest = () =>
     it('Should update a name', () => {
       const action = {
         type: updateGroupsSuccess.type,
-        payload: [
-          {
+        payload: {
+          2: {
             name: 'updated',
             id: 2,
           },
-        ],
+        },
       };
       const mocked = mockStore({
         list: {
@@ -160,7 +160,7 @@ const groupsReducerTest = () =>
         mockStore({
           list: {
             ...mocked.list,
-            ...{ 2: { ...action.payload[0] } },
+            ...action.payload,
           },
         })
       );

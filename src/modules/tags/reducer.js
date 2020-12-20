@@ -25,13 +25,12 @@ export default function reducer(state = initialStore, { type, payload }) {
 
     case createTagsSuccess.type:
     case updateTagsSuccess.type: {
-      const currentList = { ...state.list };
-      payload.forEach(({ id, ...rest }) => {
-        currentList[id] = { id, ...rest };
-      });
       return {
         ...state,
-        list: currentList,
+        list: {
+          ...state.list,
+          ...payload,
+        },
       };
     }
 

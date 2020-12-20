@@ -1,6 +1,6 @@
 // External
 import { useDispatch, useSelector } from 'react-redux';
-import { checkPropTypes, object, func, array } from 'prop-types';
+import { checkPropTypes, object, func, array, bool } from 'prop-types';
 
 // Internal
 import * as selectors from './selectors';
@@ -14,9 +14,21 @@ const {
       cancel: getTagsCancel,
       _meta: { isFetching: getIsFetching },
     },
-    create: { request: createTags, cancel: createTagsCancel },
-    update: { request: updateTags, cancel: updateTagsCancel },
-    delete: { request: deleteTags, cancel: deleteTagsCancel },
+    create: {
+      request: createTags,
+      cancel: createTagsCancel,
+      _meta: { isFetching: createIsFetching },
+    },
+    update: {
+      request: updateTags,
+      cancel: updateTagsCancel,
+      _meta: { isFetching: updateIsFetching },
+    },
+    delete: {
+      request: deleteTags,
+      cancel: deleteTagsCancel,
+      _meta: { isFetching: deleteIsFetching },
+    },
     reset: resetTags,
   },
 } = tagsActions;
@@ -38,15 +50,24 @@ export const useTagsStore = () => {
     tagsList: useSelector(selectors.getTagsList),
     tagsListArray: useSelector(selectors.getTagsListArray),
     tagsIsFetching: useSelector(store => fetchSelector(store, getIsFetching)),
+    tagCreateIsFetching: useSelector(store =>
+      fetchSelector(store, createIsFetching)
+    ),
+    tagUpdateIsFetching: useSelector(store =>
+      fetchSelector(store, updateIsFetching)
+    ),
+    tagDeleteIsFetching: useSelector(store =>
+      fetchSelector(store, deleteIsFetching)
+    ),
     // actions
     tagsFetch: () => dispatch(getTags()),
     tagsFetchCancel: () => dispatch(getTagsCancel()),
     tagsCreate: info => dispatch(createTags(info)),
     tagsCreateCancel: () => dispatch(createTagsCancel()),
-    tagsDelete: info => dispatch(updateTags(info)),
-    tagsDeleteCancel: () => dispatch(updateTagsCancel()),
-    tagsUpdate: info => dispatch(deleteTags(info)),
-    tagsUpdateCancel: () => dispatch(deleteTagsCancel()),
+    tagsUpdate: info => dispatch(updateTags(info)),
+    tagsUpdateCancel: () => dispatch(updateTagsCancel()),
+    tagsDelete: info => dispatch(deleteTags(info)),
+    tagsDeleteCancel: () => dispatch(deleteTagsCancel()),
     tagsReset: () => dispatch(resetTags()),
   };
 
@@ -54,6 +75,10 @@ export const useTagsStore = () => {
     tagsStore: object.isRequired,
     tagsList: object,
     tagsListArray: array,
+    tagsIsFetching: bool.isRequired,
+    tagCreateIsFetching: bool.isRequired,
+    tagUpdateIsFetching: bool.isRequired,
+    tagDeleteIsFetching: bool.isRequired,
     tagsFetch: func.isRequired,
     tagsFetchCancel: func.isRequired,
     tagsCreate: func.isRequired,

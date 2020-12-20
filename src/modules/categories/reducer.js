@@ -7,6 +7,7 @@ const initialStore = util.buildInitialStore();
 const {
   categories: {
     getall: { success: getAllSuccess },
+    add: { success: addSuccess },
     create: { success: createSuccess },
     update: { success: updateSuccess },
     delete: { success: deleteSuccess },
@@ -23,15 +24,15 @@ export default function reducer(state = initialStore, { type, payload }) {
       };
     }
 
+    case addSuccess.type:
     case createSuccess.type:
     case updateSuccess.type: {
-      const currentList = { ...state.list };
-      payload.forEach(({ id, ...rest }) => {
-        currentList[id] = { id, ...rest };
-      });
       return {
         ...state,
-        list: currentList,
+        list: {
+          ...state.list,
+          ...payload,
+        },
       };
     }
 

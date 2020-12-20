@@ -20,9 +20,21 @@ const {
       cancel: addCancel,
       _meta: { isFetching: getAddisFetching },
     },
-    create: { request: create, cancel: createCancel },
-    update: { request: update, cancel: updateCancel },
-    delete: { request: deleteReq, cancel: deleteReqCancel },
+    create: {
+      request: create,
+      cancel: createCancel,
+      _meta: { isFetching: getCreateisFetching },
+    },
+    update: {
+      request: update,
+      cancel: updateCancel,
+      _meta: { isFetching: getUpdateIsFetching },
+    },
+    delete: {
+      request: deleteReq,
+      cancel: deleteReqCancel,
+      _meta: { isFetching: getDeleteIsFetching },
+    },
     reset,
   },
 } = actions;
@@ -45,8 +57,17 @@ export const useGroupsHook = () => {
     groupAddIsFetching: useSelector(store =>
       fetchSelector(store, getAddisFetching)
     ),
+    getUpdateIsFetching: useSelector(store =>
+      fetchSelector(store, getUpdateIsFetching)
+    ),
     groupAllIsFetching: useSelector(store =>
       fetchSelector(store, getAllisFetching)
+    ),
+    getCreateisFetching: useSelector(store =>
+      fetchSelector(store, getCreateisFetching)
+    ),
+    getDeleteIsFetching: useSelector(store =>
+      fetchSelector(store, getDeleteIsFetching)
     ),
     // actions
     groupFetch: () => dispatch(getAll()),
@@ -55,10 +76,10 @@ export const useGroupsHook = () => {
     groupAddCancel: () => dispatch(addCancel()),
     groupCreate: info => dispatch(create(info)),
     groupCreateCancel: () => dispatch(createCancel()),
-    groupDelete: info => dispatch(update(info)),
-    groupDeleteCancel: () => dispatch(updateCancel()),
-    groupUpdate: info => dispatch(deleteReq(info)),
-    groupUpdateCancel: () => dispatch(deleteReqCancel()),
+    groupDelete: info => dispatch(deleteReq(info)),
+    groupDeleteCancel: () => dispatch(deleteReqCancel()),
+    groupUpdate: info => dispatch(update(info)),
+    groupUpdateCancel: () => dispatch(updateCancel()),
     groupReset: () => dispatch(reset()),
   };
 
@@ -68,6 +89,9 @@ export const useGroupsHook = () => {
     groupListArray: array,
     groupAllIsFetching: bool.isRequired,
     groupAddIsFetching: bool.isRequired,
+    getUpdateIsFetching: bool.isRequired,
+    getCreateisFetching: bool.isRequired,
+    getDeleteIsFetching: bool.isRequired,
     groupFetch: func.isRequired,
     groupFetchCancel: func.isRequired,
     groupCreate: func.isRequired,

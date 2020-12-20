@@ -52,16 +52,16 @@ const tagsSagasTest = () =>
               // mock selector and api calls
               [
                 matchers.call.fn(api.tags.fetch),
-                { data: [{ id: 1, tag: 'adfa' }] },
+                { data: [{ id: 1, tag: 'adfa', created_at: '' }] },
               ], // supply mock return data from api
             ])
             .withReducer(reducer)
             .hasFinalState(
               util.buildMockStore({
-                list: { 1: { id: 1, tag: 'adfa' } },
+                list: { 1: { id: 1, tag: 'adfa', date: '' } },
               })
             )
-            .put(getTagsSuccess({ 1: { id: 1, tag: 'adfa' } })) // eventual action that will be called
+            .put(getTagsSuccess({ 1: { id: 1, tag: 'adfa', date: '' } })) // eventual action that will be called
             .dispatch(getTags()) // dispatch action that starts saga
             .run());
 
@@ -104,17 +104,17 @@ const tagsSagasTest = () =>
               // mock selector and api calls
               [
                 matchers.call.fn(api.tags.create, request),
-                { data: [{ id: 1, tag: '12' }] },
+                { data: [{ id: 1, tag: '12', created_at: '' }] },
               ], // supply mock return data from api
             ])
             .withReducer(reducer)
             .withState(util.buildInitialStore())
             .hasFinalState(
               util.buildMockStore({
-                list: { 1: { id: 1, tag: '12' } },
+                list: { 1: { id: 1, tag: '12', date: '' } },
               })
             )
-            .put(createTagsSuccess([{ id: 1, tag: '12' }])) // eventual action that will be called
+            .put(createTagsSuccess({ 1: { id: 1, tag: '12', date: '' } })) // eventual action that will be called
             .dispatch(createTags(request)) // dispatch action that starts saga
             .run();
         });
@@ -160,20 +160,22 @@ const tagsSagasTest = () =>
               [
                 matchers.call.fn(api.tags.update, request),
                 {
-                  data: [{ id: 1, tag: 'data' }],
+                  data: [{ id: 1, tag: 'data', created_at: '' }],
                 },
               ], // supply mock return data from api
             ])
             .withReducer(reducer)
             .withState(
-              util.buildMockStore({ list: { 1: { id: 1, tag: 'data' } } })
+              util.buildMockStore({
+                list: { 1: { id: 1, tag: 'data', date: '' } },
+              })
             )
             .hasFinalState(
               util.buildMockStore({
-                list: { 1: request },
+                list: { 1: { ...request, date: '' } },
               })
             )
-            .put(updateTagsSuccess([request])) // eventual action that will be called
+            .put(updateTagsSuccess({ 1: { ...request, date: '' } })) // eventual action that will be called
             .dispatch(updateTags(request)) // dispatch action that starts saga
             .run();
         });

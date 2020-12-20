@@ -29,12 +29,14 @@ const Reel = () => {
     <ErrorBoundary>
       <ReelStyled movieSelected={!!movieSelectedId} className={classname}>
         {movieListArray.length < 1 && <div>No movies</div>}
-        {movieListArray.map(movie => (
+        {movieListArray.map(({ id, img_src: imgSrc, ...rest }) => (
           <Card
-            key={`${movie.id}`}
+            key={`${id}`}
+            id={id}
             selectedId={movieSelectedId}
             selectMovie={movieSelect}
-            {...movie}
+            img={imgSrc}
+            {...rest}
           />
         ))}
         <div>controls</div>

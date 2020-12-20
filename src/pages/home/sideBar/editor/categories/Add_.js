@@ -7,7 +7,7 @@ import MaterialTextField from '@material-ui/core/TextField';
 // Internal
 import { fontColorSecondary } from '~Styles/abstract/_variables';
 
-export const AddGroup = styled.div(() => ({
+export const Add = styled.div(() => ({
   display: 'flex',
   flexDirection: 'column',
   flexGrow: '1',
@@ -29,7 +29,7 @@ export const Button = styled(MaterialButton)`
 `;
 
 export default {
-  AddGroup,
+  Add,
   Input,
   Select,
   Button,

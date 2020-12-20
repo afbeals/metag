@@ -29,14 +29,10 @@ const categoriesUtilityFuncs = {
    */
   normalizeCategoriesArray: catArray =>
     arrayToIndexed({
-      array: catArray.map(
-        ({ id, name, created_at, modified_at = null, amount }) => ({
-          id,
-          name,
-          date: modified_at || created_at,
-          amount,
-        })
-      ),
+      array: catArray.map(({ created_at, modified_at = null, ...rest }) => ({
+        date: modified_at || created_at,
+        ...rest,
+      })),
     }),
 };
 

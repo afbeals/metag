@@ -22,23 +22,23 @@ const deleteMovie = async (pool, { body: { id } }) => {
   // get all movie info needed to remove folder and db info
   const getMovieInfoQuery = {
     text: `
-  SELECT
-    mv.file_src AS file_src,
-    mv.img_src AS img_src,
-    cg.src_folder AS categories_src,
-    grp.src_folder AS groups_src
-  FROM ${moviesCatTable} AS m_c
-    LEFT JOIN
-      ${moviesTable} AS mv
-    ON mv.id = m_c.movies_id
-    LEFT JOIN
-      ${categoriesTable} AS cg
-    ON cg.id = m_c.categories_id
-    LEFT join ${moviesGroupsTable} as mvgrp
-  	ON mvgrp.movies_id = m_c.movies_id
-  	LEFT JOIN ${groupsTable} as grp
-  	ON grp.id = mvgrp.groups_id
-  WHERE mv.id = $1`,
+      SELECT
+        mv.file_src AS file_src,
+        mv.img_src AS img_src,
+        cg.src_folder AS categories_src,
+        grp.src_folder AS groups_src
+      FROM ${moviesCatTable} AS m_c
+        LEFT JOIN
+          ${moviesTable} AS mv
+        ON mv.id = m_c.movies_id
+        LEFT JOIN
+          ${categoriesTable} AS cg
+        ON cg.id = m_c.categories_id
+        LEFT join ${moviesGroupsTable} as mvgrp
+      	ON mvgrp.movies_id = m_c.movies_id
+      	LEFT JOIN ${groupsTable} as grp
+      	ON grp.id = mvgrp.groups_id
+      WHERE mv.id = $1`,
     values: [id],
   };
   const movie_info = await queryHandler(pool, getMovieInfoQuery);

@@ -264,10 +264,29 @@ export const indexedToArray = ({
   return newArr;
 };
 
+/**
+ * @name convertSecToTime
+ * @desc convert seconds to time stamp
+ * @param {Number} sec The amount of seconds to convert
+ * const time = convertSecToTime(60); // 00:01:00
+ */
+export const convertSecToTime = sec => {
+  const hrs = Math.floor(sec / 3600);
+  const min = Math.floor((sec - hrs * 3600) / 60);
+  let seconds = sec - hrs * 3600 - min * 60;
+  seconds = Math.round(seconds * 100) / 100;
+
+  const hrsStr = hrs < 10 ? '0' + hrs : hrs;
+  const minStr = min < 10 ? '0' + min : min;
+  const secStr = seconds < 10 ? '0' + seconds : seconds;
+  return `${hrsStr}:${minStr}:${secStr}`;
+};
+
 export { createAction as actionCreator } from '@reduxjs/toolkit';
 
 export default {
   constructClass,
+  convertSecToTime,
   createActions,
   getCapitalized,
   getRequestMatch,

@@ -47,12 +47,12 @@ const tagsReducerTest = () =>
     it('Should create a new tag', () => {
       const action = {
         type: createTagsSuccess.type,
-        payload: [
-          {
+        payload: {
+          2: {
             tag: 'username',
             id: 2,
           },
-        ],
+        },
       };
       const mocked = mockStore({
         list: {
@@ -66,7 +66,7 @@ const tagsReducerTest = () =>
         mockStore({
           list: {
             ...mocked.list,
-            ...{ 2: { ...action.payload[0] } },
+            ...action.payload,
           },
         })
       );
@@ -108,12 +108,12 @@ const tagsReducerTest = () =>
     it('Should update a tag', () => {
       const action = {
         type: updateTagsSuccess.type,
-        payload: [
-          {
+        payload: {
+          2: {
             tag: 'updated',
             id: 2,
           },
-        ],
+        },
       };
       const mocked = mockStore({
         list: {
@@ -131,7 +131,7 @@ const tagsReducerTest = () =>
         mockStore({
           list: {
             ...mocked.list,
-            ...{ 2: { ...action.payload[0] } },
+            ...action.payload,
           },
         })
       );

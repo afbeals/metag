@@ -56,7 +56,7 @@ const moviesSagasTest = () =>
               // mock selector and api calls
               [
                 matchers.call.fn(api.movie.all),
-                { data: [{ movie_id: 1, name: 'adfa' }] },
+                { data: [{ movie_id: 1, movie_name: 'adfa' }] },
               ], // supply mock return data from api
             ])
             .withReducer(reducer)

@@ -63,12 +63,12 @@ const moviesReducerTest = () =>
       it(`Should set the movie updated/added when ${type}`, () => {
         const action = {
           type: type,
-          payload: [
-            {
+          payload: {
+            2: {
               name: 'new',
               id: 2,
             },
-          ],
+          },
         };
         const mocked = mockStore({
           list: {
@@ -86,7 +86,7 @@ const moviesReducerTest = () =>
           mockStore({
             list: {
               ...mocked.list,
-              ...{ 2: { ...action.payload[0] } },
+              ...action.payload,
             },
           })
         );

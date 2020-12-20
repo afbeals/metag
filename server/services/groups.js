@@ -29,7 +29,10 @@ const addGroup = async (pool, { body: { name, src_folder } }) => {
   const adGroupQuery = {
     text: `INSERT INTO ${groupsTable}(name, src_folder)
     VALUES($1, $2)
-    RETURNING *;`,
+    RETURNING *,
+    (SELECT count(*)::int AS amount
+      FROM ${moviesGroupsTable}
+      WHERE groups_id = ${groupsTable}.id );`,
     values: [name, srcFolder],
   };
 
@@ -56,7 +59,10 @@ const createGroup = async (pool, { body: { group } }) => {
       const query = {
         text: `INSERT INTO ${groupsTable}(name, src_folder)
             VALUES($1, $2)
-            RETURNING *;`,
+            RETURNING *,
+            (SELECT count(*)::int AS amount
+              FROM ${moviesGroupsTable}
+              WHERE groups_id = ${groupsTable}.id );`,
         values: [group, groupPathReplaced],
       };
       return queryHandler(pool, query);
@@ -70,7 +76,10 @@ const updateGroup = (pool, { body: { group, id } }) => {
     return Promise.reject({ message: 'missing required params' });
   const query = {
     text: `UPDATE ${groupsTable}
-          SET name = $1 WHERE id = $2 RETURNING *;`,
+          SET name = $1 WHERE id = $2 RETURNING *,
+          (SELECT count(*)::int AS amount
+            FROM ${moviesGroupsTable}
+            WHERE groups_id = ${groupsTable}.id );`,
     values: [group, id],
   };
   return queryHandler(pool, query);

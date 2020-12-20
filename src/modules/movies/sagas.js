@@ -262,7 +262,7 @@ export function* addMovie({ payload: request }) {
       fork(sagaRequest, {
         params: [api.movie.add, request],
         successActs: addSuccess,
-        successDataTrns: null,
+        successDataTrns: normalizeMoviesArray,
         failActs: addFail,
       }),
     ]);
@@ -318,7 +318,7 @@ export function* updateMovie({ payload: request }) {
       fork(sagaRequest, {
         params: [api.movie.update, request],
         successActs: updateSuccess,
-        successDataTrns: null,
+        successDataTrns: normalizeMoviesArray,
         failActs: updateFail,
       }),
     ]);

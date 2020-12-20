@@ -18,6 +18,12 @@ const {
       fail: getAllFail,
       cancel: getAllCancel,
     },
+    add: {
+      request: add,
+      success: addSuccess,
+      fail: addFail,
+      cancel: addCancel,
+    },
     create: {
       request: create,
       success: createSuccess,
@@ -42,6 +48,11 @@ const {
 // success generators
 function* getAllSuccesses() {
   yield all([take(getAllSuccess.type)]);
+  return true;
+}
+
+function* addSuccesses() {
+  yield all([take(addSuccess.type)]);
   return true;
 }
 
@@ -117,13 +128,41 @@ export function* categoriesDelete({ payload }) {
   }
 }
 
+export function* categoriesAdd({ payload }) {
+  try {
+    const apiCalls = yield all([
+      fork(sagaRequest, {
+        params: [api.cat.add, payload],
+        successActs: addSuccess,
+        successDataTrns: normalizeCategoriesArray,
+        failActs: addFail,
+      }),
+    ]);
+
+    const { cancelSagas, success } = yield race({
+      cancelSagas: take(addCancel.type),
+      success: addSuccesses(),
+    });
+
+    if (cancelSagas) {
+      for (let i = 0; i < apiCalls.length; i++) {
+        yield cancel(apiCalls[i]);
+      }
+    } else {
+      return success;
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 export function* categoriesUpdate({ payload }) {
   try {
     const apiCalls = yield all([
       fork(sagaRequest, {
         params: [api.cat.update, payload],
         successActs: updateSuccess,
-        successDataTrns: null,
+        successDataTrns: normalizeCategoriesArray,
         failActs: updateFail,
       }),
     ]);
@@ -151,7 +190,7 @@ export function* categoriesCreate({ payload }) {
       fork(sagaRequest, {
         params: [api.cat.create, payload],
         successActs: createSuccess,
-        successDataTrns: null,
+        successDataTrns: normalizeCategoriesArray,
         failActs: createFail,
       }),
     ]);
@@ -178,6 +217,10 @@ export function* watchReqForCreateCategories() {
   yield takeLatest(create.type, categoriesCreate);
 }
 
+export function* watchReqForAddCategories() {
+  yield takeLatest(add.type, categoriesAdd);
+}
+
 export function* watchReqForFetchAllCategories() {
   yield takeLatest(getAll.type, categoriesFetchAll);
 }
@@ -194,6 +237,7 @@ function* watcher() {
   yield all([
     watchReqForCreateCategories(),
     watchReqForFetchAllCategories(),
+    watchReqForAddCategories(),
     watchReqForDeleteCategories(),
     watchReqForUpdateCategories(),
   ]);

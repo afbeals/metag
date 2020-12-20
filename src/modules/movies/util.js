@@ -30,12 +30,15 @@ const moviesUtilityFuncs = {
    */
   normalizeMoviesArray: data =>
     arrayToIndexed({
-      array: data.map(({ movie_id, tag_ids, alt_group, ...rest }) => ({
-        ...rest,
-        alt_group: alt_group ? alt_group : [],
-        tag_ids: tag_ids ? tag_ids.split(',') : [],
-        id: movie_id,
-      })),
+      array: data.map(
+        ({ tag_ids, movie_name, movie_id, alt_group, ...rest }) => ({
+          ...rest,
+          name: movie_name,
+          tag_ids: tag_ids ? tag_ids : [],
+          alt_group: alt_group ? alt_group : [],
+          id: movie_id,
+        })
+      ),
     }),
 };
 

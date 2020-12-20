@@ -3,13 +3,13 @@ import styled from '@emotion/styled/macro';
 
 export const Reel = styled.div(({ movieSelected }) => ({
   height: '100vh',
-  'overflow-y': 'scroll',
-  'overflow-x': 'hidden',
+  overflowY: 'scroll',
+  overflowx: 'hidden',
   display: 'flex',
-  'flex-direction': 'row',
-  'justify-content': 'flex-start',
-  'align-items': 'flex-start',
-  'flex-wrap': 'wrap',
+  flexDirection: 'row',
+  justifyContent: 'flex-start',
+  alignItems: 'flex-start',
+  flexWrap: 'wrap',
   ...(movieSelected && {
     width: '25%',
   }),
