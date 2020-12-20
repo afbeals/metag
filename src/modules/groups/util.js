@@ -30,18 +30,10 @@ const groupsUtilityFuncs = {
   normalizeGroupsArray: groupArray =>
     arrayToIndexed({
       array: groupArray.map(
-        ({
-          id,
-          name,
-          created_at,
-          modified_at = null,
-          related_groups_ids = [],
-          amount,
-        }) => ({
+        ({ id, name, created_at, modified_at = null, amount }) => ({
           id,
           name,
           date: modified_at || created_at,
-          related: related_groups_ids,
           amount,
         })
       ),

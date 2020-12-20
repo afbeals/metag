@@ -12,11 +12,28 @@ const {
     getall: {
       request: getAll,
       cancel: getAllCancel,
-      _meta: { isFetched: getAllisFetched, getAllisFetching },
+      _meta: { isFetched: getAllisFetched, isFetching: getAllisFetching },
     },
-    create: { request: create, cancel: createCancel },
-    update: { request: update, cancel: updateCancel },
-    delete: { request: deleteReq, cancel: deleteReqCancel },
+    add: {
+      request: add,
+      cancel: addCancel,
+      _meta: { isFetching: addIsFetching },
+    },
+    create: {
+      request: create,
+      cancel: createCancel,
+      _meta: { isFetching: createIsFetching },
+    },
+    update: {
+      request: update,
+      cancel: updateCancel,
+      _meta: { isFetching: updateIsFetching },
+    },
+    delete: {
+      request: deleteReq,
+      cancel: deleteReqCancel,
+      _meta: { isFetching: deleteIsFetching },
+    },
     reset: resetCategories,
   },
 } = categoriesActions;
@@ -41,6 +58,16 @@ export const useCategoriesStore = () => {
     catAllIsFetching: useSelector(store =>
       fetchSelector(store, getAllisFetching)
     ),
+    catCreateIsFetching: useSelector(store =>
+      fetchSelector(store, createIsFetching)
+    ),
+    catUpdateIsFetching: useSelector(store =>
+      fetchSelector(store, updateIsFetching)
+    ),
+    catDeleteIsFetching: useSelector(store =>
+      fetchSelector(store, deleteIsFetching)
+    ),
+    catAddIsFetching: useSelector(store => fetchSelector(store, addIsFetching)),
     catAllIsFetched: useSelector(store =>
       fetchSelector(store, getAllisFetched)
     ),
@@ -49,10 +76,12 @@ export const useCategoriesStore = () => {
     catFetchCancel: () => dispatch(getAllCancel()),
     catCreate: info => dispatch(create(info)),
     catCreateCancel: () => dispatch(createCancel()),
-    catDelete: info => dispatch(update(info)),
-    catDeleteCancel: () => dispatch(updateCancel()),
-    catUpdate: info => dispatch(deleteReq(info)),
-    catUpdateCancel: () => dispatch(deleteReqCancel()),
+    catAdd: info => dispatch(add(info)),
+    catAddCancel: () => dispatch(addCancel()),
+    catUpdate: info => dispatch(update(info)),
+    catUpdateCancel: () => dispatch(updateCancel()),
+    catDelete: info => dispatch(deleteReq(info)),
+    catDeleteCancel: () => dispatch(deleteReqCancel()),
     catReset: () => dispatch(resetCategories()),
   };
 
@@ -61,9 +90,15 @@ export const useCategoriesStore = () => {
     catList: object,
     catListArray: array,
     catAllIsFetching: bool.isRequired,
+    catCreateIsFetching: bool.isRequired,
+    catUpdateIsFetching: bool.isRequired,
+    catDeleteIsFetching: bool.isRequired,
+    catAddIsFetching: bool.isRequired,
     catAllIsFetched: bool.isRequired,
     catFetch: func.isRequired,
     catFetchCancel: func.isRequired,
+    catAdd: func.isRequired,
+    catAddCancel: func.isRequired,
     catCreate: func.isRequired,
     catCreateCancel: func.isRequired,
     catDelete: func.isRequired,

@@ -6,11 +6,11 @@ import InputLabel from '@material-ui/core/InputLabel';
 // Internal
 import api from '~GlobalUtil/api';
 import { useGroupsHook } from '~Modules/groups/hooks';
-import { AddGroup as AddGroupStyled, Select, Input, Button } from './AddGroup_';
+import { Add as AddStyled, Select, Input, Button } from './Add_';
 
 // Constants
 
-const AddGroup = () => {
+const Add = () => {
   const { groupAddIsFetching, groupAdd } = useGroupsHook();
   const [availableGroups, updateAvailableGroups] = useState([]);
   const [editorValues, updateEditorValues] = useState({
@@ -41,9 +41,11 @@ const AddGroup = () => {
   };
 
   return (
-    <AddGroupStyled>
+    <AddStyled>
       <FormControl fullWidth variant='standard'>
-        <InputLabel htmlFor='editor-add-group-available'>Category:</InputLabel>
+        <InputLabel htmlFor='editor-add-group-available'>
+          Available Groups:
+        </InputLabel>
         <Select
           label='Available Groups:'
           value={editorValues.src_folder}
@@ -87,11 +89,11 @@ const AddGroup = () => {
       >
         Add Movie
       </Button>
-    </AddGroupStyled>
+    </AddStyled>
   );
 };
 
-AddGroup.defaultProps = {};
-AddGroup.propTypes = {};
+Add.defaultProps = {};
+Add.propTypes = {};
 
-export default AddGroup;
+export default Add;

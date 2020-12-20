@@ -47,7 +47,6 @@ const groupsSagasTest = () =>
                       id: 1,
                       name: 'adfa',
                       modified_at: 1,
-                      related_groups_ids: [],
                       amount: 0,
                     },
                   ],
@@ -58,13 +57,13 @@ const groupsSagasTest = () =>
             .hasFinalState(
               util.buildMockStore({
                 list: {
-                  1: { id: 1, name: 'adfa', date: 1, related: [], amount: 0 },
+                  1: { id: 1, name: 'adfa', date: 1, amount: 0 },
                 },
               })
             )
             .put(
               getAllSuccess({
-                1: { id: 1, name: 'adfa', date: 1, related: [], amount: 0 },
+                1: { id: 1, name: 'adfa', date: 1, amount: 0 },
               })
             ) // eventual action that will be called
             .dispatch(getAll()) // dispatch action that starts saga
@@ -111,17 +110,17 @@ const groupsSagasTest = () =>
               // mock selector and api calls
               [
                 matchers.call.fn(api.group.add, request),
-                { data: [{ id: 1, name: '12' }] },
+                { data: [{ id: 1, name: '12', created_at: '', amount: 0 }] },
               ], // supply mock return data from api
             ])
             .withReducer(reducer)
             .withState(util.buildInitialStore())
             .hasFinalState(
               util.buildMockStore({
-                list: { 1: { id: 1, name: '12' } },
+                list: { 1: { id: 1, name: '12', date: '', amount: 0 } },
               })
             )
-            .put(addSuccess([{ id: 1, name: '12' }])) // eventual action that will be called
+            .put(addSuccess({ 1: { id: 1, name: '12', date: '', amount: 0 } })) // eventual action that will be called
             .dispatch(add(request)) // dispatch action that starts saga
             .run();
         });
@@ -169,17 +168,19 @@ const groupsSagasTest = () =>
               // mock selector and api calls
               [
                 matchers.call.fn(api.group.create, request),
-                { data: [{ id: 1, name: '12' }] },
+                { data: [{ id: 1, name: '12', created_at: '', amount: 0 }] },
               ], // supply mock return data from api
             ])
             .withReducer(reducer)
             .withState(util.buildInitialStore())
             .hasFinalState(
               util.buildMockStore({
-                list: { 1: { id: 1, name: '12' } },
+                list: { 1: { id: 1, name: '12', date: '', amount: 0 } },
               })
             )
-            .put(createSuccess([{ id: 1, name: '12' }])) // eventual action that will be called
+            .put(
+              createSuccess({ 1: { id: 1, name: '12', date: '', amount: 0 } })
+            ) // eventual action that will be called
             .dispatch(create(request)) // dispatch action that starts saga
             .run();
         });
@@ -229,20 +230,22 @@ const groupsSagasTest = () =>
               [
                 matchers.call.fn(api.group.update, request),
                 {
-                  data: [request],
+                  data: [{ ...request, created_at: '', amount: 0 }],
                 },
               ], // supply mock return data from api
             ])
             .withReducer(reducer)
             .withState(
-              util.buildMockStore({ list: { 1: { id: 1, name: 'data1' } } })
+              util.buildMockStore({
+                list: { 1: { id: 1, name: 'data1', date: '', amount: 0 } },
+              })
             )
             .hasFinalState(
               util.buildMockStore({
-                list: { 1: request },
+                list: { 1: { ...request, date: '', amount: 0 } },
               })
             )
-            .put(updateSuccess([request])) // eventual action that will be called
+            .put(updateSuccess({ 1: { ...request, date: '', amount: 0 } })) // eventual action that will be called
             .dispatch(update(request)) // dispatch action that starts saga
             .run();
         });

@@ -97,6 +97,7 @@
     "inquirer": "^7.3.3",
     "jest-html-reporters": "^2.1.0",
     "material-design-icons": "^3.0.1",
+    "node-postgres-named": "^2.4.1",
     "nodemon": "^2.0.6",
     "pg": "^8.4.2",
     "prettier": "^2.1.2",

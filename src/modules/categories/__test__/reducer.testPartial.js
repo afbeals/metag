@@ -47,12 +47,12 @@ const categoriesReducerTest = () =>
     it('Should create a new name', () => {
       const action = {
         type: createCategoriesSuccess.type,
-        payload: [
-          {
+        payload: {
+          2: {
             name: 'username',
             id: 2,
           },
-        ],
+        },
       };
       const mocked = mockStore({
         list: {
@@ -66,7 +66,7 @@ const categoriesReducerTest = () =>
         mockStore({
           list: {
             ...mocked.list,
-            ...{ 2: { ...action.payload[0] } },
+            ...action.payload,
           },
         })
       );
@@ -108,12 +108,12 @@ const categoriesReducerTest = () =>
     it('Should update a name', () => {
       const action = {
         type: updateCategoriesSuccess.type,
-        payload: [
-          {
+        payload: {
+          2: {
             name: 'updated',
             id: 2,
           },
-        ],
+        },
       };
       const mocked = mockStore({
         list: {
@@ -131,7 +131,7 @@ const categoriesReducerTest = () =>
         mockStore({
           list: {
             ...mocked.list,
-            ...{ 2: { ...action.payload[0] } },
+            ...action.payload,
           },
         })
       );

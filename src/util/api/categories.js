@@ -28,6 +28,20 @@ const categoriesAPI = {
   },
 
   /**
+   * @desc api request to add category from dir
+   * @method add
+   * @param {object} catData
+   * @param {string} catData.name the category to create
+   * @param {string} catData.src_folder the source in the dir
+   * @return {object} return data from query
+   */
+  add: async catData => {
+    const response = await axios.post(constants.API.CATEGORIES.ADD, catData);
+    const data = await response;
+    return data;
+  },
+
+  /**
    * @desc api request to create category
    * @method create
    * @param {object} catData

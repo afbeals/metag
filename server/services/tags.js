@@ -15,7 +15,10 @@ const createTag = (pool, { body: { tag } }) => {
     text: `INSERT INTO ${tagsTable}(name)
            VALUES($1)
            ON CONFLICT (name) DO NOTHING
-           RETURNING *;`,
+           RETURNING *,
+           (SELECT count(*) AS amount
+            FROM ${movieTagsTable}
+            WHERE tags_id = ${tagsTable}.id );`,
     values: [tag],
   };
   return queryHandler(pool, query);
@@ -28,7 +31,10 @@ const updateTag = (pool, { body: { tag, id } }) => {
     text: `UPDATE ${tagsTable}
           SET name = $1
           WHERE id = $2
-          RETURNING *;`,
+          RETURNING *,
+          (SELECT count(*) AS amount
+           FROM ${movieTagsTable}
+           WHERE tags_id = ${tagsTable}.id );`,
     values: [tag, id],
   };
   return queryHandler(pool, query);

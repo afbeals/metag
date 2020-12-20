@@ -37,9 +37,21 @@ const {
       _meta: { isFetching: movieSearchIsFetching },
     },
     select: { movie: selectMovie },
-    add: { request: addReq, cancel: addCancel },
-    delete: { request: deleteReq, cancel: deleteCancel },
-    update: { request: updateReq, cancel: updateCancel },
+    add: {
+      request: addReq,
+      cancel: addCancel,
+      _meta: { isFetching: addIsFetching },
+    },
+    delete: {
+      request: deleteReq,
+      cancel: deleteCancel,
+      _meta: { isFetching: deleteIsFetching },
+    },
+    update: {
+      request: updateReq,
+      cancel: updateCancel,
+      _meta: { isFetching: updateIsFetching },
+    },
   },
 } = actions;
 // Constants
@@ -77,6 +89,15 @@ export const useMovies = () => {
     movieSearchIsFetching: useSelector(store =>
       fetchSelector(store, movieSearchIsFetching)
     ),
+    movieAddIsFetching: useSelector(store =>
+      fetchSelector(store, addIsFetching)
+    ),
+    movieDeleteIsFetching: useSelector(store =>
+      fetchSelector(store, deleteIsFetching)
+    ),
+    movieUpdateIsFetching: useSelector(store =>
+      fetchSelector(store, updateIsFetching)
+    ),
     // actions
     movieFetch: () => dispatch(allReq()),
     movieFetchCancel: () => dispatch(allCancel()),
@@ -92,9 +113,9 @@ export const useMovies = () => {
     movieSelect: info => dispatch(selectMovie(info)),
     movieAdd: () => dispatch(addReq()),
     movieAddCancel: () => dispatch(addCancel()),
-    movieDelete: () => dispatch(deleteReq()),
+    movieDelete: info => dispatch(deleteReq(info)),
     movieDeleteCancel: () => dispatch(deleteCancel()),
-    movieUpdate: () => dispatch(updateReq()),
+    movieUpdate: info => dispatch(updateReq(info)),
     movieUpdateCancel: () => dispatch(updateCancel()),
   };
 
@@ -109,6 +130,9 @@ export const useMovies = () => {
     movieUnderGroupIsFetching: bool.isRequired,
     movieUnderCatIsFetching: bool.isRequired,
     movieUnderTagIsFetching: bool.isRequired,
+    movieAddIsFetching: bool.isRequired,
+    movieDeleteIsFetching: bool.isRequired,
+    movieUpdateIsFetching: bool.isRequired,
     movieAllIsFetching: bool.isRequired,
     movieAllIsFetched: bool.isRequired,
     // actions

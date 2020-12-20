@@ -5,9 +5,11 @@ import { takeLatest, all, fork, race, take, cancel } from 'redux-saga/effects';
 import tagsActions from './actions';
 import api from '~GlobalUtil/api';
 import { normalize } from '~GlobalUtil/';
+import groupsUtil from './util';
 
 // Constants
-const { sagaRequest, arrayToIndexed } = normalize;
+const { sagaRequest } = normalize;
+const { normalizeTagsArray } = groupsUtil;
 const {
   tags: {
     get: {
@@ -61,12 +63,11 @@ function* updateTagsSuccesses() {
 // Series Generators
 export function* tagsFetch() {
   try {
-    const indexedList = data => arrayToIndexed({ array: data });
     const apiCalls = yield all([
       fork(sagaRequest, {
         params: [api.tags.fetch],
         successActs: [getTagsSuccess],
-        successDataTrns: indexedList,
+        successDataTrns: normalizeTagsArray,
         failActs: getTagsFail,
       }),
     ]);
@@ -122,7 +123,7 @@ export function* tagsUpdate({ payload }) {
       fork(sagaRequest, {
         params: [api.tags.update, payload],
         successActs: updateTagsSuccess,
-        successDataTrns: null,
+        successDataTrns: normalizeTagsArray,
         failActs: updateTagsFail,
       }),
     ]);
@@ -150,7 +151,7 @@ export function* tagsCreate({ payload }) {
       fork(sagaRequest, {
         params: [api.tags.create, payload],
         successActs: createTagsSuccess,
-        successDataTrns: null,
+        successDataTrns: normalizeTagsArray,
         failActs: createTagsFail,
       }),
     ]);

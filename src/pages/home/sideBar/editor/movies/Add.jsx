@@ -14,14 +14,14 @@ import { useTagsStore } from '~Modules/tags/hooks';
 import { useMovies } from '~Modules/movies/hooks';
 import constants from '~GlobalUtil/constants';
 import {
-  AddMovie as AddMovieStyled,
+  Add as AddStyled,
   Input,
   Select,
   Button,
   MovieSelector,
   MenuItem,
   TextField,
-} from './AddMovie_';
+} from './Add_';
 
 // Constants
 const {
@@ -31,7 +31,7 @@ const {
   },
 } = constants;
 
-const AddMovie = () => {
+const Add = () => {
   const [showMovie, updateShowMovie] = useState(false);
   const [availableMovies, updateAvailabeMovies] = useState([]);
   const [editorValues, updateEditorValues] = useState({
@@ -151,7 +151,7 @@ const AddMovie = () => {
   }, [editorValues.category_id, editorValues.primary_group]);
 
   return (
-    <AddMovieStyled>
+    <AddStyled>
       <FormControl fullWidth variant='standard'>
         <InputLabel htmlFor='editor-add-movie-groups'>Groups:</InputLabel>
         <Select
@@ -341,11 +341,11 @@ const AddMovie = () => {
       >
         Add Movie
       </Button>
-    </AddMovieStyled>
+    </AddStyled>
   );
 };
 
-AddMovie.defaultProps = {};
-AddMovie.propTypes = {};
+Add.defaultProps = {};
+AddStyled.propTypes = {};
 
-export default AddMovie;
+export default Add;

@@ -10,29 +10,29 @@ import {
 } from '~Styles/abstract/_variables';
 
 export const SideBar = styled.div(() => ({
-  'flex-grow': '1',
-  'font-size': '1rem',
-  'box-shadow': `2px 0px 11px 1px ${black}`,
+  flexGrow: '1',
+  fontSize: '1rem',
+  bowShadow: `2px 0px 11px 1px ${black}`,
   display: 'flex',
-  'flex-direction': 'row',
-  'align-items': 'center',
+  flexDirection: 'row',
+  alignItems: 'center',
   background: '#ebebeb',
   width: 'fit-content',
 }));
 
 export const SelectorIcon = styled.div(({ selected }) => ({
   display: 'flex',
-  'flex-direction': 'column',
-  'align-items': 'center',
-  'justify-content': 'center',
-  'text-transform': 'capitalize',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+  textTransform: 'capitalize',
   width: '100%',
   padding: '5px 10px',
   cursor: 'pointer',
   outline: 'none',
   transition: `all ${animSpeed}s`,
   p: {
-    'font-size': '.75em',
+    fontSize: '.75em',
     ...(selected && { color: fontColorSecondary }),
   },
   ':hover': {
@@ -44,31 +44,31 @@ export const SelectorIcon = styled.div(({ selected }) => ({
 }));
 
 export const Selector = styled.div(() => ({
-  'font-size': '1em',
+  fontSize: '1em',
   height: '100%',
   display: 'flex',
-  'flex-direction': 'column',
+  flexDirection: 'column',
   background: primaryLight,
   width: 'fit-content',
 }));
 
 export const SelectorBottom = styled.div(() => ({
   display: 'flex',
-  'align-items': 'center',
-  'justify-content': 'center',
+  alignItems: 'center',
+  justifyContent: 'center',
   opacity: '1',
   '.hide': {
-    'pointer-events': 'none',
+    pointerEvents: 'none',
     opacity: '0',
   },
 }));
 
 export const SelectorMain = styled.div(() => ({
-  'flex-grow': '1',
+  flexGrow: '1',
   display: 'flex',
-  'flex-direction': 'column',
-  'align-items': 'center',
-  'justify-content': 'center',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
 }));
 
 export const List = styled.div(({ isOpen }) => ({

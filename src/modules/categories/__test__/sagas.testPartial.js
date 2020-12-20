@@ -96,17 +96,17 @@ const categoriesSagasTest = () =>
               // mock selector and api calls
               [
                 matchers.call.fn(api.cat.create, request),
-                { data: [{ id: 1, name: '12' }] },
+                { data: [{ id: 1, name: '12', created_at: '' }] },
               ], // supply mock return data from api
             ])
             .withReducer(reducer)
             .withState(util.buildInitialStore())
             .hasFinalState(
               util.buildMockStore({
-                list: { 1: { id: 1, name: '12' } },
+                list: { 1: { id: 1, name: '12', date: '' } },
               })
             )
-            .put(createSuccess([{ id: 1, name: '12' }])) // eventual action that will be called
+            .put(createSuccess({ 1: { id: 1, name: '12', date: '' } })) // eventual action that will be called
             .dispatch(create(request)) // dispatch action that starts saga
             .run();
         });
@@ -156,20 +156,22 @@ const categoriesSagasTest = () =>
               [
                 matchers.call.fn(api.cat.update, request),
                 {
-                  data: [request],
+                  data: [{ ...request, created_at: '' }],
                 },
               ], // supply mock return data from api
             ])
             .withReducer(reducer)
             .withState(
-              util.buildMockStore({ list: { 1: { id: 1, name: 'data1' } } })
+              util.buildMockStore({
+                list: { 1: { id: 1, name: 'data1', date: '' } },
+              })
             )
             .hasFinalState(
               util.buildMockStore({
-                list: { 1: request },
+                list: { 1: { ...request, date: '' } },
               })
             )
-            .put(updateSuccess([request])) // eventual action that will be called
+            .put(updateSuccess({ 1: { ...request, date: '' } })) // eventual action that will be called
             .dispatch(update(request)) // dispatch action that starts saga
             .run();
         });

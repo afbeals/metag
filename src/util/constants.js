@@ -21,6 +21,7 @@ const constants = {
     CATEGORIES: {
       CREATE: `/createCategory`,
       DELETE: `/deleteCategory`,
+      ADD: `/addCategory`,
       FETCH_ALL: `/getAllCategories`,
       FETCH_AVAIL: `/getAvailableCategories`,
       UPDATE: `/updateCategory`,

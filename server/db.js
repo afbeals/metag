@@ -2,6 +2,7 @@
 import env from 'dotenv';
 import path from 'path';
 import { Pool } from 'pg';
+import named from 'node-postgres-named';
 
 // Internal
 const envFilePath = path.join(__dirname, '../.env.local');
@@ -26,7 +27,7 @@ const createPool = () => {
     password: SERVER_PASSWORD,
     port: SERVER_DB_PORT,
   });
-
+  named.patch(pool);
   return pool;
 };
 

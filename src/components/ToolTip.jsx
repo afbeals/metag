@@ -69,7 +69,7 @@ const ChildWrapper = styled.div`
   &.left {
     right: calc(100% + 18px);
     .arrow {
-      left: -8px;
+      right: -8px;
       border-left: 10px solid ${secondaryLight};
     }
   }

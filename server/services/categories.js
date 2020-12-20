@@ -13,6 +13,32 @@ const {
 } = process.env;
 
 // Queries
+// post add category (db only)
+const addCategory = async (pool, { body: { name, src_folder } }) => {
+  // adjust src folder spaces, update existing folder
+  let srcFolder = src_folder;
+  if (srcFolder.includes(' ')) {
+    const re = new RegExp(/\s/, 'g');
+    const replacedSrc = srcFolder.replace(re, '_');
+    const oldPath = path.join(adPath, srcFolder);
+    const newPath = path.join(adPath, replacedSrc);
+    await fs.rename(oldPath, newPath);
+    srcFolder = replacedSrc;
+  }
+
+  const adCatQuery = {
+    text: `INSERT INTO ${categoriesTable}(name, src_folder)
+    VALUES($1, $2)
+    RETURNING *,
+    (SELECT count(*)::int AS amount
+      FROM ${moviesCatTable}
+      WHERE categories_id = ${categoriesTable}.id );`,
+    values: [name, srcFolder],
+  };
+
+  return queryHandler(pool, adCatQuery);
+};
+
 // post create category (db and folder)
 const createCategory = async (pool, { body: { category } }) => {
   const checkDbQuery = {
@@ -33,7 +59,10 @@ const createCategory = async (pool, { body: { category } }) => {
       const query = {
         text: `INSERT INTO ${categoriesTable}(name, src_folder)
             VALUES($1, $2)
-            RETURNING *;`,
+            RETURNING *,
+            (SELECT count(*)::int AS amount
+              FROM ${moviesCatTable}
+              WHERE categories_id = ${categoriesTable}.id );`,
         values: [category, normalizedCat],
       };
       return queryHandler(pool, query);
@@ -47,7 +76,10 @@ const updateCategory = (pool, { body: { category, id } }) => {
     return Promise.reject({ message: 'missing required params' });
   const query = {
     text: `UPDATE ${categoriesTable}
-          SET name = $1 WHERE id = $2 RETURNING *;`,
+          SET name = $1 WHERE id = $2 RETURNING *,
+          (SELECT count(*)::int AS amount
+            FROM ${moviesCatTable}
+            WHERE categories_id = ${categoriesTable}.id );`,
     values: [category, id],
   };
   return queryHandler(pool, query);
@@ -126,6 +158,7 @@ const getAvailableCategories = async pool => {
 };
 
 export default {
+  addCategory,
   createCategory,
   deleteCategory,
   getAllCategories,

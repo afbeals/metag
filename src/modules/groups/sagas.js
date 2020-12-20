@@ -134,7 +134,7 @@ export function* groupsUpdate({ payload }) {
       fork(sagaRequest, {
         params: [api.group.update, payload],
         successActs: updateSuccess,
-        successDataTrns: null,
+        successDataTrns: normalizeGroupsArray,
         failActs: updateFail,
       }),
     ]);
@@ -162,7 +162,7 @@ export function* groupsAdd({ payload }) {
       fork(sagaRequest, {
         params: [api.group.add, payload],
         successActs: addSuccess,
-        successDataTrns: null,
+        successDataTrns: normalizeGroupsArray,
         failActs: addFail,
       }),
     ]);
@@ -190,7 +190,7 @@ export function* groupsCreate({ payload }) {
       fork(sagaRequest, {
         params: [api.group.create, payload],
         successActs: createSuccess,
-        successDataTrns: null,
+        successDataTrns: normalizeGroupsArray,
         failActs: createFail,
       }),
     ]);
