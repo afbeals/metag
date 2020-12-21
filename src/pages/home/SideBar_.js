@@ -6,13 +6,13 @@ import {
   animSpeed,
   primaryLight,
   fontColorSecondary,
-  black,
+  colorBlack,
 } from '~Styles/abstract/_variables';
 
 export const SideBar = styled.div(() => ({
   flexGrow: '1',
   fontSize: '1rem',
-  bowShadow: `2px 0px 11px 1px ${black}`,
+  bowShadow: `2px 0px 11px 1px ${colorBlack}`,
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',

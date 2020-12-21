@@ -63,7 +63,7 @@ const tagsSagasTest = () =>
             )
             .put(getTagsSuccess({ 1: { id: 1, tag: 'adfa', date: '' } })) // eventual action that will be called
             .dispatch(getTags()) // dispatch action that starts saga
-            .run());
+            .silentRun());
 
         it('Should fail ', () =>
           expectSaga(tagsSagas.tagsFetch)
@@ -79,7 +79,7 @@ const tagsSagasTest = () =>
             .hasFinalState(util.buildInitialStore())
             .put(getTagsFail('Error occured'))
             .dispatch(getTags())
-            .run());
+            .silentRun());
       });
     });
 
@@ -116,7 +116,7 @@ const tagsSagasTest = () =>
             )
             .put(createTagsSuccess({ 1: { id: 1, tag: '12', date: '' } })) // eventual action that will be called
             .dispatch(createTags(request)) // dispatch action that starts saga
-            .run();
+            .silentRun();
         });
 
         it('Should fail ', () =>
@@ -133,7 +133,7 @@ const tagsSagasTest = () =>
             .hasFinalState(util.buildInitialStore())
             .put(createTagsFail('Error occured'))
             .dispatch(createTags())
-            .run());
+            .silentRun());
       });
     });
 
@@ -177,7 +177,7 @@ const tagsSagasTest = () =>
             )
             .put(updateTagsSuccess({ 1: { ...request, date: '' } })) // eventual action that will be called
             .dispatch(updateTags(request)) // dispatch action that starts saga
-            .run();
+            .silentRun();
         });
 
         it('Should fail ', () =>
@@ -194,7 +194,7 @@ const tagsSagasTest = () =>
             .hasFinalState(util.buildInitialStore())
             .put(updateTagsFail('Error occured')) // eventual action that will be called
             .dispatch(updateTags({ id: 1, tag: 'tag' })) // dispatch action that starts saga
-            .run());
+            .silentRun());
       });
     });
 
@@ -230,7 +230,7 @@ const tagsSagasTest = () =>
             )
             .put(deleteTagsSuccess(1)) // eventual action that will be called
             .dispatch(deleteTags(request)) // dispatch action that starts saga
-            .run();
+            .silentRun();
         });
 
         it('Should fail ', () =>
@@ -256,7 +256,7 @@ const tagsSagasTest = () =>
             )
             .put(deleteTagsFail('Error occured')) // eventual action that will be called
             .dispatch(deleteTags({ id: 2 })) // dispatch action that starts saga
-            .run());
+            .silentRun());
       });
     });
   });

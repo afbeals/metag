@@ -14,7 +14,7 @@ import { actions as groupsActions } from '~Modules/groups/';
 import { util as movieUtil } from '~Modules/movies/';
 import { util as catUtil } from '~Modules/categories/';
 import { util as groupsUtil } from '~Modules/groups/';
-import { theme as AppTheme, Overlay } from '~Components/';
+import { theme as AppTheme, Overlay, Snackbar } from '~Components/';
 import { api, normalize } from '~GlobalUtil';
 import '~Styles/main.scss';
 
@@ -92,6 +92,7 @@ const App = () => {
       <div id='app'>
         {isLoaded && <Home />}
         <Overlay text='Loading App...' />
+        <Snackbar />
       </div>
     </AppTheme>
   );

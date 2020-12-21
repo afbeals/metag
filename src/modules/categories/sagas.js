@@ -1,15 +1,29 @@
 // External
-import { takeLatest, all, fork, race, take, cancel } from 'redux-saga/effects';
+import {
+  takeLatest,
+  all,
+  fork,
+  race,
+  take,
+  cancel,
+  put,
+} from 'redux-saga/effects';
 
 // Internal
 import categoriesActions from './actions';
 import api from '~GlobalUtil/api';
 import normalize from '~GlobalUtil/normalize';
 import catUtil from './util';
+import appActions from '~Modules/app/actions';
 
 // Constants
 const { sagaRequest } = normalize;
 const { normalizeCategoriesArray } = catUtil;
+const {
+  app: {
+    notify: { show },
+  },
+} = appActions;
 const {
   categories: {
     getall: {
@@ -96,7 +110,7 @@ export function* categoriesFetchAll() {
       return success;
     }
   } catch (e) {
-    console.log(e);
+    yield put(show({ message: 'Error Fetching Categories', type: 'error' }));
   }
 }
 
@@ -124,7 +138,7 @@ export function* categoriesDelete({ payload }) {
       return success;
     }
   } catch (e) {
-    console.log(e);
+    yield put(show({ message: 'Error Deleting Categories', type: 'error' }));
   }
 }
 
@@ -152,7 +166,7 @@ export function* categoriesAdd({ payload }) {
       return success;
     }
   } catch (e) {
-    console.log(e);
+    yield put(show({ message: 'Error Adding Categories', type: 'error' }));
   }
 }
 
@@ -180,7 +194,7 @@ export function* categoriesUpdate({ payload }) {
       return success;
     }
   } catch (e) {
-    console.log(e);
+    yield put(show({ message: 'Error Updating Categories', type: 'error' }));
   }
 }
 
@@ -208,7 +222,7 @@ export function* categoriesCreate({ payload }) {
       return success;
     }
   } catch (e) {
-    console.log(e);
+    yield put(show({ message: 'Error Creating Category', type: 'error' }));
   }
 }
 

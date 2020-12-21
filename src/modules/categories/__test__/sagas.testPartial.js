@@ -53,7 +53,7 @@ const categoriesSagasTest = () =>
               getAllSuccess({ 1: { id: 1, name: 'adfa', date: 1, amount: 0 } })
             ) // eventual action that will be called
             .dispatch(getAll()) // dispatch action that starts saga
-            .run());
+            .silentRun());
 
         it('Should fail ', () =>
           expectSaga(categoriesSagas.categoriesFetchAll)
@@ -69,7 +69,7 @@ const categoriesSagasTest = () =>
             .hasFinalState(util.buildInitialStore())
             .put(getAllFail('Error occured'))
             .dispatch(getAll())
-            .run());
+            .silentRun());
       });
     });
 
@@ -108,7 +108,7 @@ const categoriesSagasTest = () =>
             )
             .put(createSuccess({ 1: { id: 1, name: '12', date: '' } })) // eventual action that will be called
             .dispatch(create(request)) // dispatch action that starts saga
-            .run();
+            .silentRun();
         });
 
         it('Should fail ', () =>
@@ -127,7 +127,7 @@ const categoriesSagasTest = () =>
             .hasFinalState(util.buildInitialStore())
             .put(createFail('Error occured'))
             .dispatch(create())
-            .run());
+            .silentRun());
       });
     });
 
@@ -173,7 +173,7 @@ const categoriesSagasTest = () =>
             )
             .put(updateSuccess({ 1: { ...request, date: '' } })) // eventual action that will be called
             .dispatch(update(request)) // dispatch action that starts saga
-            .run();
+            .silentRun();
         });
 
         it('Should fail ', () =>
@@ -190,7 +190,7 @@ const categoriesSagasTest = () =>
             .hasFinalState(util.buildInitialStore())
             .put(updateFail('Error occured')) // eventual action that will be called
             .dispatch(update({ id: 1, name: 'tag' })) // dispatch action that starts saga
-            .run());
+            .silentRun());
       });
     });
 
@@ -228,7 +228,7 @@ const categoriesSagasTest = () =>
             )
             .put(deleteSuccess(1)) // eventual action that will be called
             .dispatch(deleteReq(request)) // dispatch action that starts saga
-            .run();
+            .silentRun();
         });
 
         it('Should fail ', () =>
@@ -254,7 +254,7 @@ const categoriesSagasTest = () =>
             )
             .put(deleteFail('Error occured')) // eventual action that will be called
             .dispatch(deleteReq({ id: 2 })) // dispatch action that starts saga
-            .run());
+            .silentRun());
       });
     });
   });

@@ -56,24 +56,24 @@ const moviesSagasTest = () =>
               // mock selector and api calls
               [
                 matchers.call.fn(api.movie.all),
-                { data: [{ movie_id: 1, movie_name: 'adfa' }] },
+                { data: [{ movie_id: 2, movie_name: 'adfa' }] },
               ], // supply mock return data from api
             ])
             .withReducer(reducer)
             .hasFinalState(
               util.buildMockStore({
                 list: {
-                  1: { id: 1, name: 'adfa', tag_ids: [], alt_group: [] },
+                  2: { id: 2, name: 'adfa', tag_ids: [], alt_group: [] },
                 },
               })
             )
             .put(
               allSuccess({
-                1: { id: 1, name: 'adfa', tag_ids: [], alt_group: [] },
+                2: { id: 2, name: 'adfa', tag_ids: [], alt_group: [] },
               })
             ) // eventual action that will be called
             .dispatch(allReq()) // dispatch action that starts saga
-            .run());
+            .silentRun());
 
         it('Should fail ', () =>
           expectSaga(moviesSagas.fetchAll)
@@ -89,7 +89,7 @@ const moviesSagasTest = () =>
             .hasFinalState(util.buildInitialStore())
             .put(allFail('Error occured'))
             .dispatch(allReq())
-            .run());
+            .silentRun());
       });
     });
 
@@ -106,30 +106,43 @@ const moviesSagasTest = () =>
 
       describe('Section Series: ', () => {
         it('Should be successful ', () => {
-          const request = { category: 1 };
+          const request = { group: 1 };
           expectSaga(moviesSagas.fetchUnderGroup, { payload: request }) // promise/generator
             .provide([
               // mock selector and api calls
               [
                 matchers.call.fn(api.movie.underGroup, request),
-                { data: [{ movie_id: 1, name: 'adfa' }] },
+                {
+                  data: [
+                    {
+                      movie_id: 1,
+                      movie_name: 'adfa',
+                      alt_group: [],
+                      tag_ids: [],
+                    },
+                  ],
+                },
               ], // supply mock return data from api
             ])
             .withReducer(reducer)
             .hasFinalState(
               util.buildMockStore({
-                list: { 1: { id: 1, name: 'adfa', alt_group: [] } },
+                list: {
+                  1: { id: 1, name: 'adfa', alt_group: [], tag_ids: [] },
+                },
               })
             )
             .put(
-              underGroupSuccess({ 1: { id: 1, name: 'adfa', alt_group: [] } })
+              underGroupSuccess({
+                1: { id: 1, name: 'adfa', alt_group: [], tag_ids: [] },
+              })
             ) // eventual action that will be called
             .dispatch(underGroup(request)) // dispatch action that starts saga
-            .run();
+            .silentRun();
         });
 
-        it.skip('Should fail ', () =>
-          expectSaga(moviesSagas.fetchUnderGroup, { payload: { tag: '12' } })
+        it('Should fail ', () =>
+          expectSaga(moviesSagas.fetchUnderGroup, { payload: { group: '12' } })
             .provide([
               [
                 matchers.call.fn(api.movie.underGroup),
@@ -141,8 +154,8 @@ const moviesSagasTest = () =>
             .withReducer(reducer)
             .hasFinalState(util.buildInitialStore())
             .put(underGroupFail('Error occured'))
-            .dispatch(underGroup())
-            .run());
+            .dispatch(underGroup({ group: '12' }))
+            .silentRun());
       });
     });
 
@@ -165,7 +178,16 @@ const moviesSagasTest = () =>
               // mock selector and api calls
               [
                 matchers.call.fn(api.movie.underCat, request),
-                { data: [{ movie_id: 1, name: 'adfa' }] },
+                {
+                  data: [
+                    {
+                      movie_id: 1,
+                      movie_name: 'adfa',
+                      alt_group: [],
+                      tag_ids: [],
+                    },
+                  ],
+                },
               ], // supply mock return data from api
             ])
             .withReducer(reducer)
@@ -182,10 +204,10 @@ const moviesSagasTest = () =>
               })
             ) // eventual action that will be called
             .dispatch(under_catReq(request)) // dispatch action that starts saga
-            .run();
+            .silentRun();
         });
 
-        it.skip('Should fail ', () =>
+        it('Should fail ', () =>
           expectSaga(moviesSagas.fetchUnderCat, { payload: { tag: '12' } })
             .provide([
               [
@@ -199,7 +221,7 @@ const moviesSagasTest = () =>
             .hasFinalState(util.buildInitialStore())
             .put(under_catFail('Error occured'))
             .dispatch(under_catReq())
-            .run());
+            .silentRun());
       });
     });
 
@@ -222,21 +244,41 @@ const moviesSagasTest = () =>
               // mock selector and api calls
               [
                 matchers.call.fn(api.movie.underTag, request),
-                { data: [{ id: 1, name: 'adfa' }] },
+                {
+                  data: [
+                    {
+                      movie_id: 1,
+                      movie_name: 'adfa',
+                      alt_group: [],
+                      tag_ids: [],
+                    },
+                  ],
+                },
               ], // supply mock return data from api
             ])
             .withReducer(reducer)
             .hasFinalState(
               util.buildMockStore({
-                list: { 1: { id: 1, name: 'adfa' } },
+                list: {
+                  1: { id: 1, name: 'adfa', tag_ids: [], alt_group: [] },
+                },
               })
             )
-            .put(under_tagSuccess([{ id: 1, name: 'adfa' }])) // eventual action that will be called
+            .put(
+              under_tagSuccess({
+                1: {
+                  id: 1,
+                  name: 'adfa',
+                  tag_ids: [],
+                  alt_group: [],
+                },
+              })
+            ) // eventual action that will be called
             .dispatch(under_tagReq(request)) // dispatch action that starts saga
-            .run();
+            .silentRun();
         });
 
-        it.skip('Should fail ', () =>
+        it('Should fail ', () =>
           expectSaga(moviesSagas.fetchUnderTag, { payload: {} })
             .provide([
               [
@@ -251,7 +293,7 @@ const moviesSagasTest = () =>
             .hasFinalState({ list: null, selectedId: null, search: null })
             .put(under_tagFail('Error occured'))
             .dispatch(under_tagReq({ payload: {} }))
-            .run());
+            .silentRun());
       });
     });
 
@@ -274,23 +316,36 @@ const moviesSagasTest = () =>
               // mock selector and api calls
               [
                 matchers.call.fn(api.movie.search, request),
-                { data: [{ movie_id: 1, name: '1' }] },
+                {
+                  data: [
+                    {
+                      movie_id: 1,
+                      movie_name: '1',
+                      alt_group: [],
+                      tag_ids: [],
+                    },
+                  ],
+                },
               ], // supply mock return data from api
             ])
             .withReducer(reducer)
             .hasFinalState(
               util.buildMockStore({
                 list: {
-                  1: { id: 1, tag_ids: [], name: '1' },
+                  1: { id: 1, tag_ids: [], name: '1', alt_group: [] },
                 },
               })
             )
-            .put(searchSuccess({ 1: { id: 1, tag_ids: [], name: '1' } })) // eventual action that will be called
+            .put(
+              searchSuccess({
+                1: { id: 1, tag_ids: [], name: '1', alt_group: [] },
+              })
+            ) // eventual action that will be called
             .dispatch(searchReq(request)) // dispatch action that starts saga
-            .run();
+            .silentRun();
         });
 
-        it.skip('Should fail ', () =>
+        it('Should fail ', () =>
           expectSaga(moviesSagas.searchMovie, { payload: { tag: '12' } })
             .provide([
               [
@@ -304,7 +359,7 @@ const moviesSagasTest = () =>
             .hasFinalState(util.buildInitialStore())
             .put(searchFail('Error occured'))
             .dispatch(searchReq())
-            .run());
+            .silentRun());
       });
     });
 
@@ -327,23 +382,36 @@ const moviesSagasTest = () =>
               // mock selector and api calls
               [
                 matchers.call.fn(api.movie.add, request),
-                { data: [{ id: 1, name: '1' }] },
+                {
+                  data: [
+                    {
+                      movie_id: 1,
+                      movie_name: '1',
+                      alt_group: [],
+                      tag_ids: [],
+                    },
+                  ],
+                },
               ], // supply mock return data from api
             ])
             .withReducer(reducer)
             .hasFinalState(
               util.buildMockStore({
                 list: {
-                  1: { id: 1, name: '1' },
+                  1: { id: 1, name: '1', alt_group: [], tag_ids: [] },
                 },
               })
             )
-            .put(addSuccess([{ id: 1, name: '1' }])) // eventual action that will be called
+            .put(
+              addSuccess({
+                1: { id: 1, name: '1', alt_group: [], tag_ids: [] },
+              })
+            ) // eventual action that will be called
             .dispatch(addReq(request)) // dispatch action that starts saga
-            .run();
+            .silentRun();
         });
 
-        it.skip('Should fail ', () =>
+        it('Should fail ', () =>
           expectSaga(moviesSagas.addMovie, { payload: { tag: '12' } })
             .provide([
               [
@@ -357,7 +425,7 @@ const moviesSagasTest = () =>
             .hasFinalState(util.buildInitialStore())
             .put(addFail('Error occured'))
             .dispatch(addReq())
-            .run());
+            .silentRun());
       });
     });
 
@@ -388,10 +456,10 @@ const moviesSagasTest = () =>
                 },
               })
             )
-            .hasFinalState(util.buildMockStore({}))
+            .hasFinalState(util.buildMockStore())
             .put(deleteSuccess(1)) // eventual action that will be called
             .dispatch(deleteReq(request)) // dispatch action that starts saga
-            .run();
+            .silentRun();
         });
 
         it('Should fail ', () => {
@@ -417,7 +485,7 @@ const moviesSagasTest = () =>
             )
             .put(deleteFail('Error occured')) // eventual action that will be called
             .dispatch(deleteReq({ id: 2 })) // dispatch action that starts saga
-            .run();
+            .silentRun();
         });
       });
     });
@@ -441,27 +509,34 @@ const moviesSagasTest = () =>
               // mock selector and api calls
               [
                 matchers.call.fn(api.movie.update, request),
-                [{ id: '1', name: 'name' }],
+                [
+                  {
+                    movie_id: 1,
+                    movie_name: 'adfa',
+                    alt_group: [],
+                    tag_ids: [],
+                  },
+                ],
               ], // supply mock return data from api
             ])
             .withReducer(
               reducer,
               util.buildMockStore({
                 list: {
-                  1: { id: 1, name: '1' },
+                  1: { id: 1, name: 'adfa', tag_ids: [], alt_group: [] },
                 },
               })
             )
             .hasFinalState(
               util.buildMockStore({
                 list: {
-                  1: { id: 1, name: 'name' },
+                  1: { id: 1, name: 'name', tag_ids: [], alt_group: [] },
                 },
               })
             )
             .put(updateSuccess({ success: true })) // eventual action that will be called
             .dispatch(updateReq({ id: '1', name: 'name' })) // dispatch action that starts saga
-            .run();
+            .silentRun();
         });
 
         it('Should fail ', () => {
@@ -487,7 +562,7 @@ const moviesSagasTest = () =>
             )
             .put(updateFail('Error occured')) // eventual action that will be called
             .dispatch(updateReq({ id: 2 })) // dispatch action that starts saga
-            .run();
+            .silentRun();
         });
       });
     });

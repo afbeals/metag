@@ -1,15 +1,29 @@
 // External
-import { takeLatest, all, fork, race, take, cancel } from 'redux-saga/effects';
+import {
+  takeLatest,
+  all,
+  fork,
+  race,
+  take,
+  cancel,
+  put,
+} from 'redux-saga/effects';
 
 // Internal
 import tagsActions from './actions';
 import api from '~GlobalUtil/api';
 import { normalize } from '~GlobalUtil/';
 import groupsUtil from './util';
+import appActions from '~Modules/app/actions';
 
 // Constants
 const { sagaRequest } = normalize;
 const { normalizeTagsArray } = groupsUtil;
+const {
+  app: {
+    notify: { show },
+  },
+} = appActions;
 const {
   tags: {
     get: {
@@ -85,7 +99,7 @@ export function* tagsFetch() {
       return success;
     }
   } catch (e) {
-    console.log(e);
+    yield put(show({ message: 'Error Fetching Tags', type: 'error' }));
   }
 }
 
@@ -113,7 +127,7 @@ export function* tagsDelete({ payload }) {
       return success;
     }
   } catch (e) {
-    console.log(e);
+    yield put(show({ message: 'Error Deleting Tags', type: 'error' }));
   }
 }
 
@@ -141,7 +155,7 @@ export function* tagsUpdate({ payload }) {
       return success;
     }
   } catch (e) {
-    console.log(e);
+    yield put(show({ message: 'Error Updating Tag', type: 'error' }));
   }
 }
 
@@ -169,7 +183,7 @@ export function* tagsCreate({ payload }) {
       return success;
     }
   } catch (e) {
-    console.log(e);
+    yield put(show({ message: 'Error Creating Tag', type: 'error' }));
   }
 }
 

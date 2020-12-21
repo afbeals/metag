@@ -3,11 +3,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 // Local
-// import { store } from '../app/';
+import { config } from '../app/';
+import appActions from '~Modules/app/actions';
 
 // Constants
 const classname = 'error-boundary';
-// const { dispatch } = store;
+const { store } = config;
+const { dispatch } = store;
+const {
+  app: {
+    notify: { show: appShowNotify },
+  },
+} = appActions;
 
 class ErrorBoundary extends React.PureComponent {
   static propTypes = {
@@ -31,13 +38,13 @@ class ErrorBoundary extends React.PureComponent {
     const { hasError, error, info } = this.state;
     const { children } = this.props;
     if (hasError) {
+      // eslint-disable-next-line no-console
       console.log('error reported:', { hasError, error, info });
-      // dispatch(
-      //   appActions.appShowNotify({
-      //     type: appEnum.APP.NOTIFY_TYPE.SUCCESS,
-      //     msg: 'app team notified.',
-      //   })
-      // );
+      dispatch(
+        appShowNotify({
+          message: 'app team notified.',
+        })
+      );
       return (
         <div className={`${classname}`}>
           <div className={`${classname}__error-message`}>

@@ -38,7 +38,7 @@ export const selectMovieInfoQuery = (
   {
     prevId = 0,
     orderBy = 'mv.id',
-    limit = 15,
+    limit = 1500,
     dir = 'ASC',
     where = null,
     group = '',

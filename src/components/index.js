@@ -5,3 +5,4 @@ export { default as SidebarTitle } from './SidebarTitle';
 export { default as ToolTip } from './ToolTip';
 export { default as Overlay } from './Overlay';
 export { default as Loading } from './Loading';
+export { default as Snackbar } from './Snackbar';

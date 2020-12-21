@@ -1,13 +1,26 @@
 // External
-import { takeLatest, all, fork, race, take, cancel } from 'redux-saga/effects';
+import {
+  takeLatest,
+  all,
+  fork,
+  race,
+  take,
+  cancel,
+  put,
+} from 'redux-saga/effects';
 
 // Internal
 import actions from './actions';
 import api from '~GlobalUtil/api';
 import { sagaRequest } from '~GlobalUtil/normalize';
+import appActions from '~Modules/app/actions';
 
 // Constants
-
+const {
+  app: {
+    notify: { show },
+  },
+} = appActions;
 const {
   user: {
     login: {
@@ -55,7 +68,7 @@ export function* login({ payload }) {
       return success;
     }
   } catch (e) {
-    console.log('saga error', e.message);
+    yield put(show({ message: 'Error Logging in', type: 'error' }));
   }
 }
 
