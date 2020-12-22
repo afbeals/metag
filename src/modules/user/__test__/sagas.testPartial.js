@@ -74,7 +74,7 @@ const userSagasTest = () =>
               })
             ) // eventual action that will be called
             .dispatch(userLoginRequest(request)) // dispatch action that starts saga
-            .run();
+            .silentRun();
         });
 
         it('Should fail ', () =>
@@ -95,7 +95,7 @@ const userSagasTest = () =>
             )
             .put(userLoginFail('Error occured')) // eventual action that will be called
             .dispatch(userLoginRequest({ username: 'user' })) // dispatch action that starts saga
-            .run());
+            .silentRun());
       });
     });
   });

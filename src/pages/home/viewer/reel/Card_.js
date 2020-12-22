@@ -8,7 +8,7 @@ import {
   secondaryDark,
   fontColorPrimary,
   fontColorSecondary,
-  white,
+  colorWhite,
 } from '~Styles/abstract/_variables';
 
 export const Card = styled.div(({ selected }) => ({
@@ -88,7 +88,7 @@ export const Tags = styled.div`
   margin-top: auto;
   .pill {
     font-size: 0.65em;
-    background: ${white};
+    background: ${colorWhite};
     color: ${fontColorSecondary};
     padding: 2px 4px;
     text-transform: capitalize;

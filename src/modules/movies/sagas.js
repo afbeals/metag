@@ -6,7 +6,7 @@ import {
   race,
   take,
   cancel,
-  select,
+  put,
 } from 'redux-saga/effects';
 
 // Internal
@@ -14,11 +14,16 @@ import actions from './actions';
 import api from '~GlobalUtil/api';
 import normalize from '~GlobalUtil/normalize';
 import movieUtil from './util';
-import { getMoviesSearch } from './selectors';
+import appActions from '~Modules/app/actions';
 
 // Constants
 const { sagaRequest } = normalize;
 const { normalizeMoviesArray } = movieUtil;
+const {
+  app: {
+    notify: { show },
+  },
+} = appActions;
 const {
   movies: {
     all: {
@@ -138,7 +143,7 @@ export function* fetchAll() {
       return success;
     }
   } catch (e) {
-    console.log(e);
+    yield put(show({ message: 'Error Fetching All Movies', type: 'error' }));
   }
 }
 
@@ -166,7 +171,7 @@ export function* fetchUnderGroup({ payload: request }) {
       return success;
     }
   } catch (e) {
-    console.log(e);
+    yield put(show({ message: 'Error Fetching Group Movies', type: 'error' }));
   }
 }
 
@@ -194,7 +199,9 @@ export function* fetchUnderCat({ payload: request }) {
       return success;
     }
   } catch (e) {
-    console.log(e);
+    yield put(
+      show({ message: 'Error Fetching Category Movies', type: 'error' })
+    );
   }
 }
 
@@ -222,14 +229,12 @@ export function* fetchUnderTag({ payload: request }) {
       return success;
     }
   } catch (e) {
-    console.log(e);
+    yield put(show({ message: 'Error Fetching Tag Movies', type: 'error' }));
   }
 }
 
-export function* searchMovie({ payload }) {
+export function* searchMovie({ payload: request }) {
   try {
-    const { prevId } = yield select(getMoviesSearch);
-    const request = { prevId, ...payload };
     const apiCalls = yield all([
       fork(sagaRequest, {
         params: [api.movie.search, request],
@@ -252,7 +257,7 @@ export function* searchMovie({ payload }) {
       return success;
     }
   } catch (e) {
-    console.log(e);
+    yield put(show({ message: 'Error Searching for Movies', type: 'error' }));
   }
 }
 
@@ -280,7 +285,7 @@ export function* addMovie({ payload: request }) {
       return success;
     }
   } catch (e) {
-    console.log(e);
+    yield put(show({ message: 'Error Adding Movies', type: 'error' }));
   }
 }
 
@@ -308,7 +313,7 @@ export function* deleteMovie({ payload: request }) {
       return success;
     }
   } catch (e) {
-    console.log(e);
+    yield put(show({ message: 'Error deleting Movies', type: 'error' }));
   }
 }
 
@@ -336,7 +341,7 @@ export function* updateMovie({ payload: request }) {
       return success;
     }
   } catch (e) {
-    console.log(e);
+    yield put(show({ message: 'Error updating Movies', type: 'error' }));
   }
 }
 

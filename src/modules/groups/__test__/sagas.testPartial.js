@@ -67,7 +67,7 @@ const groupsSagasTest = () =>
               })
             ) // eventual action that will be called
             .dispatch(getAll()) // dispatch action that starts saga
-            .run());
+            .silentRun());
 
         it('Should fail ', () =>
           expectSaga(sagas.groupsFetchAll)
@@ -83,7 +83,7 @@ const groupsSagasTest = () =>
             .hasFinalState(util.buildInitialStore())
             .put(getAllFail('Error occured'))
             .dispatch(getAll())
-            .run());
+            .silentRun());
       });
     });
 
@@ -122,7 +122,7 @@ const groupsSagasTest = () =>
             )
             .put(addSuccess({ 1: { id: 1, name: '12', date: '', amount: 0 } })) // eventual action that will be called
             .dispatch(add(request)) // dispatch action that starts saga
-            .run();
+            .silentRun();
         });
 
         it('Should fail ', () =>
@@ -141,7 +141,7 @@ const groupsSagasTest = () =>
             .hasFinalState(util.buildInitialStore())
             .put(addFail('Error occured'))
             .dispatch(add())
-            .run());
+            .silentRun());
       });
     });
 
@@ -182,7 +182,7 @@ const groupsSagasTest = () =>
               createSuccess({ 1: { id: 1, name: '12', date: '', amount: 0 } })
             ) // eventual action that will be called
             .dispatch(create(request)) // dispatch action that starts saga
-            .run();
+            .silentRun();
         });
 
         it('Should fail ', () =>
@@ -201,7 +201,7 @@ const groupsSagasTest = () =>
             .hasFinalState(util.buildInitialStore())
             .put(createFail('Error occured'))
             .dispatch(create())
-            .run());
+            .silentRun());
       });
     });
 
@@ -247,7 +247,7 @@ const groupsSagasTest = () =>
             )
             .put(updateSuccess({ 1: { ...request, date: '', amount: 0 } })) // eventual action that will be called
             .dispatch(update(request)) // dispatch action that starts saga
-            .run();
+            .silentRun();
         });
 
         it('Should fail ', () =>
@@ -264,7 +264,7 @@ const groupsSagasTest = () =>
             .hasFinalState(util.buildInitialStore())
             .put(updateFail('Error occured')) // eventual action that will be called
             .dispatch(update({ id: 1, name: 'tag' })) // dispatch action that starts saga
-            .run());
+            .silentRun());
       });
     });
 
@@ -302,7 +302,7 @@ const groupsSagasTest = () =>
             )
             .put(deleteSuccess(1)) // eventual action that will be called
             .dispatch(deleteReq(request)) // dispatch action that starts saga
-            .run();
+            .silentRun();
         });
 
         it('Should fail ', () =>
@@ -328,7 +328,7 @@ const groupsSagasTest = () =>
             )
             .put(deleteFail('Error occured')) // eventual action that will be called
             .dispatch(deleteReq({ id: 2 })) // dispatch action that starts saga
-            .run());
+            .silentRun());
       });
     });
   });

@@ -1,15 +1,29 @@
 // External
-import { takeLatest, all, fork, race, take, cancel } from 'redux-saga/effects';
+import {
+  takeLatest,
+  all,
+  fork,
+  race,
+  take,
+  cancel,
+  put,
+} from 'redux-saga/effects';
 
 // Internal
 import actions from './actions';
 import api from '~GlobalUtil/api';
 import normalize from '~GlobalUtil/normalize';
 import groupsUtil from './util';
+import appActions from '~Modules/app/actions';
 
 // Constants
 const { sagaRequest } = normalize;
 const { normalizeGroupsArray } = groupsUtil;
+const {
+  app: {
+    notify: { show },
+  },
+} = appActions;
 const {
   groups: {
     getall: {
@@ -96,7 +110,7 @@ export function* groupsFetchAll() {
       return success;
     }
   } catch (e) {
-    console.log(e);
+    yield put(show({ message: 'Error Fetching All Groups', type: 'error' }));
   }
 }
 
@@ -124,7 +138,7 @@ export function* groupsDelete({ payload }) {
       return success;
     }
   } catch (e) {
-    console.log(e);
+    yield put(show({ message: 'Error Deleting Group', type: 'error' }));
   }
 }
 
@@ -152,7 +166,7 @@ export function* groupsUpdate({ payload }) {
       return success;
     }
   } catch (e) {
-    console.log(e);
+    yield put(show({ message: 'Error updating group', type: 'error' }));
   }
 }
 
@@ -180,7 +194,7 @@ export function* groupsAdd({ payload }) {
       return success;
     }
   } catch (e) {
-    console.log(e);
+    yield put(show({ message: 'Error adding group', type: 'error' }));
   }
 }
 
@@ -208,7 +222,7 @@ export function* groupsCreate({ payload }) {
       return success;
     }
   } catch (e) {
-    console.log(e);
+    yield put(show({ message: 'Error creating group', type: 'error' }));
   }
 }
 

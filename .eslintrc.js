@@ -155,7 +155,7 @@ const eslintrc = {
     'react/jsx-curly-brace-presence': 0,
     'react/jsx-no-bind': [2, { allowBind: true, allowArrowFunctions: true }],
     'react-hooks/rules-of-hooks': 'error',
-    'react-hooks/exhaustive-deps': 'warn',
+    'react-hooks/exhaustive-deps': 0,
     'react/no-array-index-key': 0,
     'class-methods-use-this': 0,
     'no-tabs': 0,

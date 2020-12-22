@@ -48,7 +48,7 @@ const Add = () => {
     updateEditorValues(prev => ({ ...prev, ...val }));
   };
 
-  const { movieFetch } = useMovies();
+  const { movieAdd } = useMovies();
 
   const {
     groupListArray,
@@ -94,21 +94,19 @@ const Add = () => {
   }, []);
 
   const handleAddMovie = () => {
-    api.movie.add(editorValues).then(() => {
-      movieFetch();
-      const newList = availableMovies.filter(
-        ({ file }) => file !== editorValues.file_src
-      );
-      handleUpdateEditor({
-        tag_ids: [],
-        file_src: '',
-        name: '',
-        note: '',
-        primary_group: '',
-        related_groups: [],
-      });
-      updateAvailabeMovies(newList);
+    movieAdd(editorValues);
+    handleUpdateEditor({
+      tag_ids: [],
+      file_src: '',
+      name: '',
+      note: '',
+      primary_group: '',
+      related_groups: [],
     });
+    const newList = availableMovies.filter(
+      ({ file }) => file !== editorValues.file_src
+    );
+    updateAvailabeMovies(newList);
   };
 
   useEffect(() => {

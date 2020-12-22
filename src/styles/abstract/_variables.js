@@ -1,7 +1,10 @@
 // Colors get loaded at build time through plugin. variables defined here are accessable to scss with '$' as normal.
 module.exports = {
-  white: '#fff',
-  black: '#000',
+  colorWhite: '#fff',
+  colorBlack: '#000',
+  colorOrange: '#f3c118',
+  colorGreen: '#1ea01e',
+  colorRed: '#cc0000',
   rootBackground: '#f5f5f6',
   appBackground: '#101f27',
   animSpeed: '0.75',
@@ -13,4 +16,7 @@ module.exports = {
   secondaryDark: '#007ac1',
   fontColorSecondary: '#3e3e3e',
   fontColorPrimary: '#f7f7f7',
+  stateWarning: '#f3c118',
+  stateSuccess: '#1ea01e',
+  stateError: '#cc0000',
 };
