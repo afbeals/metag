@@ -99,7 +99,7 @@ const Add = () => {
       tag_ids: [],
       file_src: '',
       name: '',
-      note: '',
+      notes: '',
       primary_group: '',
       related_groups: [],
     });
@@ -107,6 +107,17 @@ const Add = () => {
       ({ file }) => file !== editorValues.file_src
     );
     updateAvailabeMovies(newList);
+  };
+
+  const isValid = () => {
+    if (editorValues.name.length < 1) return true;
+    if (
+      editorValues.primary_group.length < 1 &&
+      editorValues.category_id.length < 1
+    )
+      return true;
+    if (editorValues.file_src.length < 1) return true;
+    return false;
   };
 
   useEffect(() => {
@@ -271,6 +282,7 @@ const Add = () => {
               controls
               autoPlay
               width='100%'
+              muted
               // eslint-disable-next-line max-len
               src={`${ROOT}${STREAM}?suggestedPath=${editorValues.file_src}&${
                 editorValues.primary_group
@@ -331,11 +343,7 @@ const Add = () => {
         fullWidth
         variant='contained'
         onClick={handleAddMovie}
-        disabled={
-          Object.entries(editorValues)
-            .filter(([key]) => key !== 'notes')
-            .filter(([_, val]) => !val).length > 0
-        }
+        disabled={isValid()}
       >
         Add Movie
       </Button>

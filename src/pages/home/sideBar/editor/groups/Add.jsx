@@ -87,7 +87,7 @@ const Add = () => {
           Object.values(editorValues).filter(val => !val).length > 0
         }
       >
-        Add Movie
+        Add Group
       </Button>
     </AddStyled>
   );

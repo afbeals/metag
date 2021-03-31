@@ -34,5 +34,6 @@ export const getCategoriesList = createSelector(
  */
 export const getCategoriesListArray = createSelector(
   [getCategoriesList],
-  store => indexedToArray({ indexedList: store })
+  store =>
+    indexedToArray({ indexedList: store, sort: 'asc', sortField: 'name' })
 );

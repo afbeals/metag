@@ -44,6 +44,35 @@ const Update = () => {
 
   return (
     <UpdateStyled>
+      <UserInputs>
+        <div className='title'>Edit Fields: </div>
+        <div className='name'>
+          <Input
+            onChange={({ target: { value } }) =>
+              handleUpdateInputValues({ category: value })
+            }
+            placeholder={selectedCategory ? catList[selectedCategory].name : ''}
+            value={inputValues.category}
+            label='Name'
+          />
+        </div>
+      </UserInputs>
+      {!!selectedCategory && (
+        <Info>
+          <div className='line'>
+            <span>name: </span>
+            <p>{catList[selectedCategory].name}</p>
+          </div>
+          <div className='line'>
+            <span>created: </span>{' '}
+            <p>{new Date(catList[selectedCategory].date).toDateString()}</p>
+          </div>
+          <div className='line'>
+            <span>amount:</span>
+            <p>{catList[selectedCategory].amount}</p>
+          </div>
+        </Info>
+      )}
       <Categories>
         <div className='title'>Categories:</div>
         <RadioGroup
@@ -66,35 +95,6 @@ const Update = () => {
           ))}
         </RadioGroup>
       </Categories>
-      {!!selectedCategory && (
-        <Info>
-          <div className='line'>
-            <span>name: </span>
-            <p>{catList[selectedCategory].name}</p>
-          </div>
-          <div className='line'>
-            <span>created: </span>{' '}
-            <p>{new Date(catList[selectedCategory].date).toDateString()}</p>
-          </div>
-          <div className='line'>
-            <span>amount:</span>
-            <p>{catList[selectedCategory].amount}</p>
-          </div>
-        </Info>
-      )}
-      <UserInputs>
-        <div className='title'>Edit Fields: </div>
-        <div className='name'>
-          <Input
-            onChange={({ target: { value } }) =>
-              handleUpdateInputValues({ category: value })
-            }
-            placeholder={selectedCategory ? catList[selectedCategory].name : ''}
-            value={inputValues.category}
-            label='Name'
-          />
-        </div>
-      </UserInputs>
       <Submit>
         <Button
           color='primary'

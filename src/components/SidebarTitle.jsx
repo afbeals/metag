@@ -35,7 +35,7 @@ SidebarTitleRender.propTypes = {
 };
 
 SidebarTitleRender.defaultProps = {
-  classname: '',
+  className: '',
   title: null,
 };
 

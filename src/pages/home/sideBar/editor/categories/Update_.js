@@ -11,6 +11,7 @@ import {
 } from '~Styles/abstract/_variables';
 
 export const Update = styled.div`
+  max-height: 1000px;
   font-size: 1em;
   display: flex;
   flex-direction: column;
@@ -18,7 +19,8 @@ export const Update = styled.div`
 `;
 
 export const Categories = styled.div`
-  max-height: 30%;
+  max-height: 83%;
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -36,9 +38,9 @@ export const Categories = styled.div`
   }
   .list {
     width: 100%;
-    max-height: 92%;
     overflow-x: hidden;
     overflow-y: scroll;
+    flex-wrap: nowrap;
     font-size: 0.5em;
     .MuiSvgIcon-root {
       font-size: 0.75em;
@@ -86,7 +88,6 @@ export const Info = styled.div`
   }
 `;
 export const UserInputs = styled.div`
-  flex-grow: 1;
   display: flex;
   flex-direction: column;
   .title {

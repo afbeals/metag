@@ -202,15 +202,19 @@ const addMovieToDB = async (
   await queryHandler(pool, addMovieCat);
 
   // update tags/movie table
-  const addMovieTags = tag_ids.map(tag_id => {
-    const addMovieTag = {
-      text: `INSERT INTO ${moviesTagsTable}(movies_id, tags_id)
-              VALUES($1, $2)
-              ON CONFLICT (movies_id, tags_id) DO NOTHING;`,
-      values: [movie_id, tag_id],
-    };
-    return queryHandler(pool, addMovieTag);
-  });
+  const insertTagsQuery = {
+    text: `
+      INSERT INTO ${moviesTagsTable}(movies_id, tags_id)
+         VALUES ($movie_id,${tag_ids
+           .map(v => `'${v}'::int`)
+           .join('),($movie_id,')});
+    `,
+    values: {
+      movie_id,
+    },
+  };
+
+  const insertTagsReq = queryHandler(pool, insertTagsQuery);
 
   // update movie groups
   if (primary_group) {
@@ -224,7 +228,7 @@ const addMovieToDB = async (
   }
 
   // wait for transactions
-  await Promise.all([createThumb, createGif, ...addMovieTags]);
+  await Promise.all([createThumb, createGif, insertTagsReq]);
 
   return queryHandler(pool, {
     text: `SELECT

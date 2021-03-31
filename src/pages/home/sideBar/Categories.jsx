@@ -1,6 +1,6 @@
 // External
 import { useEffect, useState, Fragment } from 'react';
-import List from '@material-ui/core/List';
+
 import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -16,6 +16,7 @@ import { SidebarTitle, Loading } from '~Components/';
 import {
   Categories as CategoriesStyled,
   Badge,
+  List,
   ListItemIcon,
   ListItemText,
   Title,

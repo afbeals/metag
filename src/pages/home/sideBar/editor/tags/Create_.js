@@ -17,7 +17,6 @@ export const Create = styled.div`
 `;
 
 export const UserInputs = styled.div`
-  flex-grow: 1;
   display: flex;
   flex-direction: column;
   .title {
@@ -50,7 +49,8 @@ export const Submit = styled.div`
 export const CurrentTags = styled.div`
   display: flex;
   flex-direction: column;
-  height: 20%;
+  max-height: 83%;
+  flex-grow: 1;
   .title {
     display: flex;
     flex-direction: row;
@@ -62,7 +62,6 @@ export const CurrentTags = styled.div`
     color: ${fontColorPrimary};
   }
   .list {
-    max-height: 90%;
     overflow-x: hidden;
     overflow-y: scroll;
     display: flex;

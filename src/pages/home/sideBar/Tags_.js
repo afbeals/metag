@@ -3,15 +3,24 @@ import styled from '@emotion/styled/macro';
 import MaterialBadge from '@material-ui/core/Badge';
 import MaterialListItemText from '@material-ui/core/ListItemText';
 import MaterialListItemIcon from '@material-ui/core/ListItemIcon';
+import MaterialList from '@material-ui/core/List';
 
 // Internal
 
-export const Tags = styled.div``;
+export const Tags = styled.div`
+  height: 100%;
+`;
 
 export const Title = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+`;
+
+export const List = styled(MaterialList)`
+  overflow-x: hidden;
+  overflow-y: scroll;
+  max-height: 100%;
 `;
 
 export const ListItemText = styled(MaterialListItemText)`
@@ -33,6 +42,7 @@ export const Badge = styled(MaterialBadge)`
 
 export default {
   Badge,
+  List,
   ListItemIcon,
   ListItemText,
   Tags,

@@ -209,12 +209,18 @@ export const arrayToIndexed = ({ array, indexer = 'id', normalizer }) => {
  * @param {array} params.array array to be sorted
  * @param {string} [params.sort] ' asc' or 'desc' (default 'asc')
  * @param {string} [params.sortField] field to sort by (single layer deep, default 'id')
+ * @param {string} [params.ignoreCase] convert to lower before compare
  * @return new sorted array
  * @example
  *
  * let newArr = listSorter({ array: [1,3,2]}); // [1,2,3]
  */
-export const listSorter = ({ array, sort = 'asc', sortField = 'id' }) => {
+export const listSorter = ({
+  array,
+  sort = 'asc',
+  sortField = 'id',
+  ignoreCase = false,
+}) => {
   if (!array || !Array.isArray(array)) {
     // eslint-disable-next-line no-console
     console.warn('non-array supplied to listSorter');
@@ -222,14 +228,18 @@ export const listSorter = ({ array, sort = 'asc', sortField = 'id' }) => {
   }
   if (sort.toLowerCase() === 'asc') {
     return [...array].sort((a, b) => {
-      if (a[sortField] < b[sortField]) return -1;
-      if (a[sortField] > b[sortField]) return 1;
+      const compareA = ignoreCase ? a[sortField].toLowerCase() : a[sortField];
+      const compareB = ignoreCase ? b[sortField].toLowerCase() : b[sortField];
+      if (compareA < compareB) return -1;
+      if (compareA > compareB) return 1;
       return 0;
     });
   }
   return [...array].sort((a, b) => {
-    if (a[sortField] > b[sortField]) return -1;
-    if (a[sortField] < b[sortField]) return 1;
+    const compareA = ignoreCase ? a[sortField].toLowerCase() : a[sortField];
+    const compareB = ignoreCase ? b[sortField].toLowerCase() : b[sortField];
+    if (compareA > compareB) return -1;
+    if (compareA < compareB) return 1;
     return 0;
   });
 };
@@ -241,6 +251,7 @@ export const listSorter = ({ array, sort = 'asc', sortField = 'id' }) => {
  * @param {object} params.indexedList indexed object
  * @param {string} [params.sort] direction to sort list (default: 'asc')
  * @param {string} [params.sortField] field to sort by (default: 'id')
+ * @param {string} [params.ignoreCase] convert to same casing
  * @return {array} returns new array with previously indexed objects
  * @example
  * const arr = indexedToArrary({ blah: { id: 1}}) // [{ id: 1}]
@@ -249,17 +260,17 @@ export const indexedToArray = ({
   indexedList = null,
   sort = null,
   sortField = 'id',
+  ignoreCase = true,
 }) => {
   if (!indexedList) return [];
-  let newArr;
+  const newArr = Object.values(indexedList);
   if (sort) {
-    newArr = listSorter({
+    return listSorter({
       array: newArr,
       sort,
       sortField,
+      ignoreCase,
     });
-  } else {
-    newArr = Object.values(indexedList);
   }
   return newArr;
 };
@@ -284,9 +295,37 @@ export const convertSecToTime = sec => {
 
 export { createAction as actionCreator } from '@reduxjs/toolkit';
 
+/**
+ * @desc Function for combining sliced reducers into one (mini reducer name doesn't matter)
+ * @function combineMiniReducers
+ * @param {object} [reducers = {}] the reducers to combine
+ * @param {object} [defaultStore = {}] the default state for the store
+ * @return single redux store for redux's combineReducers function
+ * @example
+ * const defaultStore = { one: 1};
+ * const reducerOne = (state = {}, action) => state
+ * const reducerTwo = (state = {}, action) => state
+ *
+ * const myStore = combineMiniReducers({ reducerOne, reducerTwo}, defaultStore)
+ * const reduxStore = combineReducer({ myStore })
+ */
+export const combineMiniReducers = (reducers = {}, defaultStore) => {
+  const reducerKeys = Object.values(reducers);
+  return (state = defaultStore, action) => {
+    let currentState = state;
+
+    reducerKeys.forEach(reducer => {
+      currentState = reducer(currentState, action);
+    });
+
+    return currentState;
+  };
+};
+
 export default {
   constructClass,
   convertSecToTime,
+  combineMiniReducers,
   createActions,
   getCapitalized,
   getRequestMatch,

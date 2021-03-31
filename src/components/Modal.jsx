@@ -56,7 +56,7 @@ const Modal = ({
 
 Modal.propTypes = {
   onCancel: func,
-  onConfirm: func.isRequired,
+  onConfirm: func,
   onClose: func,
   transition: any,
   children: node.isRequired,

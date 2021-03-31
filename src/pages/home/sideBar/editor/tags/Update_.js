@@ -40,6 +40,7 @@ export const Tags = styled.div`
     overflow-x: hidden;
     overflow-y: scroll;
     font-size: 0.5em;
+    flex-wrap: nowrap;
     .MuiSvgIcon-root {
       font-size: 0.75em;
     }

@@ -37,6 +37,7 @@ const Player = () => {
             <video
               controls
               autoPlay
+              muted
               width='100%'
               poster={`${ROOT}${IMG}?movie_id=${movieSelected.id}`}
               src={`${ROOT}${STREAM}?id=${movieSelected.id}`}

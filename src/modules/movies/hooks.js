@@ -111,7 +111,7 @@ export const useMovies = () => {
     movieSearchCancel: () => dispatch(searchCancel()),
     movieSearchClear: () => dispatch(searchClear()),
     movieSelect: info => dispatch(selectMovie(info)),
-    movieAdd: () => dispatch(addReq()),
+    movieAdd: info => dispatch(addReq(info)),
     movieAddCancel: () => dispatch(addCancel()),
     movieDelete: info => dispatch(deleteReq(info)),
     movieDeleteCancel: () => dispatch(deleteCancel()),

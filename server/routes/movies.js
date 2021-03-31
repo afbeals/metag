@@ -5,8 +5,10 @@ export default (app, pool) => {
   app.post('/addMovieToDB', (req, res) =>
     movies
       .addMovieToDB(pool, req)
-      .then(() => res.sendStatus(200))
-      .catch(err => res.status(500).send(err))
+      .then(results => res.status(200).send(results.rows))
+      .catch(err => {
+        res.status(500).send(err);
+      })
   );
   app.delete('/deleteMovie', (req, res) =>
     movies

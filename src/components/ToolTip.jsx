@@ -143,7 +143,7 @@ const ToolTip = ({ title, position, children, className }) => {
 
 ToolTip.defaultProps = {
   position: 'bottom',
-  classname: '',
+  className: '',
 };
 
 ToolTip.propTypes = {
