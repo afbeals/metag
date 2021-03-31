@@ -30,5 +30,5 @@ export const getGroupsList = createSelector(
  * @return {array} the tag list array
  */
 export const getGroupsListArray = createSelector([getGroupsList], store =>
-  indexedToArray({ indexedList: store })
+  indexedToArray({ indexedList: store, sort: 'asc', sortField: 'name' })
 );

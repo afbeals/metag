@@ -12,6 +12,7 @@ import {
 } from '~Styles/abstract/_variables';
 
 export const UserInput = styled.div`
+  max-height: 70%;
   font-size: 1em;
   display: flex;
   flex-direction: column;
@@ -42,7 +43,7 @@ export const Input = styled(MaterialTextField)`
 `;
 
 export const CheckList = styled.div`
-  max-height: 30%;
+  max-height: 25%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;

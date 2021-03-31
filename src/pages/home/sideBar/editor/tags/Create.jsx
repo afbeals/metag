@@ -52,18 +52,6 @@ const Create = () => {
 
   return (
     <CreateStyled>
-      <CurrentTags>
-        <div className='title'>Current Tags:</div>
-        <div className='list'>
-          {tagsListArray.map(({ id, name, amount }) => (
-            <div key={id}>
-              <p>
-                {name} <span>{amount}</span>
-              </p>
-            </div>
-          ))}
-        </div>
-      </CurrentTags>
       <UserInputs>
         <div className='title'>Tag Info: </div>
         <div className='name'>
@@ -83,6 +71,19 @@ const Create = () => {
           />
         </div>
       </UserInputs>
+      <CurrentTags>
+        <div className='title'>Current Tags:</div>
+        <div className='list'>
+          {tagsListArray.map(({ id, name, amount }) => (
+            <div key={id}>
+              <p>
+                {name} <span>{amount}</span>
+              </p>
+            </div>
+          ))}
+        </div>
+      </CurrentTags>
+
       <Submit>
         <Button
           color='primary'

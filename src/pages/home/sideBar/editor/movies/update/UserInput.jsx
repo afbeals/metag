@@ -98,7 +98,7 @@ const UserInputs = ({
         </Select>
       </FormControl>
       <CheckList>
-        <CheckListTitle>Tags:</CheckListTitle>
+        <CheckListTitle>Related Groups:</CheckListTitle>
         <div className='list'>
           {groupListArray
             .filter(({ id }) => id !== +group_id)
@@ -127,7 +127,7 @@ const UserInputs = ({
         </div>
       </CheckList>
       <CheckList>
-        <CheckListTitle>Related Groups:</CheckListTitle>
+        <CheckListTitle>Tags:</CheckListTitle>
         <div className='list'>
           {tagsListArray.map(({ id, name: tagName }) => (
             <FormControlLabel

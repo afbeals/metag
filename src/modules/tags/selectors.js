@@ -27,5 +27,5 @@ export const getTagsList = createSelector([getTagsStore], store => store.list);
  * @return {array} the tag list array
  */
 export const getTagsListArray = createSelector([getTagsStore], store =>
-  indexedToArray({ indexedList: store.list })
+  indexedToArray({ indexedList: store.list, sort: 'asc', sortField: 'name' })
 );

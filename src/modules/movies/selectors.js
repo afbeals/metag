@@ -51,7 +51,7 @@ export const getSelectedMovie = createSelector(
  * @return {array} the tag list array
  */
 export const getMovieListArray = createSelector([getMoviesList], list =>
-  indexedToArray({ indexedList: list })
+  indexedToArray({ indexedList: list, sort: 'asc', sortField: 'name' })
 );
 
 /**

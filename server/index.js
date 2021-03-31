@@ -13,7 +13,7 @@ import routes from './routes';
 const app = express();
 const pool = getPool();
 const envFilePath = path.join(__dirname, '../.env.local');
-const { SERVER_PORT: port } = process.env;
+const { SERVER_PORT: port, SERVER_HOST: host } = process.env;
 
 env.config({ path: envFilePath });
 
@@ -32,7 +32,7 @@ app.get('/', (_, response) => {
 
 routes(app, pool);
 
-app.listen(port, () => {
+app.listen(port, host, () => {
   const message = colors.brightCyan(`App running on port`);
   const portMsg = colors.underline.brightGreen(`${port}!`);
   console.log(`${message} ${portMsg}`);
